@@ -1,0 +1,16 @@
+{
+  "name": "rating-app",
+  "version": "0.0.0",
+  "description": "Monorepo of rating app",
+  "homepage": "TODO",
+  "bugs": {
+    "url": "https://www.github.com/Stradi/rating-app/issues",
+    "email": "todo@example.com"
+  },
+  "author": "Batin Evirgen <hello@batin.sh> (https://www.batin.sh)",
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/Stradi/rating-app.git"
+  },
+  "private": true
+}
