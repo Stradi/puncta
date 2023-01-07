@@ -6,3 +6,12 @@ datasource db {
   provider = "sqlite"
   url = env("DATABASE_URL")
 }
+
+model University {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  name String @unique
+  slug String @unique
+}
