@@ -1,3 +1,9 @@
 node_modules/
 .turbo
 dist/
+
+.env
+
+# SQLite
+*.db
+*.db-journal
