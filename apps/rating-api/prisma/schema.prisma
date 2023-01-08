@@ -14,4 +14,17 @@ model University {
   
   name String @unique
   slug String @unique
+
+  faculties Faculty[]
+}
+
+model Faculty {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @unique
+  slug String @unique
+
+  universities University[]
 }
