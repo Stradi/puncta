@@ -1,180 +1,132 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import slugify from 'slugify';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateFacultyDto } from './dto/create-faculty.dto';
-import { UpdateFacultyDto } from './dto/update-faculty.dto';
+import { FacultyNotFoundError } from 'src/shared/shared.exceptions';
+import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
+import { CreateFacultyInput } from './dto/create-faculty.input';
+import { DeleteFacultyInput } from './dto/delete-faculty.input';
+import { GetFacultyArgs } from './dto/get-faculty.args';
+import { UpdateFacultyInput } from './dto/update-faculty.input';
 
 @Injectable()
 export class FacultyService {
   constructor(private prismaService: PrismaService) {}
 
-  getAllFaculties() {
-    return this.prismaService.faculty.findMany();
-  }
-
-  async getFacultyBySlug(slug: string) {
-    const faculty = await this.prismaService.faculty.findFirst({
-      where: {
-        slug,
+  async findMany(args: GetFacultyArgs) {
+    return await this.prismaService.faculty.findMany({
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+      include: {
+        universities: true,
+        teachers: true,
       },
     });
-
-    if (!faculty) {
-      throw new NotFoundException('Faculty not found.', 'FACULTY_NOT_FOUND');
-    }
-    return faculty;
   }
 
-  async getFacultyOfUniversityBySlug(slug: string, facultySlug: string) {
-    const faculty = await this.prismaService.faculty.findFirst({
-      where: {
-        slug: facultySlug,
-        universities: {
-          some: {
-            slug,
-          },
-        },
-      },
-    });
-
-    if (!faculty) {
-      throw new NotFoundException('Faculty not found.', 'FACULTY_NOT_FOUND');
-    }
-
-    return faculty;
-  }
-
-  async getAllFacultiesOfUniversity(slug: string) {
-    const faculties = await this.prismaService.faculty.findMany({
-      where: {
-        universities: {
-          some: {
-            slug,
-          },
-        },
-      },
-    });
-
-    if (!faculties) {
-      throw new NotFoundException('Faculties not found.', 'FACULTIES_NOT_FOUND');
-    }
-
-    return faculties;
-  }
-
-  async createFacultyOfUniversity(slug: string, dto: CreateFacultyDto) {
-    const facultySlug = dto.name.toLocaleLowerCase().replace(' ', '-');
-
+  async findOne(args: GetFacultyArgs) {
     let faculty = null;
+    faculty = await this.prismaService.faculty.findUnique({
+      where: convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      include: {
+        universities: true,
+        teachers: true,
+      },
+    });
+
+    if (!faculty) {
+      throw FacultyNotFoundError;
+    }
+
+    return faculty;
+  }
+
+  async create(args: CreateFacultyInput) {
     try {
-      faculty = await this.prismaService.university.update({
-        where: {
-          slug,
-        },
+      const faculty = await this.prismaService.faculty.create({
         data: {
-          faculties: {
-            connectOrCreate: {
-              where: {
-                slug: facultySlug,
-              },
-              create: {
-                name: dto.name,
-                slug: facultySlug,
-              },
-            },
+          name: args.name,
+          slug: slugify(args.name, { lower: true }),
+          universities: {
+            connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.university),
           },
         },
         include: {
-          faculties: true,
+          universities: true,
+          teachers: true,
         },
       });
+
+      return faculty;
     } catch (error) {
-      // Currently it doesn't throw an error if the faculty already exists.
-      // We should fix this..
-    }
-
-    if (!faculty) {
-      throw new BadRequestException('Faculty could not be created.', 'FACULTY_NOT_CREATED');
-    }
-
-    return faculty;
-  }
-
-  async createFaculty(dto: CreateFacultyDto) {
-    const slug = dto.name.toLocaleLowerCase().replace(' ', '-');
-
-    let faculty = null;
-    try {
-      faculty = await this.prismaService.faculty.create({
-        data: {
-          name: dto.name,
-          slug,
-        },
-      });
-    } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new BadRequestException('Faculty already exists.', 'FACULTY_ALREADY_EXISTS');
-        }
-      }
-    }
-
-    if (!faculty) {
-      throw new BadRequestException('Faculty could not be created.', 'FACULTY_NOT_CREATED');
-    }
-
-    return faculty;
-  }
-
-  async updateFaculty(slug: string, dto: UpdateFacultyDto) {
-    const faculty = await this.prismaService.faculty.update({
-      where: {
-        slug,
-      },
-      data: {
-        name: dto.name,
-        slug: dto.slug,
-      },
-    });
-
-    if (!faculty) {
-      throw new NotFoundException('Faculty not found.', 'FACULTY_NOT_FOUND');
-    }
-
-    return faculty;
-  }
-
-  async deleteFacultyOfUniversity(slug: string, facultySlug: string) {
-    const faculty = await this.prismaService.faculty.delete({
-      where: {
-        slug: facultySlug,
-      },
-    });
-
-    if (!faculty) {
-      throw new NotFoundException('Faculty not found.', 'FACULTY_NOT_FOUND');
-    }
-
-    return faculty;
-  }
-
-  async deleteFaculty(slug: string) {
-    let faculty = null;
-
-    try {
-      faculty = await this.prismaService.faculty.delete({
-        where: {
-          slug,
-        },
-      });
-    } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
-          throw new NotFoundException('Faculty not found.', 'FACULTY_NOT_FOUND');
+          throw FacultyNotFoundError;
         }
+      }
+
+      throw error;
+    }
+  }
+
+  async update(args: UpdateFacultyInput) {
+    const setOptions: any = {};
+
+    if (args.set.name) {
+      setOptions['name'] = args.set.name;
+
+      if (!args.set.slug) {
+        setOptions['slug'] = slugify(args.set.name, { lower: true });
       }
     }
 
-    return faculty;
+    if (args.set.slug) {
+      setOptions['slug'] = args.set.slug;
+    }
+
+    try {
+      const university = await this.prismaService.faculty.update({
+        where: convertArgsToWhereClause(['id', 'slug', 'name'], args.filter),
+        data: {
+          ...setOptions,
+        },
+        include: {
+          universities: true,
+          teachers: true,
+        },
+      });
+
+      return university;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw FacultyNotFoundError;
+        }
+      }
+
+      throw error;
+    }
+  }
+
+  async delete(args: DeleteFacultyInput) {
+    try {
+      const faculty = await this.prismaService.faculty.delete({
+        where: convertArgsToWhereClause(['id', 'slug', 'name'], args),
+        include: {
+          universities: true,
+          teachers: true,
+        },
+      });
+
+      return faculty;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw FacultyNotFoundError;
+        }
+      }
+
+      throw error;
+    }
   }
 }

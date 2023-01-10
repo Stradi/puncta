@@ -16,6 +16,7 @@ model University {
   slug String @unique
 
   faculties Faculty[]
+  teachers Teacher[]
 }
 
 model Faculty {
@@ -27,4 +28,20 @@ model Faculty {
   slug String @unique
 
   universities University[]
+  teachers Teacher[]
+}
+
+model Teacher {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @unique
+  slug String @unique
+
+  universityId Int
+  university University @relation(fields: [universityId], references: [id])
+
+  facultyId Int
+  faculty Faculty @relation(fields: [facultyId], references: [id])
 }

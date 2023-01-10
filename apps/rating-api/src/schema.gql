@@ -1,0 +1,260 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type University {
+  """Unique identifier for the university"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Name of the university"""
+  name: String!
+
+  """Slug of the university"""
+  slug: String!
+
+  """Faculties of this university"""
+  faculties: [Faculty!]!
+
+  """Teachers of this university"""
+  teachers: [Teacher!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Teacher {
+  """Unique identifier for the teacher"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Name of the faculty"""
+  name: String!
+
+  """Slug of the faculty"""
+  slug: String!
+
+  """The university that this teacher works"""
+  university: University!
+
+  """The faculty that this teacher works"""
+  faculty: Faculty!
+}
+
+type Faculty {
+  """Unique identifier for the faculty"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Name of the faculty"""
+  name: String!
+
+  """Slug of the faculty"""
+  slug: String!
+
+  """The universities that has this faculty"""
+  universities: [University!]!
+
+  """Teachers of this faculty"""
+  teachers: [Teacher!]!
+}
+
+type Query {
+  university(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): [University!]!
+  faculty(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): [Faculty!]!
+  teacher(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): [Teacher!]!
+}
+
+type Mutation {
+  createUniversity(name: String!): University!
+  updateUniversity(filter: UpdateUniversityFilter!, set: UpdateUniversitySet!): University!
+  deleteUniversity(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+  ): University!
+  createFaculty(name: String!, university: ConnectFacultyUniversity!): Faculty!
+  updateFaculty(filter: UpdateFacultyFilter!, set: UpdateFacultySet!): Faculty!
+  deleteFaculty(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+  ): Faculty!
+  createTeacher(name: String!, university: ConnectTeacherUniversity!, faculty: ConnectTeacherFaculty!): Teacher!
+  updateTeacher(filter: UpdateTeacherFilter!, set: UpdateTeacherSet!): Teacher!
+  deleteTeacher(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+  ): Teacher!
+}
+
+input UpdateUniversityFilter {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
+}
+
+input UpdateUniversitySet {
+  name: String
+  slug: String
+}
+
+input ConnectFacultyUniversity {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
+}
+
+input UpdateFacultyFilter {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
+}
+
+input UpdateFacultySet {
+  name: String
+  slug: String
+}
+
+input ConnectTeacherUniversity {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
+}
+
+input ConnectTeacherFaculty {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
+}
+
+input UpdateTeacherFilter {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
+}
+
+input UpdateTeacherSet {
+  name: String
+  slug: String
+  university: UpdateTeacherSetUniversity
+  faculty: UpdateTeacherSetFaculty
+}
+
+input UpdateTeacherSetUniversity {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
+}
+
+input UpdateTeacherSetFaculty {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
+}

@@ -1,0 +1,160 @@
+import { Injectable } from '@nestjs/common';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import slugify from 'slugify';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { TeacherNotFoundError } from 'src/shared/shared.exceptions';
+import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
+import { CreateTeacherInput } from './dto/create-teacher.input';
+import { DeleteTeacherInput } from './dto/delete-teacher.input';
+import { GetTeacherArgs } from './dto/get-teacher.args';
+import { UpdateTeacherInput } from './dto/update-teacher.input';
+
+@Injectable()
+export class TeacherService {
+  constructor(private prismaService: PrismaService) {}
+
+  async findMany(args: GetTeacherArgs) {
+    return await this.prismaService.teacher.findMany({
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+      include: {
+        university: true,
+        faculty: true,
+        ratings: true,
+      },
+    });
+  }
+
+  async findOne(args: GetTeacherArgs) {
+    let teacher = null;
+    teacher = await this.prismaService.teacher.findUnique({
+      where: convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      include: {
+        university: true,
+        faculty: true,
+        ratings: true,
+      },
+    });
+
+    if (!teacher) {
+      throw TeacherNotFoundError;
+    }
+
+    return teacher;
+  }
+
+  async create(args: CreateTeacherInput) {
+    try {
+      const teacher = await this.prismaService.teacher.create({
+        data: {
+          name: args.name,
+          slug: slugify(args.name, { lower: true }),
+          university: {
+            connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.university),
+          },
+          faculty: {
+            connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.faculty),
+          },
+        },
+        include: {
+          university: true,
+          faculty: true,
+          ratings: true,
+        },
+      });
+
+      return teacher;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          // If university nor faculty could not be created then we should throw
+          // University/Faculty not found error. But currently we are throwing
+          // TeacherNotFoundError. Prisma should give more information about
+          // errors.
+          // Same thing goes for `update` function in this class. (If someone)
+          // tries to update a teacher's university or faculty to something
+          // that doesn't exists, it still throws TeacherNotFoundError.
+          throw TeacherNotFoundError;
+        }
+      }
+
+      throw error;
+    }
+  }
+
+  async update(args: UpdateTeacherInput) {
+    const setOptions: any = {};
+
+    if (args.set.name) {
+      setOptions['name'] = args.set.name;
+
+      // We should change slug if name changes
+      if (!args.set.slug) {
+        setOptions['slug'] = slugify(args.set.name, { lower: true });
+      }
+    }
+
+    if (args.set.slug) {
+      setOptions['slug'] = args.set.slug;
+    }
+
+    if (args.set.university) {
+      setOptions['university'] = {
+        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.set.university),
+      };
+    }
+
+    if (args.set.faculty) {
+      setOptions['faculty'] = {
+        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.set.faculty),
+      };
+    }
+
+    try {
+      const teacher = await this.prismaService.teacher.update({
+        where: convertArgsToWhereClause(['id', 'slug', 'name'], args.filter),
+        data: {
+          ...setOptions,
+        },
+        include: {
+          university: true,
+          faculty: true,
+          ratings: true,
+        },
+      });
+
+      return teacher;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw TeacherNotFoundError;
+        }
+      }
+
+      throw error;
+    }
+  }
+
+  async delete(args: DeleteTeacherInput) {
+    try {
+      const teacher = await this.prismaService.teacher.delete({
+        where: convertArgsToWhereClause(['id', 'slug', 'name'], args),
+        include: {
+          university: true,
+          faculty: true,
+          ratings: true,
+        },
+      });
+
+      return teacher;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw TeacherNotFoundError;
+        }
+      }
+
+      throw error;
+    }
+  }
+}

@@ -1,9 +1,10 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER } from '@nestjs/core';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 import { FacultyModule } from './faculty/faculty.module';
-import { GlobalExceptionFilter } from './global-exception.filter';
-import { PrismaModule } from './prisma/prisma.module';
+import { TeacherModule } from './teacher/teacher.module';
 import { UniversityModule } from './university/university.module';
 
 @Module({
@@ -11,15 +12,13 @@ import { UniversityModule } from './university/university.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    PrismaModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      driver: ApolloDriver,
+    }),
     UniversityModule,
     FacultyModule,
-  ],
-  providers: [
-    {
-      provide: APP_FILTER,
-      useClass: GlobalExceptionFilter,
-    },
+    TeacherModule,
   ],
 })
 export class AppModule {}
