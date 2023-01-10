@@ -23,11 +23,11 @@ export class UpdateTeacherSet {
 
   @Field(() => UpdateTeacherSetUniversity, { nullable: true })
   @IsOptional()
-  university: UpdateTeacherSetUniversity;
+  university?: UpdateTeacherSetUniversity;
 
   @Field(() => UpdateTeacherSetFaculty, { nullable: true })
   @IsOptional()
-  faculty: UpdateTeacherSetFaculty;
+  faculty?: UpdateTeacherSetFaculty;
 }
 
 @ArgsType()
