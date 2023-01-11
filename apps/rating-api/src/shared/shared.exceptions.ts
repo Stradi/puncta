@@ -57,3 +57,6 @@ export const FacultyAlreadyExistsError = new GenericAlreadyExistsError('faculty'
 
 export const TeacherNotFoundError = new GenericNotFoundError('teacher');
 export const TeacherAlreadyExistsError = new GenericAlreadyExistsError('teacher');
+
+export const RatingNotFoundError = new GenericNotFoundError('rating');
+export const RatingAlreadyExistsError = new GenericAlreadyExistsError('rating');
