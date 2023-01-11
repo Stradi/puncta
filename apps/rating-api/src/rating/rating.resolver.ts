@@ -57,6 +57,10 @@ export class RatingResolver {
       throw new GenericInvalidParameterError('set', 'At least one set parameter should be passed');
     }
 
+    if (args.set.score && (args.set.score < 0 || args.set.score > 100)) {
+      throw new GenericInvalidParameterError('set.score', 'score parameter should be between 0 and 100');
+    }
+
     return await this.ratingService.update(args);
   }
 
