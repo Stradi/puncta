@@ -29,7 +29,6 @@ export class RatingResolver {
     if (args.score < 0 || args.score > 100) {
       throw new GenericInvalidParameterError('score', 'score should be between 0 and 100');
     }
-    console.log(args);
 
     if (
       args.university?.id === undefined &&
