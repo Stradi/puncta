@@ -6,6 +6,7 @@ import { join } from 'path';
 import { FacultyModule } from './faculty/faculty.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { UniversityModule } from './university/university.module';
+import { RatingModule } from './rating/rating.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UniversityModule } from './university/university.module';
     UniversityModule,
     FacultyModule,
     TeacherModule,
+    RatingModule,
   ],
 })
 export class AppModule {}
