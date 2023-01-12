@@ -3,6 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RatingNotFoundError } from 'src/shared/shared.exceptions';
 import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
+import { User } from 'src/user/entities/user.entity';
 import { CreateRatingInput } from './dto/create-rating.input';
 import { DeleteRatingInput } from './dto/delete-rating.input';
 import { GetRatingArgs } from './dto/get-rating.args';
@@ -42,7 +43,7 @@ export class RatingService {
     return rating;
   }
 
-  async create(args: CreateRatingInput) {
+  async create(args: CreateRatingInput, user: User) {
     let ratingTo = {};
 
     // We should check if the university or teacher exists
@@ -71,6 +72,11 @@ export class RatingService {
           score: args.score,
           comment: args.comment || '',
           meta: args.meta || '',
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
           ...ratingTo,
         },
         include: {

@@ -34,7 +34,7 @@ export class RatingResolver {
   @Mutation(() => Rating)
   @UseGuards(GqlAuthGuard, RoleGuard)
   @Roles(Role.ADMIN, Role.STUDENT)
-  async createRating(@Args() args: CreateRatingInput) {
+  async createRating(@UserEntity() user: User, @Args() args: CreateRatingInput) {
     if (args.score < 0 || args.score > 100) {
       throw new GenericInvalidParameterError('score', 'score should be between 0 and 100');
     }
@@ -53,7 +53,7 @@ export class RatingResolver {
       );
     }
 
-    return await this.ratingService.create(args);
+    return await this.ratingService.create(args, user);
   }
 
   @Mutation(() => Rating)
