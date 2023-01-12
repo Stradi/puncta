@@ -49,6 +49,27 @@ model Teacher {
   ratings Rating[]
 }
 
+model User {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Ideally, we should have an enum for role field. Enums are not
+  // supported right now since we are using sqlite for development.
+  role String @default("USER")
+
+  username String @unique
+  email String @unique
+  password String
+  // hashedPassword String
+  // salt String // this is to prevent collisions in hashedPassword with
+  //different users with the same password
+  firstName String?
+  lastName String?
+
+  ratings Rating[]
+}
+
 model Rating {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -57,6 +78,9 @@ model Rating {
   score Int
   comment String
   meta String
+
+  userId Int?
+  user User? @relation(fields: [userId], references: [id])
 
   universityId Int?
   university University? @relation(fields: [universityId], references: [id])

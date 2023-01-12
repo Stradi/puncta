@@ -2,6 +2,27 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Token {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+}
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+type Auth {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+}
+
 type University {
   """Unique identifier for the university"""
   id: ID!
@@ -102,6 +123,35 @@ type Rating {
   teacher: Teacher
 }
 
+type User {
+  """Unique identifier for the user"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Role of this user"""
+  role: String!
+
+  """Username of this user"""
+  username: String!
+
+  """Email of this user"""
+  email: String!
+
+  """First name of this user"""
+  firstName: String
+
+  """Last name of this user"""
+  lastName: String
+
+  """Rating that this user has made"""
+  ratings: [Rating!]
+}
+
 type Query {
   university(
     """Unique identifier of the resource"""
@@ -140,6 +190,7 @@ type Query {
     pageSize: Int = 10
   ): [Teacher!]!
   rating(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]!
+  me: User!
 }
 
 type Mutation {
@@ -182,6 +233,9 @@ type Mutation {
   createRating(score: Int!, comment: String, meta: String, university: ConnectRatingUniversity, teacher: ConnectRatingTeacher): Rating!
   updateRating(filter: UpdateRatingFilter!, set: UpdateRatingSet!): Rating!
   deleteRating(id: Int!): Rating!
+  signup(username: String!, email: String!, password: String!): Auth!
+  login(username: String!, password: String!): Auth!
+  refreshToken(token: JWT!): Token!
 }
 
 input UpdateUniversityFilter {
