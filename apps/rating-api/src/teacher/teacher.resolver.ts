@@ -1,4 +1,9 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GqlAuthGuard } from 'src/auth/graphql-auth.guard';
+import { RoleGuard } from 'src/common/role/role.guard';
+import { Roles } from 'src/common/role/roles.decorator';
+import { Role } from 'src/common/role/roles.enum';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
 import { CreateTeacherInput } from './dto/create-teacher.input';
 import { DeleteTeacherInput } from './dto/delete-teacher.input';
@@ -25,6 +30,8 @@ export class TeacherResolver {
   }
 
   @Mutation(() => Teacher)
+  @UseGuards(GqlAuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   async createTeacher(@Args() args: CreateTeacherInput) {
     if (args.university.id === undefined && !args.university.slug && !args.university.name) {
       throw new GenericInvalidParameterError(
@@ -44,6 +51,8 @@ export class TeacherResolver {
   }
 
   @Mutation(() => Teacher)
+  @UseGuards(GqlAuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   async updateTeacher(@Args() args: UpdateTeacherInput) {
     if (args.filter.id && args.filter.id < 0) {
       throw new GenericInvalidParameterError('id', 'id should be greater than zero');
@@ -61,6 +70,8 @@ export class TeacherResolver {
   }
 
   @Mutation(() => Teacher)
+  @UseGuards(GqlAuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   async deleteTeacher(@Args() args: DeleteTeacherInput) {
     if (args.id && args.id < 0) {
       throw new GenericInvalidParameterError('id', 'id should be greater than zero');
