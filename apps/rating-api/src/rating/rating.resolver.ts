@@ -59,9 +59,13 @@ export class RatingResolver {
   @Mutation(() => Rating)
   @UseGuards(GqlAuthGuard, RoleGuard)
   @Roles(Role.ADMIN, Role.STUDENT)
-  async updateRating(@Args() args: UpdateRatingInput) {
+  async updateRating(@UserEntity() user: User, @Args() args: UpdateRatingInput) {
     if (args.filter.id < 0) {
       throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+    }
+
+    if (user.role !== 'ADMIN' && !user.ratings.some((rating) => rating.id === args.filter.id)) {
+      throw new GenericInvalidParameterError('id', 'User does not have permission to update this rating');
     }
 
     if (!args.set.score && !args.set.comment && !args.set.meta) {
