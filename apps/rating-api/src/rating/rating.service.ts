@@ -49,7 +49,7 @@ export class RatingService {
     // Our priority is one that's more specific. In that case teacher.
     // By checking university first allows teacher to override if both
     // are passed.
-    if (args.university && (args.university.id || args.university.slug || args.university.slug)) {
+    if (args.university && (args.university.id || args.university.slug || args.university.name)) {
       ratingTo = {
         university: {
           connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.university),
@@ -57,7 +57,7 @@ export class RatingService {
       };
     }
 
-    if (args.teacher && (args.teacher.id || args.teacher.slug || args.teacher.slug)) {
+    if (args.teacher && (args.teacher.id || args.teacher.slug || args.teacher.name)) {
       ratingTo = {
         teacher: {
           connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.teacher),
