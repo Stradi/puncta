@@ -35,7 +35,7 @@ export class AuthService {
           username: args.username,
           email: args.email,
           password: hashedPassword,
-          role: 'USER',
+          role: 'STUDENT',
         },
       });
 
