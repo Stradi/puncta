@@ -56,14 +56,11 @@ model User {
 
   // Ideally, we should have an enum for role field. Enums are not
   // supported right now since we are using sqlite for development.
-  role String @default("USER")
+  role String @default("STUDENT")
 
   username String @unique
   email String @unique
   password String
-  // hashedPassword String
-  // salt String // this is to prevent collisions in hashedPassword with
-  //different users with the same password
   firstName String?
   lastName String?
 
