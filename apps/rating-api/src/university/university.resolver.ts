@@ -1,4 +1,9 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GqlAuthGuard } from 'src/auth/graphql-auth.guard';
+import { RoleGuard } from 'src/common/role/role.guard';
+import { Roles } from 'src/common/role/roles.decorator';
+import { Role } from 'src/common/role/roles.enum';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
 import { CreateUniversityInput } from './dto/create-university.input';
 import { DeleteUniversityInput } from './dto/delete-university.input';
@@ -30,11 +35,15 @@ export class UniversityResolver {
   }
 
   @Mutation(() => University)
+  @UseGuards(GqlAuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   async createUniversity(@Args() args: CreateUniversityInput) {
     return await this.universityService.create(args);
   }
 
   @Mutation(() => University)
+  @UseGuards(GqlAuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   async updateUniversity(@Args() args: UpdateUniversityInput) {
     if (args.filter.id && args.filter.id < 0) {
       throw new GenericInvalidParameterError('id', 'id should be greater than zero');
@@ -52,6 +61,8 @@ export class UniversityResolver {
   }
 
   @Mutation(() => University)
+  @UseGuards(GqlAuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   async deleteUniversity(@Args() args: DeleteUniversityInput) {
     if (args.id && args.id < 0) {
       throw new GenericInvalidParameterError('id', 'id should be greater than zero');
