@@ -76,12 +76,15 @@ model Rating {
   comment String
   meta String
 
-  userId Int?
-  user User? @relation(fields: [userId], references: [id])
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 
   universityId Int?
   university University? @relation(fields: [universityId], references: [id])
 
   teacherId Int?
   teacher Teacher? @relation(fields: [teacherId], references: [id])
+
+  @@unique([userId,teacherId])
+  @@unique([userId,universityId])
 }
