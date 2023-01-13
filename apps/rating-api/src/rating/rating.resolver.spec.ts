@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Role } from 'src/common/role/roles.enum';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { University } from 'src/university/entities/university.entity';
+import { User } from 'src/user/entities/user.entity';
 import { CreateRatingInput } from './dto/create-rating.input';
 import { DeleteRatingInput } from './dto/delete-rating.input';
 import { GetRatingArgs } from './dto/get-rating.args';
@@ -22,6 +24,18 @@ const ratingMock: Rating = {
   university: {} as University,
 };
 
+const userMock: User = {
+  id: 0,
+  email: 'mockuser@example.com',
+  username: 'mockuser',
+  firstName: 'Mock',
+  lastName: 'User',
+  role: Role.STUDENT,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  ratings: [ratingMock],
+};
+
 const ratingServiceMock = {
   findMany: jest.fn((): Rating[] => [ratingMock]),
   findOne: jest.fn((): Rating => ratingMock),
@@ -32,6 +46,7 @@ const ratingServiceMock = {
 
 describe('RatingResolver', () => {
   let ratingResolver: RatingResolver;
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -95,7 +110,7 @@ describe('RatingResolver', () => {
         },
       };
 
-      const result = ratingResolver.createRating(args);
+      const result = ratingResolver.createRating(userMock, args);
       expect(result).rejects.toThrow(GenericInvalidParameterError);
     });
 
@@ -107,7 +122,7 @@ describe('RatingResolver', () => {
         },
       };
 
-      const result = ratingResolver.createRating(args);
+      const result = ratingResolver.createRating(userMock, args);
       expect(result).rejects.toThrow(GenericInvalidParameterError);
     });
 
@@ -116,7 +131,7 @@ describe('RatingResolver', () => {
         score: 75,
       };
 
-      const result = ratingResolver.createRating(args);
+      const result = ratingResolver.createRating(userMock, args);
       expect(result).rejects.toThrow(GenericInvalidParameterError);
     });
 
@@ -128,7 +143,7 @@ describe('RatingResolver', () => {
         },
       };
 
-      const result = ratingResolver.createRating(args);
+      const result = ratingResolver.createRating(userMock, args);
       expect(result).resolves.toEqual(ratingMock);
     });
   });
@@ -144,7 +159,7 @@ describe('RatingResolver', () => {
         },
       };
 
-      const result = ratingResolver.updateRating(args);
+      const result = ratingResolver.updateRating(userMock, args);
       expect(result).rejects.toThrow(GenericInvalidParameterError);
     });
 
@@ -158,7 +173,7 @@ describe('RatingResolver', () => {
         },
       };
 
-      const result = ratingResolver.updateRating(args);
+      const result = ratingResolver.updateRating(userMock, args);
       expect(result).rejects.toThrow(GenericInvalidParameterError);
     });
 
@@ -170,7 +185,7 @@ describe('RatingResolver', () => {
         set: {},
       };
 
-      const result = ratingResolver.updateRating(args);
+      const result = ratingResolver.updateRating(userMock, args);
       expect(result).rejects.toThrow(GenericInvalidParameterError);
     });
 
@@ -184,7 +199,7 @@ describe('RatingResolver', () => {
         },
       };
 
-      const result = ratingResolver.updateRating(args);
+      const result = ratingResolver.updateRating(userMock, args);
       expect(result).resolves.toEqual(ratingMock);
     });
   });

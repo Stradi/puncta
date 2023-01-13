@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { Rating } from 'src/rating/entities/rating.entity';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { CreateUniversityInput } from './dto/create-university.input';
@@ -19,6 +20,7 @@ const universityMock: University = {
   updatedAt: new Date(),
   faculties: [{}] as [Faculty],
   teachers: [{}] as [Teacher],
+  ratings: [{}] as [Rating],
 };
 
 const universityServiceMock = {
