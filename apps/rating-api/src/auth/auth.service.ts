@@ -13,6 +13,7 @@ import { Token } from './entities/token.entity';
 import { PasswordService } from './password.service';
 
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { Role } from 'src/common/role/roles.enum';
 import { JwtConfig } from '../common/config/config.types';
 import { LoginInput } from './dto/login.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
@@ -26,7 +27,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(args: SignupInput) {
+  async signup(args: SignupInput, role: Role = Role.STUDENT) {
     const hashedPassword = await this.passwordService.hashPassword(
       args.password,
     );
@@ -37,7 +38,7 @@ export class AuthService {
           username: args.username,
           email: args.email,
           password: hashedPassword,
-          role: 'STUDENT',
+          role: role || Role.STUDENT,
         },
       });
 
