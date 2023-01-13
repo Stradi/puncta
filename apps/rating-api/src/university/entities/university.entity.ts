@@ -7,10 +7,14 @@ export class University {
   @Field(() => ID, { description: 'Unique identifier for the university' })
   id: number;
 
-  @Field(() => GraphQLISODateTime, { description: 'Date the this object created' })
+  @Field(() => GraphQLISODateTime, {
+    description: 'Date the this object created',
+  })
   createdAt: Date;
 
-  @Field(() => GraphQLISODateTime, { description: 'Date the this object last updated' })
+  @Field(() => GraphQLISODateTime, {
+    description: 'Date the this object last updated',
+  })
   updatedAt: Date;
 
   @Field(() => String, { description: 'Name of the university' })

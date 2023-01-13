@@ -27,7 +27,9 @@ export class AuthService {
   ) {}
 
   async signup(args: SignupInput) {
-    const hashedPassword = await this.passwordService.hashPassword(args.password);
+    const hashedPassword = await this.passwordService.hashPassword(
+      args.password,
+    );
 
     try {
       const user = await this.prismaService.user.create({
@@ -62,7 +64,10 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    const isValidPassword = await this.passwordService.comparePassword(args.password, user.password);
+    const isValidPassword = await this.passwordService.comparePassword(
+      args.password,
+      user.password,
+    );
 
     if (!isValidPassword) {
       throw new BadRequestException('Invalid password');

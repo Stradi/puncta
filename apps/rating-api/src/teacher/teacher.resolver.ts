@@ -19,7 +19,10 @@ export class TeacherResolver {
   @Query(() => [Teacher], { name: 'teacher' })
   async find(@Args() args: GetTeacherArgs) {
     if (args.id && args.id < 0) {
-      throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+      throw new GenericInvalidParameterError(
+        'id',
+        'id should be greater than zero',
+      );
     }
 
     if (args.id === undefined && !args.slug && !args.name) {
@@ -33,14 +36,22 @@ export class TeacherResolver {
   @UseGuards(GqlAuthGuard, RoleGuard)
   @Roles(Role.ADMIN)
   async createTeacher(@Args() args: CreateTeacherInput) {
-    if (args.university.id === undefined && !args.university.slug && !args.university.name) {
+    if (
+      args.university.id === undefined &&
+      !args.university.slug &&
+      !args.university.name
+    ) {
       throw new GenericInvalidParameterError(
         ['id', 'slug', 'name'],
         'At least one university filter parameter should be passed',
       );
     }
 
-    if (args.faculty.id === undefined && !args.faculty.slug && !args.faculty.name) {
+    if (
+      args.faculty.id === undefined &&
+      !args.faculty.slug &&
+      !args.faculty.name
+    ) {
       throw new GenericInvalidParameterError(
         ['id', 'slug', 'name'],
         'At least one faculty filter parameter should be passed',
@@ -55,15 +66,33 @@ export class TeacherResolver {
   @Roles(Role.ADMIN)
   async updateTeacher(@Args() args: UpdateTeacherInput) {
     if (args.filter.id && args.filter.id < 0) {
-      throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+      throw new GenericInvalidParameterError(
+        'id',
+        'id should be greater than zero',
+      );
     }
 
-    if (args.filter.id === undefined && !args.filter.slug && !args.filter.name) {
-      throw new GenericInvalidParameterError('filter', 'At least one filter parameter should be passed');
+    if (
+      args.filter.id === undefined &&
+      !args.filter.slug &&
+      !args.filter.name
+    ) {
+      throw new GenericInvalidParameterError(
+        'filter',
+        'At least one filter parameter should be passed',
+      );
     }
 
-    if (!args.set.name && !args.set.slug && !args.set.university && !args.set.faculty) {
-      throw new GenericInvalidParameterError('set', 'At least one set parameter should be passed');
+    if (
+      !args.set.name &&
+      !args.set.slug &&
+      !args.set.university &&
+      !args.set.faculty
+    ) {
+      throw new GenericInvalidParameterError(
+        'set',
+        'At least one set parameter should be passed',
+      );
     }
 
     return await this.teacherService.update(args);
@@ -74,11 +103,17 @@ export class TeacherResolver {
   @Roles(Role.ADMIN)
   async deleteTeacher(@Args() args: DeleteTeacherInput) {
     if (args.id && args.id < 0) {
-      throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+      throw new GenericInvalidParameterError(
+        'id',
+        'id should be greater than zero',
+      );
     }
 
     if (args.id === undefined && !args.slug && !args.name) {
-      throw new GenericInvalidParameterError(['id', 'slug', 'name'], 'At least one filter parameter should be passed');
+      throw new GenericInvalidParameterError(
+        ['id', 'slug', 'name'],
+        'At least one filter parameter should be passed',
+      );
     }
 
     return await this.teacherService.delete(args);

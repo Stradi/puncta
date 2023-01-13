@@ -22,7 +22,10 @@ export class UniversityResolver {
     // return a list of universities. Otherwise we should return
     // the queried university (such as queries by id, slug or name).
     if (args.id && args.id < 0) {
-      throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+      throw new GenericInvalidParameterError(
+        'id',
+        'id should be greater than zero',
+      );
     }
 
     // We can't just type `!args.id` because JavaScript interprets that
@@ -46,15 +49,28 @@ export class UniversityResolver {
   @Roles(Role.ADMIN)
   async updateUniversity(@Args() args: UpdateUniversityInput) {
     if (args.filter.id && args.filter.id < 0) {
-      throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+      throw new GenericInvalidParameterError(
+        'id',
+        'id should be greater than zero',
+      );
     }
 
-    if (args.filter.id === undefined && !args.filter.slug && !args.filter.name) {
-      throw new GenericInvalidParameterError('filter', 'At least one filter parameter should be passed');
+    if (
+      args.filter.id === undefined &&
+      !args.filter.slug &&
+      !args.filter.name
+    ) {
+      throw new GenericInvalidParameterError(
+        'filter',
+        'At least one filter parameter should be passed',
+      );
     }
 
     if (!args.set.name && !args.set.slug) {
-      throw new GenericInvalidParameterError('set', 'At least one set parameter should be passed');
+      throw new GenericInvalidParameterError(
+        'set',
+        'At least one set parameter should be passed',
+      );
     }
 
     return await this.universityService.update(args);
@@ -65,11 +81,17 @@ export class UniversityResolver {
   @Roles(Role.ADMIN)
   async deleteUniversity(@Args() args: DeleteUniversityInput) {
     if (args.id && args.id < 0) {
-      throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+      throw new GenericInvalidParameterError(
+        'id',
+        'id should be greater than zero',
+      );
     }
 
     if (args.id === undefined && !args.slug && !args.name) {
-      throw new GenericInvalidParameterError(['id', 'slug', 'name'], 'At least one filter parameter should be passed');
+      throw new GenericInvalidParameterError(
+        ['id', 'slug', 'name'],
+        'At least one filter parameter should be passed',
+      );
     }
 
     return await this.universityService.delete(args);

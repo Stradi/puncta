@@ -4,7 +4,10 @@ import { IsOptional } from 'class-validator';
 @ArgsType()
 export class BaseResourceIdentifierArgs {
   @IsOptional()
-  @Field(() => Int, { nullable: true, description: 'Unique identifier of the resource' })
+  @Field(() => Int, {
+    nullable: true,
+    description: 'Unique identifier of the resource',
+  })
   id?: number;
 
   @IsOptional()
@@ -19,7 +22,10 @@ export class BaseResourceIdentifierArgs {
 @InputType()
 export class BaseResourceIdentifierInput {
   @IsOptional()
-  @Field(() => Int, { nullable: true, description: 'Unique identifier of the resource' })
+  @Field(() => Int, {
+    nullable: true,
+    description: 'Unique identifier of the resource',
+  })
   id?: number;
 
   @IsOptional()

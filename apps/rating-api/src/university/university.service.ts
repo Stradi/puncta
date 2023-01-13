@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UniversityAlreadyExistsError, UniversityNotFoundError } from 'src/shared/shared.exceptions';
+import {
+  UniversityAlreadyExistsError,
+  UniversityNotFoundError,
+} from 'src/shared/shared.exceptions';
 import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
 import { slugify } from 'src/shared/utils/text.util';
 import { CreateUniversityInput } from './dto/create-university.input';

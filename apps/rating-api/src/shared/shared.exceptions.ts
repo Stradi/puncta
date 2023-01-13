@@ -50,13 +50,19 @@ export class GenericInvalidParameterError extends GraphQLError {
 }
 
 export const UniversityNotFoundError = new GenericNotFoundError('university');
-export const UniversityAlreadyExistsError = new GenericAlreadyExistsError('university');
+export const UniversityAlreadyExistsError = new GenericAlreadyExistsError(
+  'university',
+);
 
 export const FacultyNotFoundError = new GenericNotFoundError('faculty');
-export const FacultyAlreadyExistsError = new GenericAlreadyExistsError('faculty');
+export const FacultyAlreadyExistsError = new GenericAlreadyExistsError(
+  'faculty',
+);
 
 export const TeacherNotFoundError = new GenericNotFoundError('teacher');
-export const TeacherAlreadyExistsError = new GenericAlreadyExistsError('teacher');
+export const TeacherAlreadyExistsError = new GenericAlreadyExistsError(
+  'teacher',
+);
 
 export const RatingNotFoundError = new GenericNotFoundError('rating');
 export const RatingAlreadyExistsError = new GenericAlreadyExistsError('rating');

@@ -48,7 +48,10 @@ export class FacultyService {
           name: args.name,
           slug: slugify(args.name, { lower: true }),
           universities: {
-            connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.university),
+            connect: convertArgsToWhereClause(
+              ['id', 'slug', 'name'],
+              args.university,
+            ),
           },
         },
         include: {

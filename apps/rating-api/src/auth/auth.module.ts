@@ -10,7 +10,14 @@ import { JwtStrategy } from './jwt.strategy';
 import { PasswordService } from './password.service';
 
 @Module({
-  providers: [AuthResolver, AuthService, JwtStrategy, GqlAuthGuard, PasswordService, PrismaModule],
+  providers: [
+    AuthResolver,
+    AuthService,
+    JwtStrategy,
+    GqlAuthGuard,
+    PasswordService,
+    PrismaModule,
+  ],
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     PrismaModule,

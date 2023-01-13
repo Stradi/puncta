@@ -1,4 +1,9 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpException,
+} from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 
 @Catch()
@@ -62,7 +67,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     );
   }
 
-  getCustomParameter(exception: any, parameter: string, defaultValue: any = null) {
+  getCustomParameter(
+    exception: any,
+    parameter: string,
+    defaultValue: any = null,
+  ) {
     const isHttpException = exception instanceof HttpException;
     if (!isHttpException) {
       return defaultValue;
@@ -73,7 +82,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       return defaultValue;
     }
 
-    if (!(response as any)[parameter] || typeof (response as any)[parameter] !== 'string') {
+    if (
+      !(response as any)[parameter] ||
+      typeof (response as any)[parameter] !== 'string'
+    ) {
       return defaultValue;
     }
 

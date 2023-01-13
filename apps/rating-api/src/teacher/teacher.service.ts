@@ -50,10 +50,16 @@ export class TeacherService {
           name: args.name,
           slug: slugify(args.name, { lower: true }),
           university: {
-            connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.university),
+            connect: convertArgsToWhereClause(
+              ['id', 'slug', 'name'],
+              args.university,
+            ),
           },
           faculty: {
-            connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.faculty),
+            connect: convertArgsToWhereClause(
+              ['id', 'slug', 'name'],
+              args.faculty,
+            ),
           },
         },
         include: {
@@ -100,13 +106,19 @@ export class TeacherService {
 
     if (args.set.university) {
       setOptions['university'] = {
-        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.set.university),
+        connect: convertArgsToWhereClause(
+          ['id', 'slug', 'name'],
+          args.set.university,
+        ),
       };
     }
 
     if (args.set.faculty) {
       setOptions['faculty'] = {
-        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.set.faculty),
+        connect: convertArgsToWhereClause(
+          ['id', 'slug', 'name'],
+          args.set.faculty,
+        ),
       };
     }
 

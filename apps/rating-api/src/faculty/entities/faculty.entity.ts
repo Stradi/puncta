@@ -7,10 +7,14 @@ export class Faculty {
   @Field(() => ID, { description: 'Unique identifier for the faculty' })
   id: number;
 
-  @Field(() => GraphQLISODateTime, { description: 'Date the this object created' })
+  @Field(() => GraphQLISODateTime, {
+    description: 'Date the this object created',
+  })
   createdAt: Date;
 
-  @Field(() => GraphQLISODateTime, { description: 'Date the this object last updated' })
+  @Field(() => GraphQLISODateTime, {
+    description: 'Date the this object last updated',
+  })
   updatedAt: Date;
 
   @Field(() => String, { description: 'Name of the faculty' })
@@ -19,7 +23,9 @@ export class Faculty {
   @Field(() => String, { description: 'Slug of the faculty' })
   slug: string;
 
-  @Field(() => [University], { description: 'The universities that has this faculty' })
+  @Field(() => [University], {
+    description: 'The universities that has this faculty',
+  })
   universities: [University];
 
   @Field(() => [Teacher], { description: 'Teachers of this faculty' })

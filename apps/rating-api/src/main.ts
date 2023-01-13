@@ -9,7 +9,10 @@ async function bootstrap() {
       // Having `whitelist: true` causes `@Args` to not properly parsed
       // while passing arguments DTO decorated with `InputType` decorator
       transform: true,
-      transformOptions: { enableImplicitConversion: true, enableCircularCheck: true },
+      transformOptions: {
+        enableImplicitConversion: true,
+        enableCircularCheck: true,
+      },
     }),
   );
   await app.listen(3000);

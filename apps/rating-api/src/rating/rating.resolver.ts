@@ -21,7 +21,10 @@ export class RatingResolver {
   @Query(() => [Rating], { name: 'rating' })
   async find(@Args() args: GetRatingArgs) {
     if (args.id && args.id < 0) {
-      throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+      throw new GenericInvalidParameterError(
+        'id',
+        'id should be greater than zero',
+      );
     }
 
     if (args.id === undefined) {
@@ -34,9 +37,15 @@ export class RatingResolver {
   @Mutation(() => Rating)
   @UseGuards(GqlAuthGuard, RoleGuard)
   @Roles(Role.ADMIN, Role.STUDENT)
-  async createRating(@UserEntity() user: User, @Args() args: CreateRatingInput) {
+  async createRating(
+    @UserEntity() user: User,
+    @Args() args: CreateRatingInput,
+  ) {
     if (args.score < 0 || args.score > 100) {
-      throw new GenericInvalidParameterError('score', 'score should be between 0 and 100');
+      throw new GenericInvalidParameterError(
+        'score',
+        'score should be between 0 and 100',
+      );
     }
 
     if (
@@ -48,7 +57,14 @@ export class RatingResolver {
       !args.teacher?.name
     ) {
       throw new GenericInvalidParameterError(
-        ['university.id', 'university.slug', 'university.name', 'teacher.id', 'teacher.slug', 'teacher.name'],
+        [
+          'university.id',
+          'university.slug',
+          'university.name',
+          'teacher.id',
+          'teacher.slug',
+          'teacher.name',
+        ],
         'At least one university or teacher parameter should be passed',
       );
     }
@@ -59,21 +75,39 @@ export class RatingResolver {
   @Mutation(() => Rating)
   @UseGuards(GqlAuthGuard, RoleGuard)
   @Roles(Role.ADMIN, Role.STUDENT)
-  async updateRating(@UserEntity() user: User, @Args() args: UpdateRatingInput) {
+  async updateRating(
+    @UserEntity() user: User,
+    @Args() args: UpdateRatingInput,
+  ) {
     if (args.filter.id < 0) {
-      throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+      throw new GenericInvalidParameterError(
+        'id',
+        'id should be greater than zero',
+      );
     }
 
-    if (user.role !== 'ADMIN' && !user.ratings.some((rating) => rating.id === args.filter.id)) {
-      throw new GenericInvalidParameterError('id', 'User does not have permission to update this rating');
+    if (
+      user.role !== 'ADMIN' &&
+      !user.ratings.some((rating) => rating.id === args.filter.id)
+    ) {
+      throw new GenericInvalidParameterError(
+        'id',
+        'User does not have permission to update this rating',
+      );
     }
 
     if (!args.set.score && !args.set.comment && !args.set.meta) {
-      throw new GenericInvalidParameterError('set', 'At least one set parameter should be passed');
+      throw new GenericInvalidParameterError(
+        'set',
+        'At least one set parameter should be passed',
+      );
     }
 
     if (args.set.score && (args.set.score < 0 || args.set.score > 100)) {
-      throw new GenericInvalidParameterError('set.score', 'score parameter should be between 0 and 100');
+      throw new GenericInvalidParameterError(
+        'set.score',
+        'score parameter should be between 0 and 100',
+      );
     }
 
     return await this.ratingService.update(args);
@@ -84,7 +118,10 @@ export class RatingResolver {
   @Roles(Role.ADMIN)
   async deleteRating(@Args() args: DeleteRatingInput) {
     if (args.id < 0) {
-      throw new GenericInvalidParameterError('id', 'id should be greater than zero');
+      throw new GenericInvalidParameterError(
+        'id',
+        'id should be greater than zero',
+      );
     }
 
     return await this.ratingService.delete(args);
