@@ -23,80 +23,6 @@ type Auth {
   refreshToken: JWT!
 }
 
-type University {
-  """Unique identifier for the university"""
-  id: ID!
-
-  """Date the this object created"""
-  createdAt: DateTime!
-
-  """Date the this object last updated"""
-  updatedAt: DateTime!
-
-  """Name of the university"""
-  name: String!
-
-  """Slug of the university"""
-  slug: String!
-
-  """Faculties of this university"""
-  faculties: [Faculty!]!
-
-  """Teachers of this university"""
-  teachers: [Teacher!]!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type Teacher {
-  """Unique identifier for the teacher"""
-  id: ID!
-
-  """Date the this object created"""
-  createdAt: DateTime!
-
-  """Date the this object last updated"""
-  updatedAt: DateTime!
-
-  """Name of the faculty"""
-  name: String!
-
-  """Slug of the faculty"""
-  slug: String!
-
-  """The university that this teacher works"""
-  university: University!
-
-  """The faculty that this teacher works"""
-  faculty: Faculty!
-}
-
-type Faculty {
-  """Unique identifier for the faculty"""
-  id: ID!
-
-  """Date the this object created"""
-  createdAt: DateTime!
-
-  """Date the this object last updated"""
-  updatedAt: DateTime!
-
-  """Name of the faculty"""
-  name: String!
-
-  """Slug of the faculty"""
-  slug: String!
-
-  """The universities that has this faculty"""
-  universities: [University!]!
-
-  """Teachers of this faculty"""
-  teachers: [Teacher!]!
-}
-
 type Rating {
   """Unique identifier for rating"""
   id: ID!
@@ -117,10 +43,178 @@ type Rating {
   meta: String
 
   """The university that this rating rates"""
-  university: University
+  university(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): University
 
   """The university that this rating rates"""
-  teacher: Teacher
+  teacher(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): Teacher
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type University {
+  """Unique identifier for the university"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Name of the university"""
+  name: String!
+
+  """Slug of the university"""
+  slug: String!
+
+  """Faculties of this university"""
+  faculties(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): [Faculty!]
+
+  """Teachers of this university"""
+  teachers(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): [Teacher!]
+
+  """Ratings of this university"""
+  ratings: [Rating!]
+}
+
+type Faculty {
+  """Unique identifier for the faculty"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Name of the faculty"""
+  name: String!
+
+  """Slug of the faculty"""
+  slug: String!
+
+  """The universities that has this faculty"""
+  universities(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): [University!]
+
+  """Teachers of this faculty"""
+  teachers(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): [Teacher!]
+}
+
+type Teacher {
+  """Unique identifier for the teacher"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Name of the faculty"""
+  name: String!
+
+  """Slug of the faculty"""
+  slug: String!
+
+  """The university that this teacher works"""
+  university(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): University
+
+  """The faculty that this teacher works"""
+  faculty(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): Faculty
+
+  """Ratings of this teacher"""
+  ratings: [Rating!]
 }
 
 type User {

@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import slugify from 'slugify';
+import { GetFacultyArgs } from 'src/faculty/dto/get-faculty.args';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { TeacherNotFoundError } from 'src/shared/shared.exceptions';
 import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
+import { GetUniversityArgs } from 'src/university/dto/get-university.args';
 import { CreateTeacherInput } from './dto/create-teacher.input';
 import { DeleteTeacherInput } from './dto/delete-teacher.input';
 import { GetTeacherArgs } from './dto/get-teacher.args';
@@ -41,6 +43,45 @@ export class TeacherService {
     }
 
     return teacher;
+  }
+
+  async university(id: number, args: GetUniversityArgs) {
+    return await this.prismaService.university.findFirst({
+      where: {
+        teachers: {
+          some: {
+            id,
+          },
+        },
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      },
+      include: {
+        faculties: true,
+        teachers: true,
+        ratings: true,
+      },
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+    });
+  }
+
+  async faculty(id: number, args: GetFacultyArgs) {
+    return await this.prismaService.faculty.findFirst({
+      where: {
+        teachers: {
+          some: {
+            id,
+          },
+        },
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      },
+      include: {
+        universities: true,
+        teachers: true,
+      },
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+    });
   }
 
   async create(args: CreateTeacherInput) {

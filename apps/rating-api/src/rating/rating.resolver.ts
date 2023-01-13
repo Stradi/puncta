@@ -1,11 +1,22 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { GqlAuthGuard } from 'src/auth/graphql-auth.guard';
 import { UserEntity } from 'src/common/decorators/user.decorator';
 import { RoleGuard } from 'src/common/role/role.guard';
 import { Roles } from 'src/common/role/roles.decorator';
 import { Role } from 'src/common/role/roles.enum';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
+import { GetTeacherArgs } from 'src/teacher/dto/get-teacher.args';
+import { Teacher } from 'src/teacher/entities/teacher.entity';
+import { GetUniversityArgs } from 'src/university/dto/get-university.args';
+import { University } from 'src/university/entities/university.entity';
 import { User } from 'src/user/entities/user.entity';
 import { CreateRatingInput } from './dto/create-rating.input';
 import { DeleteRatingInput } from './dto/delete-rating.input';
@@ -32,6 +43,18 @@ export class RatingResolver {
     }
 
     return [await this.ratingService.findOne(args)];
+  }
+
+  @ResolveField('university', () => University)
+  async university(@Parent() rating: Rating, @Args() args: GetUniversityArgs) {
+    const { id } = rating;
+    return await this.ratingService.university(id, args);
+  }
+
+  @ResolveField('teacher', () => Teacher)
+  async teacher(@Parent() rating: Rating, @Args() args: GetTeacherArgs) {
+    const { id } = rating;
+    return await this.ratingService.teacher(id, args);
   }
 
   @Mutation(() => Rating)

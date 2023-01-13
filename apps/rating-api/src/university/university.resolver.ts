@@ -1,10 +1,21 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { GqlAuthGuard } from 'src/auth/graphql-auth.guard';
 import { RoleGuard } from 'src/common/role/role.guard';
 import { Roles } from 'src/common/role/roles.decorator';
 import { Role } from 'src/common/role/roles.enum';
+import { GetFacultyArgs } from 'src/faculty/dto/get-faculty.args';
+import { Faculty } from 'src/faculty/entities/faculty.entity';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
+import { GetTeacherArgs } from 'src/teacher/dto/get-teacher.args';
+import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { CreateUniversityInput } from './dto/create-university.input';
 import { DeleteUniversityInput } from './dto/delete-university.input';
 import { GetUniversityArgs } from './dto/get-university.args';
@@ -35,6 +46,24 @@ export class UniversityResolver {
     }
 
     return [await this.universityService.findOne(args)];
+  }
+
+  @ResolveField('faculties', () => [Faculty])
+  async faculties(
+    @Parent() university: University,
+    @Args() args: GetFacultyArgs,
+  ) {
+    const { id } = university;
+    return await this.universityService.faculties(id, args);
+  }
+
+  @ResolveField('teachers', () => [Teacher])
+  async teachers(
+    @Parent() university: University,
+    @Args() args: GetTeacherArgs,
+  ) {
+    const { id } = university;
+    return await this.universityService.teachers(id, args);
   }
 
   @Mutation(() => University)

@@ -4,6 +4,8 @@ import slugify from 'slugify';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FacultyNotFoundError } from 'src/shared/shared.exceptions';
 import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
+import { GetTeacherArgs } from 'src/teacher/dto/get-teacher.args';
+import { GetUniversityArgs } from 'src/university/dto/get-university.args';
 import { CreateFacultyInput } from './dto/create-faculty.input';
 import { DeleteFacultyInput } from './dto/delete-faculty.input';
 import { GetFacultyArgs } from './dto/get-faculty.args';
@@ -39,6 +41,42 @@ export class FacultyService {
     }
 
     return faculty;
+  }
+
+  async teachers(id: number, args: GetTeacherArgs) {
+    return await this.prismaService.teacher.findMany({
+      where: {
+        facultyId: id,
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      },
+      include: {
+        university: true,
+        faculty: true,
+        ratings: true,
+      },
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+    });
+  }
+
+  async universities(id: number, args: GetUniversityArgs) {
+    return await this.prismaService.university.findMany({
+      where: {
+        faculties: {
+          some: {
+            id,
+          },
+        },
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      },
+      include: {
+        faculties: true,
+        teachers: true,
+        ratings: true,
+      },
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+    });
   }
 
   async create(args: CreateFacultyInput) {

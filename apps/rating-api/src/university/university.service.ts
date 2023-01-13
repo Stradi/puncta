@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { GetFacultyArgs } from 'src/faculty/dto/get-faculty.args';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
   UniversityAlreadyExistsError,
@@ -7,6 +8,7 @@ import {
 } from 'src/shared/shared.exceptions';
 import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
 import { slugify } from 'src/shared/utils/text.util';
+import { GetTeacherArgs } from 'src/teacher/dto/get-teacher.args';
 import { CreateUniversityInput } from './dto/create-university.input';
 import { DeleteUniversityInput } from './dto/delete-university.input';
 import { GetUniversityArgs } from './dto/get-university.args';
@@ -43,6 +45,41 @@ export class UniversityService {
     }
 
     return university;
+  }
+
+  async faculties(id: number, args: GetFacultyArgs) {
+    return await this.prismaService.faculty.findMany({
+      where: {
+        universities: {
+          some: {
+            id,
+          },
+        },
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      },
+      include: {
+        universities: true,
+        teachers: true,
+      },
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+    });
+  }
+
+  async teachers(id: number, args: GetTeacherArgs) {
+    return await this.prismaService.teacher.findMany({
+      where: {
+        universityId: id,
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      },
+      include: {
+        university: true,
+        faculty: true,
+        ratings: true,
+      },
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+    });
   }
 
   async create(args: CreateUniversityInput) {

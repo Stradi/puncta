@@ -25,9 +25,13 @@ export class Faculty {
 
   @Field(() => [University], {
     description: 'The universities that has this faculty',
+    nullable: true,
   })
   universities: [University];
 
-  @Field(() => [Teacher], { description: 'Teachers of this faculty' })
+  @Field(() => [Teacher], {
+    description: 'Teachers of this faculty',
+    nullable: true,
+  })
   teachers: [Teacher];
 }

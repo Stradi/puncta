@@ -1,5 +1,6 @@
 import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
+import { Rating } from 'src/rating/entities/rating.entity';
 import { University } from 'src/university/entities/university.entity';
 
 @ObjectType()
@@ -25,9 +26,19 @@ export class Teacher {
 
   @Field(() => University, {
     description: 'The university that this teacher works',
+    nullable: true,
   })
   university: University;
 
-  @Field(() => Faculty, { description: 'The faculty that this teacher works' })
+  @Field(() => Faculty, {
+    description: 'The faculty that this teacher works',
+    nullable: true,
+  })
   faculty: Faculty;
+
+  @Field(() => [Rating], {
+    description: 'Ratings of this teacher',
+    nullable: true,
+  })
+  ratings: [Rating];
 }
