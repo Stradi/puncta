@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "web",
   "version": "0.0.0",
   "description": "Frontend for Puncta",
   "homepage": "https://www.thepuncta.com",
@@ -11,7 +11,7 @@
   "repository": {
     "type": "git",
     "url": "https://www.github.com/Stradi/puncta.git",
-    "directory": "apps/frontend"
+    "directory": "apps/web"
   },
   "private": true,
   "scripts": {

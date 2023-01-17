@@ -1,5 +1,5 @@
 {
-  "name": "rating-api",
+  "name": "api",
   "version": "0.0.0",
   "description": "API for Puncta",
   "homepage": "https://www.thepuncta.com",
@@ -11,7 +11,7 @@
   "repository": {
     "type": "git",
     "url": "https://www.github.com/Stradi/puncta.git",
-    "directory": "apps/rating-api"
+    "directory": "apps/api"
   },
   "private": true,
   "scripts": {
