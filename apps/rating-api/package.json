@@ -1,16 +1,16 @@
 {
   "name": "rating-api",
   "version": "0.0.0",
-  "description": "API for rating-app",
-  "homepage": "TODO",
+  "description": "API for Puncta",
+  "homepage": "https://www.thepuncta.com",
   "bugs": {
-    "url": "https://www.github.com/Stradi/rating-app/issues",
-    "email": "todo@example.com"
+    "url": "https://www.github.com/Stradi/puncta/issues",
+    "email": "bug@thepuncta.com"
   },
   "author": "Batin Evirgen <hello@batin.sh> (https://www.batin.sh)",
   "repository": {
     "type": "git",
-    "url": "https://www.github.com/Stradi/rating-app.git",
+    "url": "https://www.github.com/Stradi/puncta.git",
     "directory": "apps/rating-api"
   },
   "private": true,
