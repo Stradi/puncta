@@ -21,6 +21,9 @@ module.exports = {
           darker: "#005954",
         },
       },
+      fontFamily: {
+        sans: ["GeneralSans-Variable", "sans-serif"],
+      },
     },
   },
   plugins: [],
