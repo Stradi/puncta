@@ -1,5 +1,6 @@
 "use client";
 
+import NavigationBar from "@/components/NavigationBar";
 import { useApollo } from "@/lib/apollo";
 import { ApolloProvider } from "@apollo/client";
 import "./globals.css";
@@ -15,7 +16,10 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
+        <ApolloProvider client={apolloClient}>
+          <NavigationBar />
+          {children}
+        </ApolloProvider>
       </body>
     </html>
   );

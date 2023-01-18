@@ -7,18 +7,22 @@ import { useState } from "react";
 import Button from "./Button";
 import { CloseIcon, HamburgerIcon } from "./Icons";
 
-type NavigationBarItem = {
-  label: string;
-  href: string;
-};
+interface NavigationBarProps extends React.ComponentPropsWithoutRef<"nav"> {}
 
-interface NavigationBarProps extends React.ComponentPropsWithoutRef<"nav"> {
-  items?: NavigationBarItem[];
-}
-export default function NavigationBar({ items, ...props }: NavigationBarProps) {
+export default function NavigationBar({
+  className,
+  ...props
+}: NavigationBarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
-    <nav className={cn("w-full", "bg-primary-light border-b border-black")}>
+    <nav
+      className={cn(
+        "w-full",
+        "bg-primary-light border-b border-black",
+        className
+      )}
+      {...props}
+    >
       <div
         className={cn(
           "container mx-auto max-w-6xl",
@@ -65,7 +69,7 @@ export default function NavigationBar({ items, ...props }: NavigationBarProps) {
               "sm:mt-0 sm:flex-row sm:border-0 sm:py-0 sm:text-sm"
             )}
           >
-            {items?.map((item) => (
+            {config.navigation.primary.map((item) => (
               <li key={item.href} className="hover:text-black">
                 <Link href={item.href}>{item.label}</Link>
               </li>
