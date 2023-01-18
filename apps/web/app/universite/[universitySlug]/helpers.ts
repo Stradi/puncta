@@ -1,7 +1,7 @@
 import { initializeApollo } from "@/lib/apollo";
 import { gql } from "@apollo/client";
 
-async function fetchUniversity(slug: string) {
+export async function fetchUniversity(slug: string) {
   const apolloClient = initializeApollo();
   const { data } = await apolloClient.query({
     query: gql`
@@ -26,7 +26,8 @@ async function fetchUniversity(slug: string) {
   return data.university[0];
 }
 
-export default async function Home({ params }: any) {
-  const university = await fetchUniversity(params.universitySlug);
-  return <div>{university.name}</div>;
+export interface BaseProps {
+  params: {
+    universitySlug: string;
+  };
 }

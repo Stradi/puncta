@@ -2,13 +2,13 @@ import { initializeApollo } from "@/lib/apollo";
 import { gql } from "@apollo/client";
 import Link from "next/link";
 
-async function fetchFaculties(slug: string) {
+async function fetchTeachers(slug: string) {
   const apolloClient = initializeApollo();
   const { data } = await apolloClient.query({
     query: gql`
-      query Faculties($slug: String) {
+      query Teachers($slug: String) {
         university(slug: $slug) {
-          faculties {
+          teachers {
             id
             name
             slug
@@ -21,19 +21,16 @@ async function fetchFaculties(slug: string) {
     },
   });
 
-  return data.university[0].faculties;
+  return data.university[0].teachers;
 }
 
 export default async function Home({ params }: any) {
-  const faculties = await fetchFaculties(params.universitySlug);
+  const teachers = await fetchTeachers(params.universitySlug);
   return (
     <div>
-      {faculties.map((faculty: any) => (
-        <Link
-          key={faculty.id}
-          href={`/universiteler/${params.universitySlug}/${faculty.slug}`}
-        >
-          {faculty.name}
+      {teachers.map((teacher: any) => (
+        <Link href={`/ogretmen/${teacher.slug}`} key={teacher.id}>
+          {teacher.name}
         </Link>
       ))}
     </div>
