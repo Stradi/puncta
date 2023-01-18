@@ -2,15 +2,9 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import ConditionalWrapper from "./ConditionalWrapper";
 
-export enum ButtonVariant {
-  Primary,
-  Text,
-  Plain,
-}
-
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   icon?: React.ReactNode;
-  variant?: ButtonVariant;
+  variant?: "primary" | "text" | "plain";
   fullWidth?: boolean;
   asLink?: boolean;
   href?: string;
@@ -18,7 +12,7 @@ interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
 
 export default function Button({
   icon,
-  variant = ButtonVariant.Primary,
+  variant = "primary",
   fullWidth = false,
   asLink = false,
   href = "",
@@ -40,14 +34,14 @@ export default function Button({
           fullWidth && "w-full",
           icon && "flex items-center gap-2 pl-4 pr-6",
 
-          variant === ButtonVariant.Primary &&
+          variant === "primary" &&
             [
               "bg-primary-normal font-medium",
               "hover:bg-primary-normal-hover hover:ring-1 hover:ring-black",
               "active:bg-primary-normal-active active:ring-0",
             ].join(" "),
 
-          variant === ButtonVariant.Text &&
+          variant === "text" &&
             [
               "border-0 font-bold text-black",
               "underline underline-offset-1",
@@ -55,7 +49,7 @@ export default function Button({
               "active:underline-offset-1",
             ].join(" "),
 
-          variant === ButtonVariant.Plain && "border-0 font-medium text-black",
+          variant === "plain" && "border-0 font-medium text-black",
           className
         )}
         {...props}
