@@ -1,5 +1,9 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { InfoIcon } from "./Icons";
+import LetterGrade from "./LetterGrade";
+import { ProgressBarChart } from "./ProgressBarChart";
+
 interface CardProps extends React.ComponentPropsWithoutRef<"div"> {}
 
 export function Card({ children, className, ...props }: CardProps) {
@@ -52,6 +56,50 @@ export function InfoCard({
       </div>
       <div className={cn("grow p-4", "text-xl font-medium")}>{description}</div>
       <div>{footer}</div>
+    </Card>
+  );
+}
+
+interface OverallRatingCardProps extends CardProps {
+  letterGrade: "A" | "B" | "C" | "D" | "F";
+  gradeText?: string;
+
+  scores?: {
+    category: string;
+    value: number;
+    max: number;
+    info: string;
+  }[];
+}
+
+export function OverallRatingCard({
+  letterGrade,
+  gradeText,
+  scores,
+  ...props
+}: OverallRatingCardProps) {
+  return (
+    <Card {...props} className={cn("space-y-4 p-4")}>
+      <div className="flex items-center gap-4">
+        <LetterGrade letter={letterGrade} size="large" className="shrink-0" />
+        <p className="text-lg font-medium">{gradeText}</p>
+      </div>
+      <div className="space-y-4">
+        {scores?.map((score) => (
+          <div className="flex items-center gap-2" key={score.category}>
+            <InfoIcon size="sm" />
+            <p className="w-40 text-lg font-semibold">{score.category}</p>
+            <ProgressBarChart
+              value={score.value}
+              max={score.max}
+              size="small"
+            />
+            <p className="align-right w-40 text-right font-mono text-lg font-semibold">
+              {score.value} / {score.max}
+            </p>
+          </div>
+        ))}
+      </div>
     </Card>
   );
 }
