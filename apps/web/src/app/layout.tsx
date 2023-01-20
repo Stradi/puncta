@@ -1,6 +1,7 @@
 "use client";
 
 import NavigationBar from "@/components/NavigationBar";
+import { AuthProvider } from "@/context/AuthContext";
 import { useApollo } from "@/lib/apollo";
 import { ApolloProvider } from "@apollo/client";
 import "./globals.css";
@@ -17,8 +18,10 @@ export default function RootLayout({
       <head />
       <body>
         <ApolloProvider client={apolloClient}>
-          <NavigationBar />
-          {children}
+          <AuthProvider>
+            <NavigationBar />
+            {children}
+          </AuthProvider>
         </ApolloProvider>
       </body>
     </html>
