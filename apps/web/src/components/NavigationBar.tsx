@@ -70,7 +70,7 @@ export default function NavigationBar({
             )}
           >
             {config.navigation.primary.map((item) => (
-              <li key={item.href} className="hover:text-black">
+              <li key={item.label} className="hover:text-black">
                 <Link href={item.href}>{item.label}</Link>
               </li>
             ))}
