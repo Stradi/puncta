@@ -84,7 +84,7 @@ export default function NavigationBar({
             "border-t border-t-black sm:border-0"
           )}
         >
-          <Button asLink href="/" variant="text" fullWidth>
+          <Button asLink href="/giris-yap" variant="text" fullWidth>
             Giriş Yap
           </Button>
           <Button asLink href="/" fullWidth>
