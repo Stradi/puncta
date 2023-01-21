@@ -1,9 +1,10 @@
 "use client";
 
 import config from "@/app/config";
+import { AuthContext } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "./Button";
 import { CloseIcon, HamburgerIcon } from "./Icons";
 
@@ -14,6 +15,8 @@ export default function NavigationBar({
   ...props
 }: NavigationBarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const authContext = useContext(AuthContext);
+
   return (
     <nav
       className={cn(
@@ -84,12 +87,20 @@ export default function NavigationBar({
             "border-t border-t-black sm:border-0"
           )}
         >
-          <Button asLink href="/giris-yap" variant="text" fullWidth>
-            Giriş Yap
-          </Button>
-          <Button asLink href="/" fullWidth>
-            Kayıt Ol
-          </Button>
+          {authContext.isAuthenticated ? (
+            <Button asLink href="/profil" variant="text">
+              {authContext.user?.username}
+            </Button>
+          ) : (
+            <>
+              <Button asLink href="/giris-yap" variant="text" fullWidth>
+                Giriş Yap
+              </Button>
+              <Button asLink href="/kayit-ol" fullWidth>
+                Kayıt Ol
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </nav>
