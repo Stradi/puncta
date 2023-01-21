@@ -23,7 +23,7 @@ function getAllUniversities() {
       .then((response) => {
         const $ = cheerio.load(response.data);
 
-        const universities = $("optgroup > option")
+        const universities = $("select#univ > optgroup > option")
           .map((i, el) => ({
             id: $(el).attr("value"),
             name: toTitleCase($(el).text()),
