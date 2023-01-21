@@ -25,6 +25,11 @@ export default function RootLayout({
                 to: "/",
                 requireAuth: false,
               },
+              {
+                page: "/kayit-ol",
+                to: "/",
+                requireAuth: false,
+              },
             ]}
           >
             <NavigationBar />
