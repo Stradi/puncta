@@ -34,6 +34,15 @@ const REFRESH_TOKEN_MUTATION = gql`
   }
 `;
 
+const REGISTER_MUTATION = gql`
+  mutation Signup($email: String!, $username: String!, $password: String!) {
+    signup(email: $email, username: $username, password: $password) {
+      accessToken
+      refreshToken
+    }
+  }
+`;
+
 export async function doLogin(username: string, password: string) {
   const apolloClient = initializeApollo();
 
@@ -121,4 +130,42 @@ export async function getNewAccessToken(refreshToken: string) {
     accessToken: response.data.refreshToken.accessToken,
     refreshToken: response.data.refreshToken.refreshToken,
   };
+}
+
+export async function doRegister(
+  email: string,
+  username: string,
+  password: string
+) {
+  const apolloClient = initializeApollo();
+
+  const response = await apolloClient.mutate({
+    mutation: REGISTER_MUTATION,
+    variables: {
+      email,
+      username,
+      password,
+    },
+    errorPolicy: "ignore",
+  });
+
+  if (response.errors && response.errors.length > 0) {
+    console.log("Something happened while registering.");
+    console.log(response.errors);
+    return null;
+  }
+
+  if (!response.data || !response.data.signup) {
+    return null;
+  }
+
+  const { accessToken, refreshToken } = response.data.signup;
+
+  if (!accessToken || !refreshToken) {
+    console.log("Access token or refresh token doesn't exists.");
+    console.log(response.data.signup);
+    return null;
+  }
+
+  return { accessToken, refreshToken };
 }

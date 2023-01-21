@@ -1,4 +1,4 @@
-import { doLogin, getNewAccessToken, getUser } from "@/lib/auth";
+import { doLogin, doRegister, getNewAccessToken, getUser } from "@/lib/auth";
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
@@ -19,7 +19,11 @@ interface AuthContextProps {
 
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
-  register: (username: string, password: string) => Promise<void>;
+  register: (
+    email: string,
+    username: string,
+    password: string
+  ) => Promise<boolean>;
 }
 
 export const AuthContext = createContext<AuthContextProps>(
@@ -167,7 +171,30 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
     setIsAuthenticated(false);
   };
 
-  const register = async (username: string, password: string) => {};
+  const register = async (
+    email: string,
+    username: string,
+    password: string
+  ) => {
+    const response = await doRegister(email, username, password);
+    if (!response) {
+      // User already exists or something else
+      return false;
+    }
+
+    localStorage.setItem("accessToken", response.accessToken);
+    localStorage.setItem("refreshToken", response.refreshToken);
+
+    const user = await getUser(response.accessToken);
+    if (!user) {
+      // Probably server error.
+      return false;
+    }
+
+    setUser(user);
+    setIsAuthenticated(true);
+    return true;
+  };
 
   return (
     <AuthContext.Provider
