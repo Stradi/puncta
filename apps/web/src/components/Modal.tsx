@@ -9,7 +9,6 @@ export default function Modal({
   handleClose,
   children,
   className,
-  ...props
 }: ModalProps) {
   return (
     <motion.div
@@ -24,15 +23,17 @@ export default function Modal({
       <motion.div
         className={cn(
           "relative top-1/4 mx-auto max-w-lg",
-          "border-2 border-black bg-white p-4",
-          className
+          "border-2 border-black bg-white"
         )}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        initial={{
+          opacity: 0,
+          height: 0,
+        }}
+        animate={{ opacity: 1, height: "auto" }}
+        exit={{ opacity: 0, height: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {children}
+        <div className={cn("p-4", className)}>{children}</div>
       </motion.div>
     </motion.div>
   );
