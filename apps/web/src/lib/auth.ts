@@ -52,6 +52,10 @@ export async function doLogin(username: string, password: string) {
     return null;
   }
 
+  if (!response.data || !response.data.login) {
+    return null;
+  }
+
   const { accessToken, refreshToken } = response.data.login;
 
   if (!accessToken || !refreshToken) {
@@ -83,6 +87,10 @@ export async function getUser(accessToken: string) {
     return null;
   }
 
+  if (!response.data || !response.data.me) {
+    return null;
+  }
+
   console.log(response.data);
 
   return response.data.me;
@@ -102,6 +110,10 @@ export async function getNewAccessToken(refreshToken: string) {
   if (response.errors && response.errors.length > 0) {
     console.log("Something happened while refreshing token.");
     console.log(response.errors);
+    return null;
+  }
+
+  if (!response.data || !response.data.refreshToken) {
     return null;
   }
 
