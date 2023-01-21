@@ -17,6 +17,7 @@ export default function Button({
   asLink = false,
   href = "",
   className,
+  disabled,
   children,
   ...props
 }: ButtonProps) {
@@ -37,19 +38,21 @@ export default function Button({
           variant === "primary" &&
             [
               "bg-primary-normal font-medium",
-              "hover:bg-primary-normal-hover hover:ring-1 hover:ring-black",
-              "active:bg-primary-normal-active active:ring-0",
+              !disabled &&
+                "hover:bg-primary-normal-hover hover:ring-1 hover:ring-black",
+              !disabled && "active:bg-primary-normal-active active:ring-0",
             ].join(" "),
 
           variant === "text" &&
             [
               "border-0 font-bold text-black",
               "underline underline-offset-1",
-              "hover:underline-offset-4",
-              "active:underline-offset-1",
+              !disabled && "hover:underline-offset-4",
+              !disabled && "active:underline-offset-1",
             ].join(" "),
 
           variant === "plain" && "border-0 font-medium text-black",
+          disabled && "cursor-not-allowed opacity-50",
           className
         )}
         {...props}
