@@ -2,35 +2,50 @@ import { SignUpContext } from "@/context/SignUpContext";
 import { cn } from "@/lib/utils";
 import { FormikProps, useFormik } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
-import { forwardRef, useContext, useImperativeHandle } from "react";
+import {
+  forwardRef,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 
 import * as Yup from "yup";
+import faculties from "./faculties.json";
+import universities from "./universities.json";
+
+const UniversityFieldSchema = Yup.string()
+  .oneOf(
+    universities.map((university) => university.name),
+    "Lütfen geçerli bir üniversite seçiniz."
+  )
+  .required("Üniversite boş bırakılamaz.");
+
+const FacultyFieldSchema = Yup.string().when(
+  ["university"],
+  (university, schema) => {
+    const isUniversityValid = UniversityFieldSchema.isValidSync(university);
+    if (!isUniversityValid) {
+      return schema;
+    }
+
+    const selectedUniversity = universities.find(
+      (universityItem) => universityItem.name === university
+    );
+
+    const availableFaculties = selectedUniversity?.faculties.map(
+      (facultyItem) => faculties[facultyItem]
+    );
+
+    return schema
+      .oneOf(availableFaculties, "Lütfen geçerli bir bölüm seçiniz.")
+      .required("Bölüm boş bırakılamaz.");
+  }
+);
+
 const UniversityValidationSchema = Yup.object().shape({
-  university: Yup.string()
-    .oneOf(
-      [
-        "İstanbul Teknik Üniversitesi",
-        "Hacettepe Üniversitesi",
-        "Bilkent Üniversitesi",
-        "Gazi Üniversitesi",
-        "Ankara Üniversitesi",
-        "Orta Doğu Teknik Üniversitesi",
-      ],
-      "Lütfen geçerli bir üniversite seçiniz."
-    )
-    .required("Üniversite boş bırakılamaz."),
-  faculty: Yup.string()
-    .oneOf(
-      [
-        "Bilgisayar Mühendisliği",
-        "Fizik Mühendisliği",
-        "Tıp",
-        "İşletme",
-        "İktisat",
-      ],
-      "Lütfen geçerli bir bölüm seçiniz."
-    )
-    .required("Bölüm boş bırakılamaz."),
+  university: UniversityFieldSchema,
+  faculty: FacultyFieldSchema,
 });
 
 type UniversityFormValues = {
@@ -40,6 +55,11 @@ type UniversityFormValues = {
 
 const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
   (props, ref) => {
+    const [filteredUniversities, setFilteredUniversities] =
+      useState(universities);
+
+    const [filteredFaculties, setFilteredFaculties] = useState(faculties);
+
     const signUpContext = useContext(SignUpContext);
 
     const formik = useFormik<UniversityFormValues>({
@@ -60,6 +80,32 @@ const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
     useImperativeHandle(ref, () => ({
       ...formik,
     }));
+
+    useEffect(() => {
+      const newUniversities = universities
+        .filter((uni) =>
+          uni.name
+            .toLowerCase()
+            .replaceAll(" ", "")
+            .includes(
+              formik.values.university.toLowerCase().replaceAll(" ", "")
+            )
+        )
+        .slice(0, 5);
+
+      setFilteredUniversities(newUniversities);
+    }, [formik.values.university]);
+
+    useEffect(() => {
+      const allFaculties = universities
+        .find((u) => u.name === formik.values.university)
+        ?.faculties.map((f) => faculties[f]);
+      const filteredFaculties = allFaculties?.filter((f) =>
+        f.toLowerCase().includes(formik.values.faculty.toLowerCase())
+      );
+
+      setFilteredFaculties(filteredFaculties || []);
+    }, [formik.values.faculty, formik.values.university]);
 
     return (
       <form
@@ -95,6 +141,13 @@ const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
             onChange={formik.handleChange}
             value={formik.values.university}
           />
+          <div>
+            <ul>
+              {filteredUniversities.map((university) => (
+                <li key={university.name}>{university.name}</li>
+              ))}
+            </ul>
+          </div>
           <AnimatePresence>
             {formik.errors.university ? (
               <motion.div
@@ -125,6 +178,13 @@ const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
             onChange={formik.handleChange}
             value={formik.values.faculty}
           />
+          <div>
+            <ul>
+              {filteredFaculties.map((faculty) => (
+                <li key={faculty}>{faculty}</li>
+              ))}
+            </ul>
+          </div>
           <AnimatePresence>
             {formik.errors.faculty ? (
               <motion.div
