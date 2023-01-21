@@ -9,6 +9,21 @@ import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import * as Yup from "yup";
+
+const LoginValidationSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(3, "Kullanıcı adı en az 3 karakter olmalıdır.")
+    .max(20, "Kullanıcı adı en fazla 20 karakter olmalıdır.")
+    .required("Kullanıcı adı boş bırakılamaz.")
+    .matches(
+      /^[a-zA-Z0-9]+$/,
+      "Kullanıcı adı sadece harf ve rakamlardan oluşmalıdır."
+    ),
+  password: Yup.string()
+    .min(8, "Şifre en az 8 karakter olmalıdır.")
+    .required("Şifre boş bırakılamaz."),
+});
 
 //TODO: We should redirect the user to the profile page after
 // successfull login. Lines: 25,59
@@ -20,25 +35,6 @@ export default function Page() {
 
   const authContext = useContext(AuthContext);
   const router = useRouter();
-
-  const validate = (values: FormValues) => {
-    const errors = {} as FormValues;
-    if (!values.username) {
-      errors.username = "Kullanıcı adı boş bırakılamaz.";
-    } else if (values.username.length < 3) {
-      errors.username = "Kullanıcı adı en az 3 karakter olmalıdır.";
-    } else if (values.username.length > 20) {
-      errors.username = "Kullanıcı adı en fazla 20 karakter olmalıdır.";
-    }
-
-    if (!values.password) {
-      errors.password = "Şifre boş bırakılamaz.";
-    } else if (values.password.length < 8) {
-      errors.password = "Şifre en az 6 karakter olmalıdır.";
-    }
-
-    return errors;
-  };
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -57,7 +53,7 @@ export default function Page() {
         formik.errors.password = "Şifre hatalı.";
       }
     },
-    validate,
+    validationSchema: LoginValidationSchema,
   });
 
   return (
@@ -154,9 +150,11 @@ export default function Page() {
           <Button
             variant="primary"
             fullWidth
-            disabled={
-              formik.errors.username || formik.errors.password ? true : false
-            }
+            // disabled={
+            //   formik.dirty || formik.errors.username || formik.errors.password
+            //     ? true
+            //     : false
+            // }
           >
             Giriş Yap
           </Button>
