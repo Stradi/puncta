@@ -1,0 +1,28 @@
+{
+  "name": "university-scraper",
+  "version": "0.0.0",
+  "description": "University and faculty scraper for Puncta",
+  "homepage": "https://www.thepuncta.com",
+  "bugs": {
+    "url": "https://www.github.com/Stradi/puncta/issues",
+    "email": "bug@thepuncta.com"
+  },
+  "author": "Batin Evirgen <hello@batin.sh> (https://www.batin.sh)",
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/Stradi/puncta.git",
+    "directory": "tools/university-scraper"
+  },
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.2.3",
+    "chalk": "^5.2.0",
+    "cheerio": "^1.0.0-rc.12",
+    "fs-extra": "^11.1.0",
+    "promise-limit": "^2.7.0"
+  }
+}
