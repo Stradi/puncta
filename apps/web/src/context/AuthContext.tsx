@@ -1,4 +1,5 @@
 import { doLogin, getNewAccessToken, getUser } from "@/lib/auth";
+import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
 interface User {
@@ -26,12 +27,42 @@ export const AuthContext = createContext<AuthContextProps>(
 );
 
 // TODO: Please fix this file. It's working but my eyes are bleeding.
-interface AuthProviderProps extends React.PropsWithChildren {}
-export function AuthProvider({ children }: AuthProviderProps) {
+interface AuthProviderProps extends React.PropsWithChildren {
+  redirects?: {
+    page: string;
+    to: string;
+    requireAuth: boolean;
+  }[];
+}
+
+export function AuthProvider({ redirects, children }: AuthProviderProps) {
   const [user, setUser] = useState<Partial<User> | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
+
+  const pathName = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!redirects || redirects.length <= 0) {
+      return;
+    }
+
+    for (const redirect of redirects) {
+      if (redirect.page === pathName) {
+        if (redirect.requireAuth && !isAuthenticated) {
+          router.push(redirect.to || "/");
+          return;
+        }
+
+        if (!redirect.requireAuth && isAuthenticated) {
+          router.push(redirect.to || "/");
+          return;
+        }
+      }
+    }
+  }, [pathName, router, isAuthenticated, redirects]);
 
   // Access token or refresh token changed. We need to update the user if tokens
   // are not null.
