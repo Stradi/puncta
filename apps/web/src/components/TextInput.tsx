@@ -22,6 +22,7 @@ export default function TextInput({ name, label, ...props }: TextInputProps) {
           "rounded-full px-4 py-2 transition duration-100",
           "border border-black font-medium outline-none"
         )}
+        autoComplete="off"
       />
       <AnimatePresence>
         {meta.error && meta.touched && (
