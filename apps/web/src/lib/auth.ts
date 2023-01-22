@@ -3,8 +3,8 @@ import { gql } from "@apollo/client";
 import { initializeApollo } from "./apollo";
 
 const LOGIN_MUTATION = gql`
-  mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
       accessToken
       refreshToken
     }
@@ -17,7 +17,6 @@ const GET_ME_QUERY = gql`
       id
       createdAt
       updatedAt
-      username
       firstName
       lastName
       role
@@ -38,7 +37,6 @@ const REFRESH_TOKEN_MUTATION = gql`
 const REGISTER_MUTATION = gql`
   mutation Signup(
     $email: String!
-    $username: String!
     $password: String!
     $firstName: String!
     $lastName: String!
@@ -47,7 +45,6 @@ const REGISTER_MUTATION = gql`
   ) {
     signup(
       email: $email
-      username: $username
       password: $password
       firstName: $firstName
       lastName: $lastName
@@ -66,7 +63,7 @@ export async function doLogin(payload: LoginPayload) {
   const response = await apolloClient.mutate({
     mutation: LOGIN_MUTATION,
     variables: {
-      username: payload.username,
+      email: payload.email,
       password: payload.password,
     },
     errorPolicy: "ignore",
@@ -155,7 +152,6 @@ export async function doRegister(payload: RegisterPayload) {
   const response = await apolloClient.mutate({
     mutation: REGISTER_MUTATION,
     variables: {
-      username: payload.username,
       email: payload.email,
       password: payload.password,
       firstName: payload.firstName,

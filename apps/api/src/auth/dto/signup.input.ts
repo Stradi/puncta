@@ -11,10 +11,6 @@ export class ConnectUserFaculty extends BaseResourceIdentifierInput {}
 @ArgsType()
 export class SignupInput {
   @Field(() => String)
-  @IsNotEmpty()
-  username: string;
-
-  @Field(() => String)
   @IsEmail()
   email: string;
 

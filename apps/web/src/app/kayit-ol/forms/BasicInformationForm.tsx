@@ -19,7 +19,6 @@ const BasicInformationValidationSchema = yup.object().shape({
 type BasicInformationFormValues = {
   email: string;
   name: string;
-  username: string;
 };
 
 const BasicInformationForm = forwardRef<
@@ -31,7 +30,6 @@ const BasicInformationForm = forwardRef<
     initialValues: {
       email: signUpContext.email,
       name: `${signUpContext.firstName} ${signUpContext.lastName}`,
-      username: signUpContext.username,
     },
     onSubmit: (values) => {
       signUpContext.setEmail(values.email);
@@ -40,8 +38,6 @@ const BasicInformationForm = forwardRef<
       const [firstName, lastName] = values.name.split(" ");
       signUpContext.setFirstName(firstName);
       signUpContext.setLastName(lastName);
-
-      signUpContext.setUsername(values.username);
 
       signUpContext.nextStep();
     },
@@ -68,7 +64,6 @@ const BasicInformationForm = forwardRef<
         </div>
         <TextInput name="name" label="Ad Soyad" type="text" />
         <TextInput name="email" label="E-posta" type="email" />
-        <TextInput name="username" label="Kullanıcı Adı" type="text" />
       </form>
     </FormikProvider>
   );

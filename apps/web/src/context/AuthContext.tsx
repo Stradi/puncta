@@ -6,7 +6,6 @@ interface User {
   id: string;
   createdAt: string;
   updatedAt: string;
-  username: string;
   firstName: string;
   lastName: string;
   role: string;
@@ -14,13 +13,12 @@ interface User {
 }
 
 export interface LoginPayload {
-  username: string;
+  email: string;
   password: string;
 }
 
 export interface RegisterPayload {
   email: string;
-  username: string;
   password: string;
   firstName: string;
   lastName: string;
@@ -155,7 +153,6 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
   const login = async (payload: LoginPayload) => {
     const response = await doLogin(payload);
     if (!response) {
-      // Username or password is wrong.
       return false;
     }
 

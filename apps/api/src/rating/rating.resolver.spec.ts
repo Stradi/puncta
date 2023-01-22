@@ -27,7 +27,6 @@ const ratingMock: Rating = {
 const userMock: User = {
   id: 0,
   email: 'mockuser@example.com',
-  username: 'mockuser',
   firstName: 'Mock',
   lastName: 'User',
   role: Role.STUDENT,

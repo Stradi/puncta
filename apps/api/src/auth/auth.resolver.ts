@@ -41,10 +41,4 @@ export class AuthResolver {
     const response = await this.authService.isEmailExists(email);
     return response ? { result: true } : { result: false };
   }
-
-  @Query(() => IsExists)
-  async isUsernameExists(@Args('username') username: string) {
-    const response = await this.authService.isUsernameExists(username);
-    return response ? { result: true } : { result: false };
-  }
 }

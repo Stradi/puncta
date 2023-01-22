@@ -5,7 +5,7 @@ import { IsNotEmpty, MinLength } from 'class-validator';
 export class LoginInput {
   @Field(() => String)
   @IsNotEmpty()
-  username: string;
+  email: string;
 
   @Field(() => String)
   @IsNotEmpty()

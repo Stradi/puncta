@@ -3,7 +3,7 @@ import { useField } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface TextInputProps extends React.ComponentPropsWithoutRef<"input"> {
-  name: string; // email, username, password
+  name: string;
   label: string;
 }
 

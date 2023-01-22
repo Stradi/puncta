@@ -235,9 +235,6 @@ type User {
   """Role of this user"""
   role: String!
 
-  """Username of this user"""
-  username: String!
-
   """Email of this user"""
   email: String!
 
@@ -290,7 +287,6 @@ type Query {
   ): [Teacher!]!
   rating(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]!
   isEmailExists(email: String!): IsExists!
-  isUsernameExists(username: String!): IsExists!
   me: User!
 }
 
@@ -334,8 +330,8 @@ type Mutation {
   createRating(score: Int!, comment: String, meta: String, university: ConnectRatingUniversity, teacher: ConnectRatingTeacher): Rating!
   updateRating(filter: UpdateRatingFilter!, set: UpdateRatingSet!): Rating!
   deleteRating(id: Int!): Rating!
-  signup(username: String!, email: String!, password: String!, firstName: String!, lastName: String!, university: ConnectUserUniversity!, faculty: ConnectUserFaculty!): Auth!
-  login(username: String!, password: String!): Auth!
+  signup(email: String!, password: String!, firstName: String!, lastName: String!, university: ConnectUserUniversity!, faculty: ConnectUserFaculty!): Auth!
+  login(email: String!, password: String!): Auth!
   refreshToken(token: JWT!): Token!
 }
 

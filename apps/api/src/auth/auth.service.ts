@@ -36,7 +36,6 @@ export class AuthService {
     try {
       const user = await this.prismaService.user.create({
         data: {
-          username: args.username,
           email: args.email,
           firstName: args.firstName,
           lastName: args.lastName,
@@ -72,7 +71,7 @@ export class AuthService {
   async login(args: LoginInput) {
     const user = await this.prismaService.user.findUnique({
       where: {
-        username: args.username,
+        email: args.email,
       },
     });
 
@@ -118,14 +117,6 @@ export class AuthService {
     return await this.prismaService.user.findUnique({
       where: {
         email,
-      },
-    });
-  }
-
-  async isUsernameExists(username: string) {
-    return await this.prismaService.user.findUnique({
-      where: {
-        username,
       },
     });
   }

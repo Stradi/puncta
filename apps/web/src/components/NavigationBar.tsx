@@ -89,7 +89,7 @@ export default function NavigationBar({
         >
           {authContext.isAuthenticated ? (
             <Button asLink href="/profil" variant="text">
-              {authContext.user?.username}
+              {`${authContext.user?.firstName} ${authContext.user?.lastName}`}
             </Button>
           ) : (
             <>
