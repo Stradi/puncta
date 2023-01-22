@@ -1,4 +1,4 @@
-import TextInput from "@/components/TextInput";
+import SearchInput from "@/components/SearchInput";
 import { SignUpContext } from "@/context/SignUpContext";
 import { cn } from "@/lib/utils";
 import { FormikProps, FormikProvider, useFormik } from "formik";
@@ -45,6 +45,7 @@ const UniversityValidationSchema = Yup.object().shape({
 type UniversityFormValues = {
   university: string;
   faculty: string;
+  test: string;
 };
 
 const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
@@ -55,6 +56,7 @@ const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
       initialValues: {
         university: signUpContext.university,
         faculty: signUpContext.faculty,
+        test: "",
       },
       onSubmit: async (values) => {
         signUpContext.setUniversity(values.university);
@@ -83,8 +85,28 @@ const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
               üniversiteni ve bölümünü girmelisin.
             </p>
           </div>
-          <TextInput name="university" label="Üniversite" type="text" />
-          <TextInput name="faculty" label="Bölüm" type="text" />
+          <SearchInput
+            name="university"
+            label="Üniversite"
+            items={universities.map((u) => u.name)}
+          />
+          <SearchInput
+            name="faculty"
+            label="Bölüm"
+            items={(function () {
+              const selectedUniversity = universities.find(
+                (university) => university.name === formik.values.university
+              );
+
+              if (!selectedUniversity) {
+                return [];
+              }
+
+              return selectedUniversity.faculties.map(
+                (faculty) => faculties[faculty]
+              );
+            })()}
+          />
         </form>
       </FormikProvider>
     );
