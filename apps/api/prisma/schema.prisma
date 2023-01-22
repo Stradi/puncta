@@ -18,6 +18,7 @@ model University {
   faculties Faculty[]
   teachers Teacher[]
   ratings Rating[]
+  users User[]
 }
 
 model Faculty {
@@ -30,6 +31,7 @@ model Faculty {
 
   universities University[]
   teachers Teacher[]
+  users User[]
 }
 
 model Teacher {
@@ -63,6 +65,12 @@ model User {
   password String
   firstName String?
   lastName String?
+
+  universityId Int?
+  university University? @relation(fields: [universityId], references: [id])
+
+  facultyId Int?
+  faculty Faculty? @relation(fields: [facultyId], references: [id])
 
   ratings Rating[]
 }

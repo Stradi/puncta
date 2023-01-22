@@ -327,7 +327,7 @@ type Mutation {
   createRating(score: Int!, comment: String, meta: String, university: ConnectRatingUniversity, teacher: ConnectRatingTeacher): Rating!
   updateRating(filter: UpdateRatingFilter!, set: UpdateRatingSet!): Rating!
   deleteRating(id: Int!): Rating!
-  signup(username: String!, email: String!, password: String!, firstName: String!, lastName: String!): Auth!
+  signup(username: String!, email: String!, password: String!, firstName: String!, lastName: String!, university: ConnectUserUniversity!, faculty: ConnectUserFaculty!): Auth!
   login(username: String!, password: String!): Auth!
   refreshToken(token: JWT!): Token!
 }
@@ -467,4 +467,26 @@ input UpdateRatingSet {
   score: Int!
   comment: String!
   meta: String!
+}
+
+input ConnectUserUniversity {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
+}
+
+input ConnectUserFaculty {
+  """Unique identifier of the resource"""
+  id: Int
+
+  """Name of the resource"""
+  name: String
+
+  """Slug of the resource"""
+  slug: String
 }

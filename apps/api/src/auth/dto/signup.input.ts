@@ -1,5 +1,12 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { BaseResourceIdentifierInput } from 'src/shared/dto/resource-identifier.args';
+
+@InputType()
+export class ConnectUserUniversity extends BaseResourceIdentifierInput {}
+
+@InputType()
+export class ConnectUserFaculty extends BaseResourceIdentifierInput {}
 
 @ArgsType()
 export class SignupInput {
@@ -23,4 +30,12 @@ export class SignupInput {
   @Field(() => String)
   @IsNotEmpty()
   lastName: string;
+
+  @Field(() => ConnectUserUniversity)
+  // @IsNotEmpty()
+  university?: ConnectUserUniversity;
+
+  @Field(() => ConnectUserFaculty)
+  // @IsNotEmpty()
+  faculty?: ConnectUserFaculty;
 }

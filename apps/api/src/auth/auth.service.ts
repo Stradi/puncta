@@ -14,6 +14,7 @@ import { PasswordService } from './password.service';
 
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { Role } from 'src/common/role/roles.enum';
+import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
 import { JwtConfig } from '../common/config/config.types';
 import { LoginInput } from './dto/login.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
@@ -41,6 +42,18 @@ export class AuthService {
           lastName: args.lastName,
           password: hashedPassword,
           role: role || Role.STUDENT,
+          university: {
+            connect: convertArgsToWhereClause(
+              ['id', 'slug', 'name'],
+              args.university,
+            ),
+          },
+          faculty: {
+            connect: convertArgsToWhereClause(
+              ['id', 'slug', 'name'],
+              args.faculty,
+            ),
+          },
         },
       });
 
