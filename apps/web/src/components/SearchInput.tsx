@@ -19,7 +19,7 @@ export default function SearchInput({
 }: SearchInputProps) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(true);
 
   const [field, meta, helpers] = useField({ name });
 
