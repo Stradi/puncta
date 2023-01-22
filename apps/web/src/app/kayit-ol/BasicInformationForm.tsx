@@ -80,7 +80,7 @@ const BasicInformationForm = forwardRef<
           value={formik.values.email}
         />
         <AnimatePresence>
-          {formik.errors.email ? (
+          {formik.errors.email && formik.touched.email ? (
             <motion.div
               initial={{
                 height: 0,
@@ -110,7 +110,7 @@ const BasicInformationForm = forwardRef<
           value={formik.values.name}
         />
         <AnimatePresence>
-          {formik.errors.name ? (
+          {formik.errors.name && formik.touched.name ? (
             <motion.div
               initial={{
                 height: 0,

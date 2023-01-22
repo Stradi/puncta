@@ -149,7 +149,7 @@ const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
             </ul>
           </div>
           <AnimatePresence>
-            {formik.errors.university ? (
+            {formik.errors.university && formik.touched.university ? (
               <motion.div
                 initial={{
                   height: 0,
@@ -186,7 +186,7 @@ const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
             </ul>
           </div>
           <AnimatePresence>
-            {formik.errors.faculty ? (
+            {formik.errors.faculty && formik.touched.faculty ? (
               <motion.div
                 initial={{
                   height: 0,

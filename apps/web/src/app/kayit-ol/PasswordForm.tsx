@@ -72,7 +72,7 @@ const PasswordForm = forwardRef<FormikProps<PasswordFormValues>>(
             value={formik.values.password}
           />
           <AnimatePresence>
-            {formik.errors.password ? (
+            {formik.errors.password && formik.touched.password ? (
               <motion.div
                 initial={{
                   height: 0,
@@ -102,7 +102,7 @@ const PasswordForm = forwardRef<FormikProps<PasswordFormValues>>(
             value={formik.values.confirmation}
           />
           <AnimatePresence>
-            {formik.errors.confirmation ? (
+            {formik.errors.confirmation && formik.touched.confirmation ? (
               <motion.div
                 initial={{
                   height: 0,
