@@ -49,13 +49,13 @@ export default function Page() {
           fullWidth
           onClick={() => {
             if (signUpContext.step === 3) {
-              // TODO: Handle sign up
+              authContext.register(signUpContext.getPayload());
             } else {
               formRef.current?.submitForm();
             }
           }}
         >
-          İlerle
+          {signUpContext.step === 3 ? "Kayıt Ol" : "Devam Et"}
         </Button>
       </div>
     </Card>

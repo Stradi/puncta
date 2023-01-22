@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { RegisterPayload } from "./AuthContext";
 
 interface SignUpContextProps {
   email: string;
@@ -25,6 +26,8 @@ interface SignUpContextProps {
   step: number;
   nextStep: () => void;
   prevStep: () => void;
+
+  getPayload: () => RegisterPayload;
 }
 
 export const SignUpContext = createContext<SignUpContextProps>(
@@ -52,6 +55,18 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
     }
   }
 
+  function getPayload() {
+    return {
+      email,
+      username,
+      password,
+      firstName,
+      lastName,
+      university,
+      faculty,
+    };
+  }
+
   return (
     <SignUpContext.Provider
       value={{
@@ -72,6 +87,7 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
         step,
         nextStep,
         prevStep,
+        getPayload,
       }}
     >
       {children}

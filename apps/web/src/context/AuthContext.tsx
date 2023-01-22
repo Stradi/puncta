@@ -13,17 +13,28 @@ interface User {
   email: string;
 }
 
+export interface LoginPayload {
+  username: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  email: string;
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  university: string;
+  faculty: string;
+}
+
 interface AuthContextProps {
   user: Partial<User> | null;
   isAuthenticated: boolean;
 
-  login: (username: string, password: string) => Promise<boolean>;
+  login: (payload: LoginPayload) => Promise<boolean>;
   logout: () => Promise<void>;
-  register: (
-    email: string,
-    username: string,
-    password: string
-  ) => Promise<boolean>;
+  register: (payload: RegisterPayload) => Promise<boolean>;
 }
 
 export const AuthContext = createContext<AuthContextProps>(
@@ -141,8 +152,8 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
     });
   }, []);
 
-  const login = async (username: string, password: string) => {
-    const response = await doLogin(username, password);
+  const login = async (payload: LoginPayload) => {
+    const response = await doLogin(payload);
     if (!response) {
       // Username or password is wrong.
       return false;
@@ -171,12 +182,8 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
     setIsAuthenticated(false);
   };
 
-  const register = async (
-    email: string,
-    username: string,
-    password: string
-  ) => {
-    const response = await doRegister(email, username, password);
+  const register = async (payload: RegisterPayload) => {
+    const response = await doRegister(payload);
     if (!response) {
       // User already exists or something else
       return false;

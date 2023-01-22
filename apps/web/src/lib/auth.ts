@@ -1,3 +1,4 @@
+import { LoginPayload, RegisterPayload } from "@/context/AuthContext";
 import { gql } from "@apollo/client";
 import { initializeApollo } from "./apollo";
 
@@ -35,22 +36,34 @@ const REFRESH_TOKEN_MUTATION = gql`
 `;
 
 const REGISTER_MUTATION = gql`
-  mutation Signup($email: String!, $username: String!, $password: String!) {
-    signup(email: $email, username: $username, password: $password) {
+  mutation Signup(
+    $email: String!
+    $username: String!
+    $password: String!
+    $firstName: String!
+    $lastName: String!
+  ) {
+    signup(
+      email: $email
+      username: $username
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+    ) {
       accessToken
       refreshToken
     }
   }
 `;
 
-export async function doLogin(username: string, password: string) {
+export async function doLogin(payload: LoginPayload) {
   const apolloClient = initializeApollo();
 
   const response = await apolloClient.mutate({
     mutation: LOGIN_MUTATION,
     variables: {
-      username,
-      password,
+      username: payload.username,
+      password: payload.password,
     },
     errorPolicy: "ignore",
   });
@@ -132,19 +145,17 @@ export async function getNewAccessToken(refreshToken: string) {
   };
 }
 
-export async function doRegister(
-  email: string,
-  username: string,
-  password: string
-) {
+export async function doRegister(payload: RegisterPayload) {
   const apolloClient = initializeApollo();
 
   const response = await apolloClient.mutate({
     mutation: REGISTER_MUTATION,
     variables: {
-      email,
-      username,
-      password,
+      username: payload.username,
+      email: payload.email,
+      password: payload.password,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
     },
     errorPolicy: "ignore",
   });
