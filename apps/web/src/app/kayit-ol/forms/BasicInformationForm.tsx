@@ -19,6 +19,7 @@ const BasicInformationValidationSchema = yup.object().shape({
 type BasicInformationFormValues = {
   email: string;
   name: string;
+  username: string;
 };
 
 const BasicInformationForm = forwardRef<
@@ -30,6 +31,7 @@ const BasicInformationForm = forwardRef<
     initialValues: {
       email: signUpContext.email,
       name: `${signUpContext.firstName} ${signUpContext.lastName}`,
+      username: signUpContext.username,
     },
     onSubmit: (values) => {
       signUpContext.setEmail(values.email);
@@ -38,6 +40,8 @@ const BasicInformationForm = forwardRef<
       const [firstName, lastName] = values.name.split(" ");
       signUpContext.setFirstName(firstName);
       signUpContext.setLastName(lastName);
+
+      signUpContext.setUsername(values.username);
 
       signUpContext.nextStep();
     },
@@ -59,10 +63,12 @@ const BasicInformationForm = forwardRef<
           <h2 className="text-xl font-medium">Genel Bilgiler</h2>
           <p className="text-sm">
             E-postan ve adın senin kim olduğunu anlamamız için önemlidir.
+            Kullanıcı adını da giriş yapmak için kullanacaksın.
           </p>
         </div>
+        <TextInput name="name" label="Ad Soyad" type="text" />
         <TextInput name="email" label="E-posta" type="email" />
-        <TextInput name="name" label="Ad Soyad" type="name" />
+        <TextInput name="username" label="Kullanıcı Adı" type="text" />
       </form>
     </FormikProvider>
   );
