@@ -114,6 +114,22 @@ export class AuthService {
     });
   }
 
+  async isEmailExists(email: string) {
+    return await this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+    });
+  }
+
+  async isUsernameExists(username: string) {
+    return await this.prismaService.user.findUnique({
+      where: {
+        username,
+      },
+    });
+  }
+
   refreshToken(args: RefreshTokenInput) {
     try {
       const { id } = this.jwtService.verify(args.token, {

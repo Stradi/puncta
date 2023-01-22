@@ -23,6 +23,11 @@ type Auth {
   refreshToken: JWT!
 }
 
+type IsExists {
+  """Is exists"""
+  result: Boolean!
+}
+
 type Rating {
   """Unique identifier for rating"""
   id: ID!
@@ -284,6 +289,8 @@ type Query {
     pageSize: Int = 10
   ): [Teacher!]!
   rating(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]!
+  isEmailExists(email: String!): IsExists!
+  isUsernameExists(username: String!): IsExists!
   me: User!
 }
 
