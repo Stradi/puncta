@@ -57,6 +57,13 @@ const REGISTER_MUTATION = gql`
   }
 `;
 
+const EMAIL_EXISTS_QUERY = gql`
+  query EmailExists($email: String!) {
+    isEmailExists(email: $email) {
+      result
+    }
+  }
+`;
 export async function doLogin(payload: LoginPayload) {
   const apolloClient = initializeApollo();
 
@@ -185,4 +192,28 @@ export async function doRegister(payload: RegisterPayload) {
   }
 
   return { accessToken, refreshToken };
+}
+
+export async function checkEmailExists(email: string) {
+  const apolloClient = initializeApollo();
+
+  const response = await apolloClient.query({
+    query: EMAIL_EXISTS_QUERY,
+    variables: {
+      email,
+    },
+    errorPolicy: "ignore",
+  });
+
+  if (response.errors && response.errors.length > 0) {
+    console.log("Something happened while checking email.");
+    console.log(response.errors);
+    return null;
+  }
+
+  if (!response.data || !response.data.isEmailExists) {
+    return null;
+  }
+
+  return response.data.isEmailExists.result;
 }

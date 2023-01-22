@@ -1,5 +1,6 @@
 import TextInput from "@/components/TextInput";
 import { SignUpContext } from "@/context/SignUpContext";
+import { checkEmailExists } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { FormikProps, FormikProvider, useFormik } from "formik";
 import { forwardRef, useContext, useImperativeHandle } from "react";
@@ -9,7 +10,17 @@ const BasicInformationValidationSchema = yup.object().shape({
   email: yup
     .string()
     .email("E-posta adresi geçersiz.")
-    .required("E-posta boş bırakılamaz."),
+    .required("E-posta boş bırakılamaz.")
+    .test(
+      "Kayıtlı E-posta",
+      "Bu e-posta adresi zaten kayıtlı.",
+      async function (value) {
+        if (!value) {
+          return false;
+        }
+        return !(await checkEmailExists(value as string));
+      }
+    ),
   name: yup
     .string()
     .min(3, "Ad en az 3 karakter olmalıdır.")
@@ -42,6 +53,8 @@ const BasicInformationForm = forwardRef<
       signUpContext.nextStep();
     },
     validationSchema: BasicInformationValidationSchema,
+    // To prevent sending request to API server on every keypress
+    validateOnChange: false,
     innerRef: ref,
   });
 
