@@ -327,7 +327,7 @@ type Mutation {
   createRating(score: Int!, comment: String, meta: String, university: ConnectRatingUniversity, teacher: ConnectRatingTeacher): Rating!
   updateRating(filter: UpdateRatingFilter!, set: UpdateRatingSet!): Rating!
   deleteRating(id: Int!): Rating!
-  signup(username: String!, email: String!, password: String!): Auth!
+  signup(username: String!, email: String!, password: String!, firstName: String!, lastName: String!): Auth!
   login(username: String!, password: String!): Auth!
   refreshToken(token: JWT!): Token!
 }

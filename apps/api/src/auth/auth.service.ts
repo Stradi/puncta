@@ -37,6 +37,8 @@ export class AuthService {
         data: {
           username: args.username,
           email: args.email,
+          firstName: args.firstName,
+          lastName: args.lastName,
           password: hashedPassword,
           role: role || Role.STUDENT,
         },
