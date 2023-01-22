@@ -14,7 +14,7 @@ import * as Yup from "yup";
 const LoginValidationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Geçerli bir e-posta adresi giriniz.")
-    .required("Kullanıcı adı boş bırakılamaz."),
+    .required("E-posta boş bırakılamaz."),
   password: Yup.string()
     .min(8, "Şifre en az 8 karakter olmalıdır.")
     .required("Şifre boş bırakılamaz."),

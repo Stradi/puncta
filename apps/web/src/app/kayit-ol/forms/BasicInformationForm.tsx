@@ -59,7 +59,6 @@ const BasicInformationForm = forwardRef<
           <h2 className="text-xl font-medium">Genel Bilgiler</h2>
           <p className="text-sm">
             E-postan ve adın senin kim olduğunu anlamamız için önemlidir.
-            Kullanıcı adını da giriş yapmak için kullanacaksın.
           </p>
         </div>
         <TextInput name="name" label="Ad Soyad" type="text" />
