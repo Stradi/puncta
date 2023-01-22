@@ -7,10 +7,10 @@ import { SignUpContext } from "@/context/SignUpContext";
 import { FormikProps } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { createRef, useContext } from "react";
-import BasicInformationForm from "./BasicInformationForm";
-import FinalForm from "./FinalForm";
-import PasswordForm from "./PasswordForm";
-import UniversityForm from "./UniversityForm";
+import BasicInformationForm from "./forms/BasicInformationForm";
+import FinalForm from "./forms/FinalForm";
+import PasswordForm from "./forms/PasswordForm";
+import UniversityForm from "./forms/UniversityForm";
 
 export default function Page() {
   // Since we are not interested in return type of form, we can use any.
