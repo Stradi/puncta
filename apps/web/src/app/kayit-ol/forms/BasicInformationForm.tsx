@@ -24,7 +24,20 @@ const BasicInformationValidationSchema = yup.object().shape({
   name: yup
     .string()
     .min(3, "Ad en az 3 karakter olmalıdır.")
-    .required("Ad boş bırakılamaz."),
+    .required("Ad boş bırakılamaz.")
+    .test(
+      "Only firstname",
+      "Galiba sadece adını girmişsin, lütfen soyadını da gir.",
+      function (value) {
+        if (!value) {
+          return false;
+        }
+        const fullName = value.trim();
+
+        const arr = fullName.split(" ");
+        return arr.length > 1;
+      }
+    ),
 });
 
 type BasicInformationFormValues = {
@@ -40,13 +53,18 @@ const BasicInformationForm = forwardRef<
   const formik = useFormik<BasicInformationFormValues>({
     initialValues: {
       email: signUpContext.email,
-      name: `${signUpContext.firstName} ${signUpContext.lastName}`,
+      name:
+        signUpContext.firstName && signUpContext.lastName
+          ? `${signUpContext.firstName} ${signUpContext.lastName}`
+          : "",
     },
     onSubmit: (values) => {
       signUpContext.setEmail(values.email);
 
       // TODO: Find a better way to handle this
-      const [firstName, lastName] = values.name.split(" ");
+      // TODO: Also convert to title case
+      const fullName = values.name.trim();
+      const [firstName, lastName] = fullName.split(" ");
       signUpContext.setFirstName(firstName);
       signUpContext.setLastName(lastName);
 
