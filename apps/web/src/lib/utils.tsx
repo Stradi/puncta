@@ -1,4 +1,5 @@
 import clsx, { ClassValue } from "clsx";
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -38,4 +39,11 @@ export function toReadableDate(date: string) {
     month: "long",
     year: "numeric",
   });
+}
+
+export function joinReactChildren(
+  children: React.ReactNode[],
+  seperator: React.ReactNode
+) {
+  return children.reduce((prev, curr) => [prev, seperator, curr]);
 }
