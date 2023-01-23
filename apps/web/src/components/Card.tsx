@@ -1,5 +1,7 @@
-import { cn } from "@/lib/utils";
+import { cn, ratingsToLetterGrade } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
+import ConditionalWrapper from "./ConditionalWrapper";
 import { InfoIcon } from "./Icons";
 import LetterGrade from "./LetterGrade";
 import { ProgressBarChart } from "./ProgressBarChart";
@@ -101,5 +103,43 @@ export function OverallRatingCard({
         ))}
       </div>
     </Card>
+  );
+}
+
+interface CardWithRatingProps extends CardProps {
+  ratings: Rating[];
+  title: string;
+  href?: string;
+}
+
+export function CardWithRating({ ratings, title, href }: CardWithRatingProps) {
+  return (
+    <ConditionalWrapper
+      condition={!!href}
+      wrapper={(children) => <Link href={href as string}>{children}</Link>}
+    >
+      <div
+        className={cn(
+          "flex h-24 items-center",
+          href && "tranisition duration-100",
+          href &&
+            "hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_rgba(0,0,0,1.0)]"
+        )}
+      >
+        <LetterGrade
+          letter={ratingsToLetterGrade(ratings)}
+          size="large"
+          className="h-full w-24 shrink-0"
+        />
+        <div
+          className={cn(
+            "flex h-full w-full items-center",
+            "border-y-2 border-r-2 border-black"
+          )}
+        >
+          <h2 className={cn(" p-2", "text-xl font-medium")}>{title}</h2>
+        </div>
+      </div>
+    </ConditionalWrapper>
   );
 }

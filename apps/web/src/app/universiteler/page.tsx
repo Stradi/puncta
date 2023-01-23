@@ -1,7 +1,7 @@
+import { CardWithRating } from "@/components/Card";
 import { initializeApollo } from "@/lib/apollo";
 import { cn } from "@/lib/utils";
 import { gql } from "@apollo/client";
-import SingleUniversity from "./components/SingleUniversity";
 
 async function fetchUniversities() {
   const apolloClient = initializeApollo();
@@ -53,7 +53,12 @@ export default async function Page() {
         className={cn("space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0")}
       >
         {universities.map((university) => (
-          <SingleUniversity key={university.id} {...university} />
+          <CardWithRating
+            key={university.id}
+            ratings={university.ratings as Rating[]}
+            title={university.name as string}
+            href={`/universite/${university.slug}`}
+          />
         ))}
       </div>
     </div>
