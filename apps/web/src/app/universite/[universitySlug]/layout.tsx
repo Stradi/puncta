@@ -12,7 +12,16 @@ export default async function Layout({
       <header>
         <h1>{university.name}</h1>
       </header>
-      <section>{children}</section>
+      <section>
+        <div>
+          <ul className="flex gap-4">
+            <li>Genel</li>
+            <li>Bölümler</li>
+            <li>Öğretmenler</li>
+          </ul>
+        </div>
+        <div>{children}</div>
+      </section>
     </main>
   );
 }

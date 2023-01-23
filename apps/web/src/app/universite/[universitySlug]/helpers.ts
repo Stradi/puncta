@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 
 export async function fetchUniversity(slug: string) {
   const apolloClient = initializeApollo();
-  const { data } = await apolloClient.query({
+  const { data } = await apolloClient.query<{ university: University[] }>({
     query: gql`
       query SingleUniversity($slug: String) {
         university(slug: $slug) {
@@ -14,6 +14,13 @@ export async function fetchUniversity(slug: string) {
             id
             score
             comment
+            createdAt
+          }
+          faculties {
+            id
+          }
+          teachers {
+            id
           }
         }
       }

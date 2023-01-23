@@ -31,3 +31,11 @@ export function ratingsToLetterGrade(ratings: Rating[] | undefined) {
   const average = calculateAverage(ratings.map((rating) => rating.score));
   return numberToLetterGrade(average);
 }
+
+export function toReadableDate(date: string) {
+  return new Date(date).toLocaleDateString("tr-TR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
