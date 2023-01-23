@@ -1,4 +1,5 @@
 import { InfoCard, OverallRatingCard } from "@/components/Card";
+import TextSwitch from "@/components/TextSwitch";
 import { ratingsToLetterGrade } from "@/lib/utils";
 import React from "react";
 import { BaseProps, fetchUniversity } from "./helpers";
@@ -67,6 +68,22 @@ export default async function Layout({
             ]}
           />
         </header>
+        <div>
+          <h2 className="my-8 w-full bg-black py-8 text-center text-2xl font-bold text-white md:text-4xl">
+            <TextSwitch
+              links={[
+                {
+                  href: `/universite/${params.universitySlug}/degerlendirmeler`,
+                  label: "Değerlendirmeler",
+                },
+                {
+                  href: `/universite/${params.universitySlug}/ogretmenler`,
+                  label: "Öğretmenler",
+                },
+              ]}
+            />
+          </h2>
+        </div>
         <div>{children}</div>
       </section>
     </main>

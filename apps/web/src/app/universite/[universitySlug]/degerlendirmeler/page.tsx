@@ -6,9 +6,6 @@ export default async function Page({ params }: BaseProps) {
   const uniName = university.name as string;
   return (
     <main>
-      <h2 className="my-8 w-full bg-black py-8 text-center text-2xl font-bold text-white md:text-4xl">
-        Değerlendirmeler
-      </h2>
       <div className="space-y-4 md:flex md:gap-4">
         <div className="space-y-4 sm:w-full md:max-w-3xl">
           {university.ratings && university.ratings.length > 0 ? (
