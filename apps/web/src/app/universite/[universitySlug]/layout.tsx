@@ -13,11 +13,11 @@ export default async function Layout({
 
   return (
     <main>
-      <header>
+      <header className="container mx-auto max-w-6xl">
         <h1>{university.name}</h1>
       </header>
       <section>
-        <header className="space-y-8 md:flex md:gap-8 md:space-y-0 md:py-16">
+        <header className="container mx-auto max-w-6xl space-y-8 md:flex md:gap-8 md:space-y-0 md:py-16">
           <InfoCard
             image={{
               src: "https://picsum.photos/200",
@@ -84,7 +84,7 @@ export default async function Layout({
             />
           </h2>
         </div>
-        <div>{children}</div>
+        <div className="container mx-auto max-w-6xl">{children}</div>
       </section>
     </main>
   );
