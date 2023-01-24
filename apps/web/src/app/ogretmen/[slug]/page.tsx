@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import { InfoCard, OverallRatingCard } from "@/components/Card";
 import SingleRating from "@/components/SingleRating";
 import TextSwitch from "@/components/TextSwitch";
@@ -41,8 +42,6 @@ export default async function Home({ params }: any) {
   const teacher = await getTeacher(params.slug);
   const teacherName = teacher.name as string;
 
-  console.log(teacher);
-
   return (
     <main>
       <header className="container mx-auto max-w-6xl">
@@ -57,7 +56,12 @@ export default async function Home({ params }: any) {
             }}
             title={teacherName}
             description={`${teacherName}, ${teacher.university?.name} üniversitesinde ${teacher.faculty?.name} bölümünde eğitim veriyor.`}
-            footer={<></>}
+            footer={
+              <div className="sm:flex sm:justify-between [&>*]:block">
+                <Button variant="text">{teacherName} siz misiniz?</Button>
+                <Button variant="text">Bilgilerde bir yanlışlık mı var?</Button>
+              </div>
+            }
           />
           <OverallRatingCard
             letterGrade={ratingsToLetterGrade(teacher.ratings)}
