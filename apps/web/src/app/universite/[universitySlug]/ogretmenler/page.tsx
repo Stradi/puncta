@@ -1,10 +1,12 @@
+import { CardWithRating } from "@/components/Card";
 import { initializeApollo } from "@/lib/apollo";
 import { gql } from "@apollo/client";
-import Link from "next/link";
 
 async function fetchTeachers(slug: string) {
   const apolloClient = initializeApollo();
-  const { data } = await apolloClient.query({
+  const { data } = await apolloClient.query<{
+    university: { teachers: Teacher[] }[];
+  }>({
     query: gql`
       query Teachers($slug: String) {
         university(slug: $slug) {
@@ -12,6 +14,10 @@ async function fetchTeachers(slug: string) {
             id
             name
             slug
+            ratings {
+              id
+              score
+            }
           }
         }
       }
@@ -28,11 +34,22 @@ export default async function Home({ params }: any) {
   const teachers = await fetchTeachers(params.universitySlug);
   return (
     <div>
-      {teachers.map((teacher: any) => (
-        <Link href={`/ogretmen/${teacher.slug}`} key={teacher.id}>
-          {teacher.name}
-        </Link>
-      ))}
+      {teachers.length > 0 ? (
+        <div className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0">
+          {teachers.map((teacher) => (
+            <CardWithRating
+              key={teacher.id}
+              ratings={teacher.ratings as Rating[]}
+              title={teacher.name as string}
+              href={`/ogretmen/${teacher.slug}`}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="text-2xl font-medium">
+          Bu üniversitenin henüz hiç öğretmeni bulunmamaktadır.
+        </p>
+      )}
     </div>
   );
 }
