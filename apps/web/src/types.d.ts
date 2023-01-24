@@ -28,3 +28,13 @@ interface University extends Partial<CommonResource> {
   teachers?: Teacher[];
   ratings?: Rating[];
 }
+
+interface User extends Partial<CommonResource> {
+  firstName: string;
+  lastName: string;
+  role: string;
+  email: string;
+
+  university?: University;
+  faculty?: Faculty;
+}

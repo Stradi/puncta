@@ -2,16 +2,6 @@ import { doLogin, doRegister, getNewAccessToken, getUser } from "@/lib/auth";
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
-interface User {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  email: string;
-}
-
 export interface LoginPayload {
   email: string;
   password: string;

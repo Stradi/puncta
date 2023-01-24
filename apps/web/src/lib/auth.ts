@@ -21,6 +21,12 @@ const GET_ME_QUERY = gql`
       lastName
       role
       email
+      university {
+        slug
+      }
+      faculty {
+        slug
+      }
     }
   }
 `;
@@ -100,7 +106,9 @@ export async function doLogin(payload: LoginPayload) {
 export async function getUser(accessToken: string) {
   const apolloClient = initializeApollo();
 
-  const response = await apolloClient.query({
+  const response = await apolloClient.query<{
+    me: User;
+  }>({
     query: GET_ME_QUERY,
     context: {
       headers: {
