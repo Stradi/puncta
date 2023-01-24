@@ -109,6 +109,8 @@ export class AuthService {
       },
       include: {
         ratings: true,
+        university: true,
+        faculty: true,
       },
     });
   }

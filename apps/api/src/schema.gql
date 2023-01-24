@@ -246,6 +246,12 @@ type User {
 
   """Rating that this user has made"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
+
+  """University that this user is associated with"""
+  university: University
+
+  """Faculty that this user is associated with"""
+  faculty: Faculty
 }
 
 type Query {
