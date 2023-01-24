@@ -1,3 +1,4 @@
+import AuthCardFooter from "@/components/AuthCardFooter";
 import Button from "@/components/Button";
 import { InfoCard, OverallRatingCard } from "@/components/Card";
 import SingleRating from "@/components/SingleRating";
@@ -23,9 +24,11 @@ async function getTeacher(slug: string) {
           }
           university {
             name
+            slug
           }
           faculty {
             name
+            slug
           }
         }
       }
@@ -57,10 +60,19 @@ export default async function Home({ params }: any) {
             title={teacherName}
             description={`${teacherName}, ${teacher.university?.name} üniversitesinde ${teacher.faculty?.name} bölümünde eğitim veriyor.`}
             footer={
-              <div className="sm:flex sm:justify-between [&>*]:block">
-                <Button variant="text">{teacherName} siz misiniz?</Button>
-                <Button variant="text">Bilgilerde bir yanlışlık mı var?</Button>
-              </div>
+              <>
+                <AuthCardFooter
+                  type="teacher"
+                  universitySlug={teacher.university?.slug as string}
+                  facultySlug={teacher.faculty?.slug as string}
+                />
+                <div className="sm:flex sm:justify-between [&>*]:block">
+                  <Button variant="text">{teacherName} siz misiniz?</Button>
+                  <Button variant="text">
+                    Bilgilerde bir yanlışlık mı var?
+                  </Button>
+                </div>
+              </>
             }
           />
           <OverallRatingCard

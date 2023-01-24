@@ -1,3 +1,4 @@
+import AuthCardFooter from "@/components/AuthCardFooter";
 import { InfoCard, OverallRatingCard } from "@/components/Card";
 import TextSwitch from "@/components/TextSwitch";
 import { ratingsToLetterGrade } from "@/lib/utils";
@@ -25,7 +26,12 @@ export default async function Layout({
             }}
             title={uniName}
             description={`İçerisinde ${university.faculties?.length} bölüm olan ${uniName}'nin toplam ${university.teachers?.length} öğretim üyesi bulunmaktadır.`}
-            footer={<></>}
+            footer={
+              <AuthCardFooter
+                type="university"
+                slug={university.slug as string}
+              />
+            }
           />
           <OverallRatingCard
             letterGrade={ratingsToLetterGrade(university.ratings)}
