@@ -18,27 +18,27 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <ModalProvider>
-          <ApolloProvider client={apolloClient}>
-            <AuthProvider
-              redirects={[
-                {
-                  page: "/giris-yap",
-                  to: "/",
-                  requireAuth: false,
-                },
-                {
-                  page: "/kayit-ol",
-                  to: "/",
-                  requireAuth: false,
-                },
-              ]}
-            >
+        <ApolloProvider client={apolloClient}>
+          <AuthProvider
+            redirects={[
+              {
+                page: "/giris-yap",
+                to: "/",
+                requireAuth: false,
+              },
+              {
+                page: "/kayit-ol",
+                to: "/",
+                requireAuth: false,
+              },
+            ]}
+          >
+            <ModalProvider>
               <NavigationBar />
               {children}
-            </AuthProvider>
-          </ApolloProvider>
-        </ModalProvider>
+            </ModalProvider>
+          </AuthProvider>
+        </ApolloProvider>
       </body>
     </html>
   );
