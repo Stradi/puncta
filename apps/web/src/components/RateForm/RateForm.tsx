@@ -49,7 +49,7 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
             if (rateContext.step === 0) {
               rateContext.nextStep();
             } else if (rateContext.step === 4) {
-              console.log(rateContext.getPayload());
+              rateContext.rate();
             } else {
               formRef.current?.submitForm();
             }

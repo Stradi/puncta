@@ -1,6 +1,15 @@
 "use client";
 
+import { createRating } from "@/lib/rate";
 import { createContext, useState } from "react";
+
+export interface CreateRatingPayload {
+  rating: number;
+  comment: string;
+  criterias: Criteria[];
+
+  ratingTo: ConditionalRateTo;
+}
 
 type ConditionalRateTo =
   | {
@@ -33,7 +42,9 @@ interface RateContextProps {
   step: number;
   prevStep: () => void;
   nextStep: () => void;
-  getPayload: () => any;
+  getPayload: () => CreateRatingPayload;
+
+  rate: () => Promise<boolean>;
 
   ratingTo: ConditionalRateTo;
 }
@@ -76,7 +87,17 @@ export function RateProvider(props: RateProviderProps) {
       rating,
       comment,
       criterias,
+      ratingTo: props,
     };
+  }
+
+  async function rate() {
+    const response = await createRating(getPayload());
+    if (!response) {
+      return false;
+    }
+
+    return true;
   }
 
   return (
@@ -88,6 +109,7 @@ export function RateProvider(props: RateProviderProps) {
         setComment,
         criterias,
         addOrUpdateCriteria,
+        rate,
         step,
         prevStep,
         nextStep,
