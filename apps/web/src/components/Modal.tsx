@@ -22,7 +22,7 @@ export default function Modal({
     >
       <div
         className={cn(
-          "relative top-1/4 mx-auto max-w-lg",
+          "relative top-1/2 mx-auto max-w-lg -translate-y-1/2",
           "border-2 border-black bg-white"
         )}
         onClick={(e) => e.stopPropagation()}
