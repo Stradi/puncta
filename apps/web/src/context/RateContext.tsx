@@ -14,9 +14,17 @@ type ConditionalRateTo =
       teacher: Required<Pick<Teacher, "name" | "slug">>;
     };
 
+type Criteria = {
+  name: string;
+  score: number;
+};
+
 interface RateContextProps {
   rating: number;
   setRating: (rating: number) => void;
+
+  criterias: Criteria[];
+  addOrUpdateCriteria: (criteria: Criteria) => void;
 
   step: number;
   prevStep: () => void;
@@ -34,8 +42,20 @@ type RateProviderProps = React.PropsWithChildren & ConditionalRateTo;
 
 export function RateProvider(props: RateProviderProps) {
   const [rating, setRating] = useState(0);
+  const [criterias, setCriterias] = useState<Criteria[]>([]);
 
   const [step, setStep] = useState(0);
+
+  function addOrUpdateCriteria(criteria: Criteria) {
+    setCriterias((prev) => {
+      const index = prev.findIndex((c) => c.name === criteria.name);
+      if (index === -1) {
+        return [...prev, criteria];
+      } else {
+        return prev.map((c, i) => (i === index ? criteria : c));
+      }
+    });
+  }
 
   function prevStep() {
     setStep((prev) => prev - 1);
@@ -56,6 +76,8 @@ export function RateProvider(props: RateProviderProps) {
       value={{
         rating,
         setRating,
+        criterias,
+        addOrUpdateCriteria,
         step,
         prevStep,
         nextStep,
