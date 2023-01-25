@@ -6,7 +6,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { createRef, useContext } from "react";
 import Button from "../Button";
 import BaseRatingForm from "./forms/BaseRatingForm";
+import FinalScreen from "./forms/FinalScreen";
 import IntroScreen from "./forms/IntroScreen";
+import FirstTeacherForm from "./forms/teacher/FirstTeacherForm";
+import SecondTeacherForm from "./forms/teacher/SecondTeacherForm";
 
 export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
   const formRef = createRef<FormikProps<any>>();
@@ -23,7 +26,10 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
           exit={{ opacity: 0, height: "0px" }}
         >
           {rateContext.step === 0 && <IntroScreen />}
-          {rateContext.step === 1 && <BaseRatingForm ref={formRef} />}
+          {rateContext.step === 1 && <FirstTeacherForm ref={formRef} />}
+          {rateContext.step === 2 && <SecondTeacherForm ref={formRef} />}
+          {rateContext.step === 3 && <BaseRatingForm ref={formRef} />}
+          {rateContext.step === 4 && <FinalScreen />}
         </motion.div>
       </AnimatePresence>
       <div className="mt-8 flex justify-evenly">
@@ -49,7 +55,7 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
             }
           }}
         >
-          Devam Et
+          {rateContext.step === 4 ? "Paylaş" : "Devam Et"}
         </Button>
       </div>
     </div>
