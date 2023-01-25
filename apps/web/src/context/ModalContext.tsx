@@ -1,4 +1,5 @@
 import Modal from "@/components/Modal";
+import { AnimatePresence } from "framer-motion";
 import { createContext, useState } from "react";
 
 interface ModalContextProps {
@@ -20,7 +21,11 @@ export function ModalProvider({ children }: React.PropsWithChildren<{}>) {
   return (
     <ModalContext.Provider value={{ isOpen, setIsOpen, content, setContent }}>
       {children}
-      {isOpen && <Modal handleClose={() => setIsOpen(false)}>{content}</Modal>}
+      <AnimatePresence>
+        {isOpen && (
+          <Modal handleClose={() => setIsOpen(false)}>{content}</Modal>
+        )}
+      </AnimatePresence>
     </ModalContext.Provider>
   );
 }
