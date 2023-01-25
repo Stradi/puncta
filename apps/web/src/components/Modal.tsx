@@ -20,21 +20,15 @@ export default function Modal({
         handleClose();
       }}
     >
-      <motion.div
+      <div
         className={cn(
           "relative top-1/4 mx-auto max-w-lg",
           "border-2 border-black bg-white"
         )}
-        initial={{
-          opacity: 0,
-          height: 0,
-        }}
-        animate={{ opacity: 1, height: "auto" }}
-        exit={{ opacity: 0, height: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={cn("p-4", className)}>{children}</div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
