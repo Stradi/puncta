@@ -15,6 +15,9 @@ type ConditionalRateTo =
     };
 
 interface RateContextProps {
+  rating: number;
+  setRating: (rating: number) => void;
+
   step: number;
   prevStep: () => void;
   nextStep: () => void;
@@ -30,6 +33,8 @@ export const RateContext = createContext<RateContextProps>(
 type RateProviderProps = React.PropsWithChildren & ConditionalRateTo;
 
 export function RateProvider(props: RateProviderProps) {
+  const [rating, setRating] = useState(0);
+
   const [step, setStep] = useState(0);
 
   function prevStep() {
@@ -41,12 +46,16 @@ export function RateProvider(props: RateProviderProps) {
   }
 
   function getPayload() {
-    return {};
+    return {
+      rating,
+    };
   }
 
   return (
     <RateContext.Provider
       value={{
+        rating,
+        setRating,
         step,
         prevStep,
         nextStep,
