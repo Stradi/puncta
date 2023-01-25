@@ -12,8 +12,6 @@ export default function AuthCardFooter() {
   const authContext = useContext(AuthContext);
   const modalContext = useContext(ModalContext);
 
-  console.log(rateContext);
-
   if (!authContext.isAuthenticated) {
     return <></>;
   }
