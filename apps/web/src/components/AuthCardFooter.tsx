@@ -2,24 +2,18 @@
 
 import Button from "@/components/Button";
 import { AuthContext } from "@/context/AuthContext";
+import { ModalContext } from "@/context/ModalContext";
+import { RateContext, RateProvider } from "@/context/RateContext";
 import { useContext } from "react";
+import RateForm from "./RateForm";
 
-type ConditionalProps =
-  | {
-      type: "university";
-      slug: string;
-    }
-  | {
-      type: "teacher";
-      universitySlug: string;
-      facultySlug: string;
-    };
-
-type AuthCardFooterProps = ConditionalProps;
-
-export default function AuthCardFooter(props: AuthCardFooterProps) {
+export default function AuthCardFooter() {
+  const rateContext = useContext(RateContext);
   const authContext = useContext(AuthContext);
-  console.log(props, authContext.user);
+  const modalContext = useContext(ModalContext);
+
+  console.log(rateContext);
+
   if (!authContext.isAuthenticated) {
     return <></>;
   }
@@ -30,8 +24,8 @@ export default function AuthCardFooter(props: AuthCardFooterProps) {
   // is in the same university as the university we are
   // rating.
   if (
-    props.type === "university" &&
-    authContext.user?.university?.slug === props.slug
+    rateContext.ratingTo.type === "university" &&
+    authContext.user?.university?.slug === rateContext.ratingTo.university.slug
   ) {
     canRate = true;
   }
@@ -40,9 +34,10 @@ export default function AuthCardFooter(props: AuthCardFooterProps) {
   // same university and faculty as the teacher we are
   // rating.
   if (
-    props.type === "teacher" &&
-    authContext.user?.university?.slug === props.universitySlug &&
-    authContext.user?.faculty?.slug === props.facultySlug
+    rateContext.ratingTo.type === "teacher" &&
+    authContext.user?.university?.slug ===
+      rateContext.ratingTo.university.slug &&
+    authContext.user?.faculty?.slug === rateContext.ratingTo.faculty.slug
   ) {
     canRate = true;
   }
@@ -53,20 +48,35 @@ export default function AuthCardFooter(props: AuthCardFooterProps) {
 
   return (
     <div className="space-y-2 p-4 font-medium">
-      {props.type === "university" && (
+      {rateContext.ratingTo.type === "university" && (
         <p>
           Görünüşe göre bu üniversiteyi okuyorsunuz. Bu üniversite hakkında ne
           düşünüyorsunuz?
         </p>
       )}
-      {props.type === "teacher" && (
+      {rateContext.ratingTo.type === "teacher" && (
         <p>
           Görünüşe göre bu öğretmen senin öğretmenin. Bu öğretmen hakkında ne
           düşünüyorsunuz?
         </p>
       )}
 
-      <Button fullWidth>Değerlendir</Button>
+      <Button
+        fullWidth
+        onClick={() => {
+          modalContext.setContent(
+            // Since we don't need to preserve the state of RateContext in
+            // in RateForm, we can pass another RateContext to RateForm.
+            // Think this is as Context Drilling (new term created by me).
+            <RateProvider {...rateContext.ratingTo}>
+              <RateForm />
+            </RateProvider>
+          );
+          modalContext.setIsOpen(true);
+        }}
+      >
+        Değerlendir
+      </Button>
     </div>
   );
 }

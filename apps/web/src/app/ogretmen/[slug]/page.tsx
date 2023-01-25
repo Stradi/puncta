@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import { InfoCard, OverallRatingCard } from "@/components/Card";
 import SingleRating from "@/components/SingleRating";
 import TextSwitch from "@/components/TextSwitch";
+import { RateProvider } from "@/context/RateContext";
 import { initializeApollo } from "@/lib/apollo";
 import { ratingsToLetterGrade } from "@/lib/utils";
 import { gql } from "@apollo/client";
@@ -61,11 +62,20 @@ export default async function Home({ params }: any) {
             description={`${teacherName}, ${teacher.university?.name} üniversitesinde ${teacher.faculty?.name} bölümünde eğitim veriyor.`}
             footer={
               <>
-                <AuthCardFooter
+                <RateProvider
                   type="teacher"
-                  universitySlug={teacher.university?.slug as string}
-                  facultySlug={teacher.faculty?.slug as string}
-                />
+                  university={
+                    teacher.university as Required<
+                      Pick<University, "name" | "slug">
+                    >
+                  }
+                  faculty={
+                    teacher.faculty as Required<Pick<Faculty, "name" | "slug">>
+                  }
+                  teacher={teacher as Required<Pick<Teacher, "name" | "slug">>}
+                >
+                  <AuthCardFooter />
+                </RateProvider>
                 <div className="sm:flex sm:justify-between [&>*]:block">
                   <Button variant="text">{teacherName} siz misiniz?</Button>
                   <Button variant="text">

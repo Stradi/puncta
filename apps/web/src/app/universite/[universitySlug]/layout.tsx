@@ -1,6 +1,7 @@
 import AuthCardFooter from "@/components/AuthCardFooter";
 import { InfoCard, OverallRatingCard } from "@/components/Card";
 import TextSwitch from "@/components/TextSwitch";
+import { RateProvider } from "@/context/RateContext";
 import { ratingsToLetterGrade } from "@/lib/utils";
 import React from "react";
 import { BaseProps, fetchUniversity } from "./helpers";
@@ -27,10 +28,14 @@ export default async function Layout({
             title={uniName}
             description={`İçerisinde ${university.faculties?.length} bölüm olan ${uniName}'nin toplam ${university.teachers?.length} öğretim üyesi bulunmaktadır.`}
             footer={
-              <AuthCardFooter
+              <RateProvider
                 type="university"
-                slug={university.slug as string}
-              />
+                university={
+                  university as Required<Pick<University, "name" | "slug">>
+                }
+              >
+                <AuthCardFooter />
+              </RateProvider>
             }
           />
           <OverallRatingCard
