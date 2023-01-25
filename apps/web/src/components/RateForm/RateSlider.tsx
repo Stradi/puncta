@@ -1,9 +1,9 @@
 import { useField } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import RateInputStyles from "./RateInput.module.css";
+import RateSliderStyles from "./RateSlider.module.css";
 
-interface RateInputProps extends React.ComponentPropsWithoutRef<"input"> {
+interface RateSliderProps extends React.ComponentPropsWithoutRef<"input"> {
   name: string;
   label: string;
 
@@ -12,12 +12,12 @@ interface RateInputProps extends React.ComponentPropsWithoutRef<"input"> {
   };
 }
 
-export default function RateInput({
+export default function RateSlider({
   name,
   label,
   valueToText,
   ...props
-}: RateInputProps) {
+}: RateSliderProps) {
   const [field, meta, helpers] = useField({ name });
   const [isDragging, setIsDragging] = useState(false);
   const [valueText, setValueText] = useState("");
@@ -60,7 +60,7 @@ export default function RateInput({
         {...field}
         {...props}
         type="range"
-        className={RateInputStyles.input}
+        className={RateSliderStyles.input}
         onMouseDown={() => setIsDragging(true)}
         onMouseUp={() => setIsDragging(false)}
       />
