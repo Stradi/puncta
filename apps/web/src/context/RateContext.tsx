@@ -16,12 +16,16 @@ type ConditionalRateTo =
 
 type Criteria = {
   name: string;
+  localizedName: string;
   score: number;
 };
 
 interface RateContextProps {
   rating: number;
   setRating: (rating: number) => void;
+
+  comment: string;
+  setComment: (comment: string) => void;
 
   criterias: Criteria[];
   addOrUpdateCriteria: (criteria: Criteria) => void;
@@ -42,6 +46,8 @@ type RateProviderProps = React.PropsWithChildren & ConditionalRateTo;
 
 export function RateProvider(props: RateProviderProps) {
   const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
   const [criterias, setCriterias] = useState<Criteria[]>([]);
 
   const [step, setStep] = useState(0);
@@ -68,6 +74,8 @@ export function RateProvider(props: RateProviderProps) {
   function getPayload() {
     return {
       rating,
+      comment,
+      criterias,
     };
   }
 
@@ -76,6 +84,8 @@ export function RateProvider(props: RateProviderProps) {
       value={{
         rating,
         setRating,
+        comment,
+        setComment,
         criterias,
         addOrUpdateCriteria,
         step,
