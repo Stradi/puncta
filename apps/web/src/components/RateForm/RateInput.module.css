@@ -1,0 +1,12 @@
+.input {
+  @apply appearance-none h-5;
+}
+
+.input::-webkit-slider-thumb {
+  @apply appearance-none bg-primary-normal -my-0.5 ring-2 ring-black h-6 w-6 rounded-full;
+  @apply transition duration-100 hover:scale-125 active:scale-110;
+}
+
+.input::-webkit-slider-runnable-track {
+  @apply appearance-none ring-2 ring-black rounded-full;
+}
