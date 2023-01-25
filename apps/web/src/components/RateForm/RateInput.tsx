@@ -2,10 +2,12 @@ import { cn } from "@/lib/utils";
 import { useField } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { InfoIcon } from "../Icons";
 
 interface RateInputProps {
   name: string;
   label: string;
+  info?: string;
 
   steps: {
     value: number;
@@ -13,9 +15,15 @@ interface RateInputProps {
   }[];
 }
 
-export default function RateInput({ name, label, steps }: RateInputProps) {
+export default function RateInput({
+  name,
+  label,
+  info,
+  steps,
+}: RateInputProps) {
   const [field, meta, helpers] = useField({ name });
   const [hoveringOn, setIsHoveringOn] = useState(-1);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   const stepToColors: Record<number, string> = {
     1: "bg-red-500",
@@ -34,11 +42,32 @@ export default function RateInput({ name, label, steps }: RateInputProps) {
   };
 
   return (
-    <div className="flex flex-row justify-between gap-2">
-      <label htmlFor={name} className="font-medium text-neutral-700">
-        {label}
-      </label>
-      <div className="flex [&>*:first-child]:rounded-l-full [&>*:last-child]:rounded-r-full">
+    <div className="flex flex-row justify-between">
+      <div className="flex items-center gap-2">
+        {info && (
+          <InfoIcon
+            size="md"
+            onClick={() => {
+              setIsInfoOpen((prev) => !prev);
+            }}
+          />
+        )}
+        <label htmlFor={name} className="font-medium text-neutral-700">
+          {label}
+        </label>
+      </div>
+      <AnimatePresence>
+        {isInfoOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+          >
+            <span className="text-sm">{info}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <div className="mt-4 flex [&>*:first-child]:rounded-l-full [&>*:last-child]:rounded-r-full">
         {steps.map((step) => (
           <div
             key={step.value}
