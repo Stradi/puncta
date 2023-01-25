@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { useField } from "formik";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
 interface RateInputProps {
@@ -82,6 +83,27 @@ export default function RateInput({ name, label, steps }: RateInputProps) {
           </div>
         ))}
       </div>
+      <AnimatePresence>
+        {meta.error && meta.touched && (
+          <motion.div
+            className={cn("text-sm font-medium text-red-600")}
+            initial={{
+              height: 0,
+              opacity: 0,
+            }}
+            animate={{
+              height: "auto",
+              opacity: 1,
+            }}
+            exit={{
+              height: 0,
+              opacity: 0,
+            }}
+          >
+            {meta.error}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

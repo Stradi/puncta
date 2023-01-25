@@ -7,11 +7,7 @@ import * as yup from "yup";
 import RateInput from "../RateInput";
 
 const BaseRatingFormValidationSchema = yup.object().shape({
-  rating: yup
-    .number()
-    .min(0, "Genel değerlendirme puanı 0'dan küçük olamaz")
-    .max(5, "Genel değerlendirme puanı 5'den büyük olamaz")
-    .required("Genel değerlendirme puanı boş bırakılamaz"),
+  rating: yup.number().min(1, "Genel değerlendirme puanı boş bırakılamaz"),
 });
 
 interface BaseRatingFormValues {
