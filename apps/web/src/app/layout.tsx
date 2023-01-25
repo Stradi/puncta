@@ -2,6 +2,7 @@
 
 import NavigationBar from "@/components/NavigationBar";
 import { AuthProvider } from "@/context/AuthContext";
+import { ModalProvider } from "@/context/ModalContext";
 import { useApollo } from "@/lib/apollo";
 import { ApolloProvider } from "@apollo/client";
 import "./globals.css";
@@ -17,25 +18,27 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <ApolloProvider client={apolloClient}>
-          <AuthProvider
-            redirects={[
-              {
-                page: "/giris-yap",
-                to: "/",
-                requireAuth: false,
-              },
-              {
-                page: "/kayit-ol",
-                to: "/",
-                requireAuth: false,
-              },
-            ]}
-          >
-            <NavigationBar />
-            {children}
-          </AuthProvider>
-        </ApolloProvider>
+        <ModalProvider>
+          <ApolloProvider client={apolloClient}>
+            <AuthProvider
+              redirects={[
+                {
+                  page: "/giris-yap",
+                  to: "/",
+                  requireAuth: false,
+                },
+                {
+                  page: "/kayit-ol",
+                  to: "/",
+                  requireAuth: false,
+                },
+              ]}
+            >
+              <NavigationBar />
+              {children}
+            </AuthProvider>
+          </ApolloProvider>
+        </ModalProvider>
       </body>
     </html>
   );
