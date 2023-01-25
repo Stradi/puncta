@@ -1,3 +1,4 @@
+import TextareaInput from "@/components/TextareaInput";
 import { RateContext } from "@/context/RateContext";
 import { cn } from "@/lib/utils";
 import { FormikProps, FormikProvider, useFormik } from "formik";
@@ -8,10 +9,16 @@ import RateInput from "../RateInput";
 
 const BaseRatingFormValidationSchema = yup.object().shape({
   rating: yup.number().min(1, "Genel değerlendirme puanı boş bırakılamaz"),
+  comment: yup
+    .string()
+    .max(200, "Yorum 200 karakterden uzun olamaz")
+    .min(10, "Yorum 10 karakterden kısa olamaz")
+    .required("Yorum boş bırakılamaz"),
 });
 
 interface BaseRatingFormValues {
   rating: number;
+  comment: string;
 }
 
 // This component will be used for both rating teacher and university
@@ -22,11 +29,12 @@ const BaseRatingForm = forwardRef<FormikProps<BaseRatingFormValues>>(
     const formik = useFormik<BaseRatingFormValues>({
       initialValues: {
         rating: rateContext.rating,
+        comment: rateContext.comment,
       },
       validationSchema: BaseRatingFormValidationSchema,
       onSubmit: (values) => {
-        console.log(values.rating);
         rateContext.setRating(values.rating);
+        rateContext.setComment(values.comment);
         rateContext.nextStep();
       },
       innerRef: ref,
@@ -44,7 +52,7 @@ const BaseRatingForm = forwardRef<FormikProps<BaseRatingFormValues>>(
         >
           <div>
             <p className="text-lg">
-              Değerlendirmeni 5 puan üzerinden yapacak olsan kaç verirsin?
+              Son olarak, senden genel olarak bir puan ve yorumunu istiyoruz.
             </p>
           </div>
           <RateInput
@@ -73,6 +81,7 @@ const BaseRatingForm = forwardRef<FormikProps<BaseRatingFormValues>>(
               },
             ]}
           />
+          <TextareaInput name="comment" label="Yorum" rows={6} />
         </form>
       </FormikProvider>
     );
