@@ -27,6 +27,17 @@ const GET_ME_QUERY = gql`
       faculty {
         slug
       }
+      ratings {
+        score
+        comment
+        meta
+        university {
+          slug
+        }
+        teacher {
+          slug
+        }
+      }
     }
   }
 `;
