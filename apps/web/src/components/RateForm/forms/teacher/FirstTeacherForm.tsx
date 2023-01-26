@@ -9,8 +9,7 @@ import * as yup from "yup";
 const FirstTeacherFormValidationSchema = yup.object().shape({
   knowledge: yup.number().min(1, "Bilgi düzeyi kısmı boş bırakılamaz"),
   communication: yup.number().min(1, "İletişim kısmı boş bırakılamaz"),
-  material: yup.number().min(1, "Materyal kısmı boş bırakılamaz"),
-  declamation: yup.number().min(1, "Hitabet kısmı boş bırakılamaz"),
+  fairness: yup.number().min(1, "Adillik kısmı boş bırakılamaz"),
 });
 
 interface FirstTeacherFormValues {
