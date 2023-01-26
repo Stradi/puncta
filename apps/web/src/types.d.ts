@@ -41,3 +41,9 @@ interface User extends Partial<CommonResource> {
   faculty?: Faculty;
   ratings?: Rating[];
 }
+
+interface RateCriteria {
+  name: string;
+  localizedName: string;
+  score: number;
+}

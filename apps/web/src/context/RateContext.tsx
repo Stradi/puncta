@@ -6,7 +6,7 @@ import { createContext, useState } from "react";
 export interface CreateRatingPayload {
   rating: number;
   comment: string;
-  criterias: Criteria[];
+  criterias: RateCriteria[];
 
   ratingTo: ConditionalRateTo;
 }
@@ -23,12 +23,6 @@ type ConditionalRateTo =
       teacher: Required<Pick<Teacher, "name" | "slug">>;
     };
 
-type Criteria = {
-  name: string;
-  localizedName: string;
-  score: number;
-};
-
 interface RateContextProps {
   rating: number;
   setRating: (rating: number) => void;
@@ -36,8 +30,8 @@ interface RateContextProps {
   comment: string;
   setComment: (comment: string) => void;
 
-  criterias: Criteria[];
-  addOrUpdateCriteria: (criteria: Criteria) => void;
+  criterias: RateCriteria[];
+  addOrUpdateCriteria: (criteria: RateCriteria) => void;
 
   step: number;
   prevStep: () => void;
@@ -59,11 +53,11 @@ export function RateProvider(props: RateProviderProps) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
-  const [criterias, setCriterias] = useState<Criteria[]>([]);
+  const [criterias, setCriterias] = useState<RateCriteria[]>([]);
 
   const [step, setStep] = useState(0);
 
-  function addOrUpdateCriteria(criteria: Criteria) {
+  function addOrUpdateCriteria(criteria: RateCriteria) {
     setCriterias((prev) => {
       const index = prev.findIndex((c) => c.name === criteria.name);
       if (index === -1) {
