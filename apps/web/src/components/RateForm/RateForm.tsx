@@ -10,6 +10,8 @@ import FinalScreen from "./forms/FinalScreen";
 import IntroScreen from "./forms/IntroScreen";
 import FirstTeacherForm from "./forms/teacher/FirstTeacherForm";
 import SecondTeacherForm from "./forms/teacher/SecondTeacherForm";
+import FirstUniversityForm from "./forms/university/FirstUniversityForm";
+import SecondUniversityForm from "./forms/university/SecondUniversityForm";
 
 export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
   const formRef = createRef<FormikProps<any>>();
@@ -26,8 +28,18 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
           exit={{ opacity: 0, height: "0px" }}
         >
           {rateContext.step === 0 && <IntroScreen />}
-          {rateContext.step === 1 && <FirstTeacherForm ref={formRef} />}
-          {rateContext.step === 2 && <SecondTeacherForm ref={formRef} />}
+          {rateContext.step === 1 &&
+            (rateContext.ratingTo.type === "teacher" ? (
+              <FirstTeacherForm ref={formRef} />
+            ) : (
+              <FirstUniversityForm ref={formRef} />
+            ))}
+          {rateContext.step === 2 &&
+            (rateContext.ratingTo.type === "teacher" ? (
+              <SecondTeacherForm ref={formRef} />
+            ) : (
+              <SecondUniversityForm ref={formRef} />
+            ))}
           {rateContext.step === 3 && <BaseRatingForm ref={formRef} />}
           {rateContext.step === 4 && <FinalScreen />}
         </motion.div>
