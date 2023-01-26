@@ -53,3 +53,36 @@ export function joinReactChildren(
     return [prev, keyedSeperator, curr];
   });
 }
+
+export function ratingMetaToScoresArray(ratings: Rating[], max: number) {
+  // rating.meta returns a RateCriteria object that has name and score properties
+  // We should sum up the scores of each category and return an array of {
+  //  category: string;
+  //  value: number;
+  //  max: number;
+  //  info: string;
+  // }
+
+  const criterias = ratings.map((rating) => JSON.parse(rating.meta)) as [
+    RateCriteria[]
+  ];
+
+  const criteriaNames = Array.from(
+    new Set(
+      criterias.flatMap((criteria) => criteria.map((c) => c.localizedName))
+    )
+  );
+
+  return criteriaNames.map((name) => {
+    const scores = criterias.flatMap((criteria) =>
+      criteria.filter((c) => c.localizedName === name).map((c) => c.score)
+    );
+
+    return {
+      category: name,
+      value: calculateAverage(scores),
+      max,
+      info: `${name} kriteri için ${ratings.length} değerlendirme yapılmıştır.`,
+    };
+  });
+}

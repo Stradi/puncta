@@ -5,7 +5,7 @@ import SingleRating from "@/components/SingleRating";
 import TextSwitch from "@/components/TextSwitch";
 import { RateProvider } from "@/context/RateContext";
 import { initializeApollo } from "@/lib/apollo";
-import { ratingsToLetterGrade } from "@/lib/utils";
+import { ratingMetaToScoresArray, ratingsToLetterGrade } from "@/lib/utils";
 import { gql } from "@apollo/client";
 
 async function getTeacher(slug: string) {
@@ -19,6 +19,7 @@ async function getTeacher(slug: string) {
           slug
           ratings {
             id
+            meta
             score
             comment
             createdAt
@@ -92,38 +93,7 @@ export default async function Home({ params }: any) {
             } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
               teacher.ratings
             )} olarak hesaplanmıştır.`}
-            scores={[
-              {
-                category: "Eğitim",
-                info: "Kurumun genel öğretim kadrosu ve verilen eğitim kalitesi",
-                max: 100,
-                value: 65,
-              },
-              {
-                category: "Prestij",
-                info: "Kurumun genel itibarını, bilinirliğini, tanınırlığını ve referans anlamındaki değerini",
-                max: 100,
-                value: 100,
-              },
-              {
-                category: "İmkanlar",
-                info: "Öğrenciye sağlanan ayrıcalıklar, indirimler, yardımlar veya staj potansiyelleri",
-                max: 100,
-                value: 77,
-              },
-              {
-                category: "Altyapı",
-                info: "Kurumun ısınma, havalandırma, yaz ve kız şartlarına uygun olarak aldığı aksiyonları, internet ve teknolojiye uygunluğu",
-                max: 100,
-                value: 24,
-              },
-              {
-                category: "Güvenlik",
-                info: "Kurumun genel güvenliği, güvenlik ekibi ve güvenlik protokolleri",
-                max: 100,
-                value: 10,
-              },
-            ]}
+            scores={ratingMetaToScoresArray(teacher.ratings as Rating[], 5)}
           />
         </header>
         <div>

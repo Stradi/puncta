@@ -97,7 +97,7 @@ export function OverallRatingCard({
               size="small"
             />
             <p className="align-right w-40 text-right font-mono text-lg font-semibold">
-              {score.value} / {score.max}
+              {score.value.toFixed(2)} / {score.max}
             </p>
           </div>
         ))}

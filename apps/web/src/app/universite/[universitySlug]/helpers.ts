@@ -12,6 +12,7 @@ export async function fetchUniversity(slug: string) {
           slug
           ratings {
             id
+            meta
             score
             comment
             createdAt

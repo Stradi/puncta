@@ -2,7 +2,7 @@ import AuthCardFooter from "@/components/AuthCardFooter";
 import { InfoCard, OverallRatingCard } from "@/components/Card";
 import TextSwitch from "@/components/TextSwitch";
 import { RateProvider } from "@/context/RateContext";
-import { ratingsToLetterGrade } from "@/lib/utils";
+import { ratingMetaToScoresArray, ratingsToLetterGrade } from "@/lib/utils";
 import React from "react";
 import { BaseProps, fetchUniversity } from "./helpers";
 
@@ -45,38 +45,7 @@ export default async function Layout({
             } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
               university.ratings
             )} olarak hesaplanmıştır.`}
-            scores={[
-              {
-                category: "Eğitim",
-                info: "Kurumun genel öğretim kadrosu ve verilen eğitim kalitesi",
-                max: 100,
-                value: 65,
-              },
-              {
-                category: "Prestij",
-                info: "Kurumun genel itibarını, bilinirliğini, tanınırlığını ve referans anlamındaki değerini",
-                max: 100,
-                value: 100,
-              },
-              {
-                category: "İmkanlar",
-                info: "Öğrenciye sağlanan ayrıcalıklar, indirimler, yardımlar veya staj potansiyelleri",
-                max: 100,
-                value: 77,
-              },
-              {
-                category: "Altyapı",
-                info: "Kurumun ısınma, havalandırma, yaz ve kız şartlarına uygun olarak aldığı aksiyonları, internet ve teknolojiye uygunluğu",
-                max: 100,
-                value: 24,
-              },
-              {
-                category: "Güvenlik",
-                info: "Kurumun genel güvenliği, güvenlik ekibi ve güvenlik protokolleri",
-                max: 100,
-                value: 10,
-              },
-            ]}
+            scores={ratingMetaToScoresArray(university.ratings as Rating[], 5)}
           />
         </header>
         <div>
