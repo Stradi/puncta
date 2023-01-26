@@ -109,5 +109,7 @@ export default function AuthCardFooter() {
         )}
       </div>
     );
+  } else {
+    return <></>;
   }
 }
