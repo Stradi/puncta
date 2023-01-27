@@ -75,7 +75,7 @@ export async function createRating(payload: CreateRatingPayload) {
     return null;
   }
 
-  if (!response.data || !response.data.signup) {
+  if (!response.data || !response.data.createRating) {
     return null;
   }
 
