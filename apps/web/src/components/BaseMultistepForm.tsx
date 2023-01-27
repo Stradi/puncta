@@ -6,6 +6,7 @@ import {
   useEffect,
   useImperativeHandle,
 } from "react";
+import Button from "./Button";
 
 interface BaseMultistepFormProps<T>
   extends React.ComponentPropsWithoutRef<"form"> {
@@ -53,16 +54,17 @@ function BaseMultistepForm<T extends Record<string, any>>(
 
   return (
     <FormikProvider value={formik}>
-      <form
-        {...props}
-        className={cn(
-          "flex flex-col space-y-8",
-          "[&>*]:flex [&>*]:flex-col",
-          className
-        )}
-        onSubmit={formik.handleSubmit}
-      >
-        {children}
+      <form {...props} className={className} onSubmit={formik.handleSubmit}>
+        <Button
+          type="submit"
+          variant="plain"
+          className="m-0 hidden h-0 w-0 border-0 p-0"
+        />
+        <div
+          className={cn("flex flex-col space-y-8", "[&>*]:flex [&>*]:flex-col")}
+        >
+          {children}
+        </div>
       </form>
     </FormikProvider>
   );
