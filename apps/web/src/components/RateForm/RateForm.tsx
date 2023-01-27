@@ -1,8 +1,10 @@
 "use client";
 
+import { ModalContext } from "@/context/ModalContext";
 import { RateContext } from "@/context/RateContext";
 import { FormikProps } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { createRef, useContext } from "react";
 import Button from "../Button";
 import BaseRatingForm from "./forms/BaseRatingForm";
@@ -16,6 +18,9 @@ import SecondUniversityForm from "./forms/university/SecondUniversityForm";
 export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
   const formRef = createRef<FormikProps<any>>();
   const rateContext = useContext(RateContext);
+  const modalContext = useContext(ModalContext);
+
+  const router = useRouter();
 
   return (
     <div className="py-8 px-2">
@@ -61,7 +66,15 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
             if (rateContext.step === 0) {
               rateContext.nextStep();
             } else if (rateContext.step === 4) {
-              rateContext.rate();
+              rateContext.rate().then((isDone) => {
+                if (isDone) {
+                  modalContext.setIsOpen(false);
+                  router.refresh();
+                } /* else {
+                  Something happened :(
+                }
+                */
+              });
             } else {
               formRef.current?.submitForm();
             }
