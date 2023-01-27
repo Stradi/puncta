@@ -58,7 +58,10 @@ export default forwardRef<FormikProps<any>>(function UniversityForm(
       }}
       validationSchema={UniversityValidationSchema}
       onSubmit={async (values) => {
-        console.log(values);
+        signUpContext.setUniversity(values.university);
+        signUpContext.setFaculty(values.faculty);
+
+        signUpContext.nextStep();
       }}
       onValuesChange={(values) => {
         setCurrentValues(values);
