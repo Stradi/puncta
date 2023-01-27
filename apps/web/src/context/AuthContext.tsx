@@ -25,7 +25,7 @@ interface AuthContextProps {
   login: (payload: LoginPayload) => Promise<boolean>;
   logout: () => Promise<void>;
   register: (payload: RegisterPayload) => Promise<boolean>;
-  refetchUser: () => Promise<boolean>;
+  refetchUser: (token: string) => Promise<boolean>;
   addRatingToUser: (rating: Rating) => void;
 }
 
@@ -153,7 +153,7 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
     localStorage.setItem("accessToken", response.accessToken);
     localStorage.setItem("refreshToken", response.refreshToken);
 
-    const user = await refetchUser();
+    const user = await refetchUser(response.accessToken);
     if (!user) {
       return false;
     }
@@ -179,7 +179,7 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
     localStorage.setItem("accessToken", response.accessToken);
     localStorage.setItem("refreshToken", response.refreshToken);
 
-    const user = await refetchUser();
+    const user = await refetchUser(response.accessToken);
     if (!user) {
       return false;
     }
@@ -187,8 +187,8 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
     return true;
   };
 
-  const refetchUser = async () => {
-    const user = await getUser(accessToken as string);
+  const refetchUser = async (token: string) => {
+    const user = await getUser(token);
     if (!user) {
       setUser(null);
       setIsAuthenticated(false);
