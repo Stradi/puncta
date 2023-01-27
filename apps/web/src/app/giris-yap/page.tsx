@@ -1,13 +1,13 @@
 "use client";
 
-import { AuthContext } from "@/context/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
+import BaseMultistepForm from "@/components/BaseMultistepForm";
 import Button from "@/components/Button";
 import { Card } from "@/components/Card";
 import TextInput from "@/components/TextInput";
-import { cn } from "@/lib/utils";
-import { FormikProvider, useFormik } from "formik";
+import { AuthContext } from "@/context/AuthContext";
+import { FormikProps } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
@@ -21,36 +21,11 @@ const LoginValidationSchema = Yup.object().shape({
     .required("Şifre boş bırakılamaz."),
 });
 
-//TODO: We should redirect the user to the profile page after
-// successfull login. Lines: 25,59
-export default function Page() {
-  type FormValues = {
-    email: string;
-    password: string;
-  };
-
+export default function LoginForm(props: FormikProps<any>) {
   const authContext = useContext(AuthContext);
   const router = useRouter();
 
-  const formik = useFormik<FormValues>({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: async (values) => {
-      const response = await authContext.login({
-        email: values.email,
-        password: values.password,
-      });
-      if (response) {
-        router.push("/");
-      } else {
-        formik.errors.email = "Email hatalı.";
-        formik.errors.password = "Şifre hatalı.";
-      }
-    },
-    validationSchema: LoginValidationSchema,
-  });
+  const [formik, setFormik] = useState<any>({});
 
   return (
     <Card className="mx-auto mt-16 max-w-lg py-16 px-8">
@@ -61,36 +36,49 @@ export default function Page() {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: "0px" }}
         >
-          <FormikProvider value={formik}>
-            <form
-              onSubmit={formik.handleSubmit}
-              className={cn(
-                "flex flex-col space-y-4",
-                "[&>*]:flex [&>*]:flex-col"
-              )}
-            >
-              <TextInput name="email" label="E-posta" />
-              <TextInput name="password" label="Şifre" type="password" />
-              <div className="mt-8 flex justify-evenly gap-2">
-                <Button variant="primary" fullWidth>
-                  Giriş Yap
-                </Button>
-                <Button variant="text">Şifreni mi unuttun?</Button>
-              </div>
-              <div className="h-px w-full bg-black"></div>
-              <div className="flex w-full items-center justify-center">
-                <span className="font-medium">Hesabın yok mu?</span>
-                <Button
-                  variant="text"
-                  asLink
-                  href="/kayit-ol"
-                  className="p-2 py-0"
-                >
-                  Kayıt ol
-                </Button>
-              </div>
-            </form>
-          </FormikProvider>
+          <BaseMultistepForm
+            initialValues={{
+              email: "",
+              password: "",
+            }}
+            validationSchema={LoginValidationSchema}
+            onSubmit={async (values) => {
+              const response = await authContext.login({
+                email: values.email,
+                password: values.password,
+              });
+              if (response) {
+                router.push("/");
+              } else {
+                formik.setErrors({
+                  email: "Email hatalı.",
+                  password: "Şifre hatalı.",
+                });
+              }
+            }}
+            getFormik={(formik) => setFormik(formik)}
+          >
+            <TextInput name="email" label="E-posta" />
+            <TextInput name="password" label="Şifre" type="password" />
+            <div className="mt-8 flex justify-evenly gap-2">
+              <Button variant="primary" fullWidth type="submit">
+                Giriş Yap
+              </Button>
+              <Button variant="text">Şifreni mi unuttun?</Button>
+            </div>
+            <div className="h-px w-full bg-black"></div>
+            <div className="flex w-full items-center justify-center">
+              <span className="font-medium">Hesabın yok mu?</span>
+              <Button
+                variant="text"
+                asLink
+                href="/kayit-ol"
+                className="p-2 py-0"
+              >
+                Kayıt ol
+              </Button>
+            </div>
+          </BaseMultistepForm>
         </motion.div>
       </AnimatePresence>
     </Card>

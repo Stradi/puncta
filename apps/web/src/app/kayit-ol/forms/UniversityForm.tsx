@@ -1,8 +1,8 @@
+import BaseMultistepForm from "@/components/BaseMultistepForm";
 import SearchInput from "@/components/SearchInput";
 import { SignUpContext } from "@/context/SignUpContext";
-import { cn } from "@/lib/utils";
-import { FormikProps, FormikProvider, useFormik } from "formik";
-import { forwardRef, useContext, useImperativeHandle } from "react";
+import { FormikProps } from "formik";
+import { forwardRef, useContext, useState } from "react";
 
 import * as Yup from "yup";
 import faculties from "../data/faculties.json";
@@ -42,76 +42,56 @@ const UniversityValidationSchema = Yup.object().shape({
   faculty: FacultyFieldSchema,
 });
 
-type UniversityFormValues = {
-  university: string;
-  faculty: string;
-  test: string;
-};
+export default forwardRef<FormikProps<any>>(function UniversityForm(
+  props,
+  ref
+) {
+  const signUpContext = useContext(SignUpContext);
+  const [currentValues, setCurrentValues] = useState<any>({});
 
-const UniversityForm = forwardRef<FormikProps<UniversityFormValues>>(
-  (props, ref) => {
-    const signUpContext = useContext(SignUpContext);
-
-    const formik = useFormik<UniversityFormValues>({
-      initialValues: {
+  return (
+    <BaseMultistepForm
+      ref={ref}
+      initialValues={{
         university: signUpContext.university,
         faculty: signUpContext.faculty,
-        test: "",
-      },
-      onSubmit: async (values) => {
-        signUpContext.setUniversity(values.university);
-        signUpContext.setFaculty(values.faculty);
-
-        signUpContext.nextStep();
-      },
-      validationSchema: UniversityValidationSchema,
-      innerRef: ref,
-    });
-
-    useImperativeHandle(ref, () => ({
-      ...formik,
-    }));
-
-    return (
-      <FormikProvider value={formik}>
-        <form
-          onSubmit={formik.handleSubmit}
-          className={cn("flex flex-col space-y-8", "[&>*]:flex [&>*]:flex-col")}
-        >
-          <div>
-            <h2 className="text-xl font-medium">Üniversite ve Bölüm</h2>
-            <p className="text-sm">
-              Sadece kendi üniversitendeki öğretmenleri puanlaman için
-              üniversiteni ve bölümünü girmelisin.
-            </p>
-          </div>
-          <SearchInput
-            name="university"
-            label="Üniversite"
-            items={universities.map((u) => u.name)}
-          />
-          <SearchInput
-            name="faculty"
-            label="Bölüm"
-            items={(function () {
-              const selectedUniversity = universities.find(
-                (university) => university.name === formik.values.university
-              );
-
-              if (!selectedUniversity) {
-                return [];
-              }
-
-              return selectedUniversity.faculties.map(
-                (faculty) => faculties[faculty]
-              );
-            })()}
-          />
-        </form>
-      </FormikProvider>
-    );
-  }
-);
-
-UniversityForm.displayName = "UniversityForm";
-export default UniversityForm;
+      }}
+      validationSchema={UniversityValidationSchema}
+      onSubmit={async (values) => {
+        console.log(values);
+      }}
+      onValuesChange={(values) => {
+        setCurrentValues(values);
+      }}
+    >
+      <div>
+        <h2 className="text-xl font-medium">Üniversite ve Bölüm</h2>
+        <p className="text-sm">
+          Sadece kendi üniversitendeki öğretmenleri puanlaman için üniversiteni
+          ve bölümünü girmelisin.
+        </p>
+        <p>{JSON.stringify(currentValues)}</p>
+      </div>
+      <SearchInput
+        name="university"
+        label="Üniversite"
+        items={universities.map((u) => u.name)}
+      />
+      <SearchInput
+        name="faculty"
+        label="Bölüm"
+        items={(function () {
+          const selectedUniversity = universities.find(
+            (university) => university.name === currentValues.university
+          );
+          if (!selectedUniversity) {
+            return [];
+          }
+          return selectedUniversity.faculties.map(
+            (faculty) => faculties[faculty]
+          );
+        })()}
+      />
+    </BaseMultistepForm>
+  );
+});

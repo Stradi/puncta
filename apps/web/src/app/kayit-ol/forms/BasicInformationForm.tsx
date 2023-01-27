@@ -1,9 +1,9 @@
+import BaseMultistepForm from "@/components/BaseMultistepForm";
 import TextInput from "@/components/TextInput";
 import { SignUpContext } from "@/context/SignUpContext";
 import { checkEmailExists } from "@/lib/auth";
-import { cn } from "@/lib/utils";
-import { FormikProps, FormikProvider, useFormik } from "formik";
-import { forwardRef, useContext, useImperativeHandle } from "react";
+import { FormikProps } from "formik";
+import { forwardRef, useContext } from "react";
 import * as yup from "yup";
 
 const BasicInformationValidationSchema = yup.object().shape({
@@ -40,64 +40,38 @@ const BasicInformationValidationSchema = yup.object().shape({
     ),
 });
 
-type BasicInformationFormValues = {
-  email: string;
-  name: string;
-};
-
-const BasicInformationForm = forwardRef<
-  FormikProps<BasicInformationFormValues>
->((props, ref) => {
+export default forwardRef<FormikProps<any>>(function BasicInformationForm(
+  props,
+  ref
+) {
   const signUpContext = useContext(SignUpContext);
-
-  const formik = useFormik<BasicInformationFormValues>({
-    initialValues: {
-      email: signUpContext.email,
-      name:
-        signUpContext.firstName && signUpContext.lastName
-          ? `${signUpContext.firstName} ${signUpContext.lastName}`
-          : "",
-    },
-    onSubmit: (values) => {
-      signUpContext.setEmail(values.email);
-
-      // TODO: Find a better way to handle this
-      // TODO: Also convert to title case
-      const fullName = values.name.trim();
-      const [firstName, lastName] = fullName.split(" ");
-      signUpContext.setFirstName(firstName);
-      signUpContext.setLastName(lastName);
-
-      signUpContext.nextStep();
-    },
-    validationSchema: BasicInformationValidationSchema,
-    // To prevent sending request to API server on every keypress
-    validateOnChange: false,
-    innerRef: ref,
-  });
-
-  useImperativeHandle(ref, () => ({
-    ...formik,
-  }));
-
   return (
-    <FormikProvider value={formik}>
-      <form
-        onSubmit={formik.handleSubmit}
-        className={cn("flex flex-col space-y-8", "[&>*]:flex [&>*]:flex-col")}
-      >
-        <div>
-          <h2 className="text-xl font-medium">Genel Bilgiler</h2>
-          <p className="text-sm">
-            E-postan ve adın senin kim olduğunu anlamamız için önemlidir.
-          </p>
-        </div>
-        <TextInput name="name" label="Ad Soyad" type="text" />
-        <TextInput name="email" label="E-posta" type="email" />
-      </form>
-    </FormikProvider>
+    <BaseMultistepForm
+      ref={ref}
+      initialValues={{
+        email: signUpContext.email,
+        name:
+          signUpContext.firstName && signUpContext.lastName
+            ? `${signUpContext.firstName} ${signUpContext.lastName}`
+            : "",
+      }}
+      validationSchema={BasicInformationValidationSchema}
+      onSubmit={(values) => {
+        const arr = values.name.trim().split(" ");
+        signUpContext.setEmail(values.email);
+        signUpContext.setFirstName(arr[0]);
+        signUpContext.setLastName(arr[1]);
+        signUpContext.nextStep();
+      }}
+    >
+      <div>
+        <h2 className="text-xl font-medium">Genel Bilgiler</h2>
+        <p className="text-sm">
+          E-postan ve adın senin kim olduğunu anlamamız için önemlidir.
+        </p>
+      </div>
+      <TextInput name="name" label="Ad Soyad" type="text" />
+      <TextInput name="email" label="E-posta" type="email" />
+    </BaseMultistepForm>
   );
 });
-
-BasicInformationForm.displayName = "BasicInformationForm";
-export default BasicInformationForm;
