@@ -73,7 +73,6 @@ export default forwardRef<FormikProps<any>>(function UniversityForm(
           Sadece kendi üniversitendeki öğretmenleri puanlaman için üniversiteni
           ve bölümünü girmelisin.
         </p>
-        <p>{JSON.stringify(currentValues)}</p>
       </div>
       <SearchInput
         name="university"
