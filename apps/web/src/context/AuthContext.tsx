@@ -23,6 +23,8 @@ interface AuthContextProps {
   login: (payload: LoginPayload) => Promise<boolean>;
   logout: () => Promise<void>;
   register: (payload: RegisterPayload) => Promise<boolean>;
+  refetchUser: () => Promise<boolean>;
+  addRatingToUser: (rating: Rating) => void;
 }
 
 export const AuthContext = createContext<AuthContextProps>(
@@ -149,14 +151,10 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
     localStorage.setItem("accessToken", response.accessToken);
     localStorage.setItem("refreshToken", response.refreshToken);
 
-    const user = await getUser(response.accessToken);
+    const user = await refetchUser();
     if (!user) {
-      // Probably server error.
       return false;
     }
-
-    setUser(user);
-    setIsAuthenticated(true);
     return true;
   };
 
@@ -179,15 +177,37 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
     localStorage.setItem("accessToken", response.accessToken);
     localStorage.setItem("refreshToken", response.refreshToken);
 
-    const user = await getUser(response.accessToken);
+    const user = await refetchUser();
     if (!user) {
-      // Probably server error.
+      return false;
+    }
+
+    return true;
+  };
+
+  const refetchUser = async () => {
+    const user = await getUser(accessToken as string);
+    if (!user) {
+      setUser(null);
+      setIsAuthenticated(false);
       return false;
     }
 
     setUser(user);
     setIsAuthenticated(true);
     return true;
+  };
+
+  const addRatingToUser = (rating: Rating) => {
+    if (!user) {
+      return;
+    }
+
+    const newUser = {
+      ...user,
+      ratings: [...user.ratings || [], rating],
+    }
+    setUser(newUser);
   };
 
   return (
@@ -198,6 +218,8 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
         login,
         logout,
         register,
+        refetchUser,
+        addRatingToUser
       }}
     >
       {children}

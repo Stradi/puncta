@@ -62,19 +62,18 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
         </Button>
         <Button
           fullWidth
-          onClick={() => {
+          onClick={async () => {
             if (rateContext.step === 0) {
               rateContext.nextStep();
             } else if (rateContext.step === 4) {
-              rateContext.rate().then((isDone) => {
-                if (isDone) {
-                  modalContext.setIsOpen(false);
-                  router.refresh();
-                } /* else {
-                  Something happened :(
-                }
-                */
-              });
+              const isDone = await rateContext.rate();
+              if (!isDone) {
+                // Something happened, show error.
+                return;
+              }
+
+              modalContext.setIsOpen(false);
+              router.refresh();
             } else {
               formRef.current?.submitForm();
             }

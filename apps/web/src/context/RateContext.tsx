@@ -1,7 +1,8 @@
 "use client";
 
 import { createRating } from "@/lib/rate";
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { AuthContext } from "./AuthContext";
 
 export interface CreateRatingPayload {
   rating: number;
@@ -50,6 +51,8 @@ export const RateContext = createContext<RateContextProps>(
 type RateProviderProps = React.PropsWithChildren & ConditionalRateTo;
 
 export function RateProvider(props: RateProviderProps) {
+  const authContext = useContext(AuthContext);
+
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
@@ -91,6 +94,7 @@ export function RateProvider(props: RateProviderProps) {
       return false;
     }
 
+    authContext.addRatingToUser(response);
     return true;
   }
 
