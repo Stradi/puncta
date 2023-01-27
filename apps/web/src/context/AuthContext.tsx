@@ -1,3 +1,5 @@
+"use client";
+
 import { doLogin, doRegister, getNewAccessToken, getUser } from "@/lib/auth";
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
@@ -205,8 +207,8 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
 
     const newUser = {
       ...user,
-      ratings: [...user.ratings || [], rating],
-    }
+      ratings: [...(user.ratings || []), rating],
+    };
     setUser(newUser);
   };
 
@@ -219,7 +221,7 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
         logout,
         register,
         refetchUser,
-        addRatingToUser
+        addRatingToUser,
       }}
     >
       {children}

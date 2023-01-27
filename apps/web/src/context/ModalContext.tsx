@@ -1,3 +1,5 @@
+"use client";
+
 import Modal from "@/components/Modal";
 import { AnimatePresence } from "framer-motion";
 import { createContext, useState } from "react";
