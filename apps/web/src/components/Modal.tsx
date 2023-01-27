@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { CloseIcon } from "./Icons";
 
 interface ModalProps extends React.ComponentPropsWithoutRef<"div"> {
   handleClose: () => void;
@@ -27,7 +28,16 @@ export default function Modal({
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={cn("p-4", className)}>{children}</div>
+        <div className={cn("p-4", className)}>
+          <CloseIcon
+            size="lg"
+            onClick={() => {
+              handleClose();
+            }}
+            className="float-right cursor-pointer"
+          />
+          <div>{children}</div>
+        </div>
       </div>
     </motion.div>
   );
