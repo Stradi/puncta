@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import ConditionalWrapper from "./ConditionalWrapper";
@@ -19,6 +21,7 @@ export default function Button({
   className,
   disabled,
   children,
+  onClick,
   ...props
 }: ButtonProps) {
   return (
@@ -56,6 +59,13 @@ export default function Button({
           className
         )}
         {...props}
+        onClick={(e) => {
+          if (disabled) {
+            e.preventDefault();
+          } else {
+            onClick?.(e);
+          }
+        }}
       >
         {icon && icon}
         {children}
