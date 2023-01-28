@@ -4,10 +4,14 @@ import { CloseIcon } from "./Icons";
 
 interface ModalProps extends React.ComponentPropsWithoutRef<"div"> {
   handleClose: () => void;
+  maxWidth?: "sm" | "md" | "lg";
+  hideCloseIcon?: boolean;
 }
 
 export default function Modal({
   handleClose,
+  maxWidth = "md",
+  hideCloseIcon = false,
   children,
   className,
 }: ModalProps) {
@@ -17,25 +21,28 @@ export default function Modal({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      onClick={() => {
-        handleClose();
-      }}
+      onClick={handleClose}
     >
       <div
         className={cn(
-          "relative top-1/2 mx-auto max-w-lg -translate-y-1/2",
-          "border-2 border-black bg-white"
+          "relative top-1/2 mx-auto -translate-y-1/2",
+          "border-2 border-black bg-white",
+          {
+            "max-w-md": maxWidth === "sm",
+            "max-w-lg": maxWidth === "md",
+            "max-w-xl": maxWidth === "lg",
+          }
         )}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={cn("p-4", className)}>
-          <CloseIcon
-            size="lg"
-            onClick={() => {
-              handleClose();
-            }}
-            className="float-right cursor-pointer"
-          />
+          {!hideCloseIcon && (
+            <CloseIcon
+              size="lg"
+              onClick={handleClose}
+              className="float-right cursor-pointer"
+            />
+          )}
           <div>{children}</div>
         </div>
       </div>
