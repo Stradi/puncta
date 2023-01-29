@@ -66,10 +66,7 @@ export function ratingMetaToScoresArray(ratings: Rating[], max: number) {
   //  info: string;
   // }
 
-  const criterias = ratings.map((rating) => JSON.parse(rating.meta)) as [
-    RateCriteria[]
-  ];
-
+  const criterias = ratings.map((rating) => getRatingMeta(rating));
   const criteriaNames = Array.from(
     new Set(
       criterias.flatMap((criteria) => criteria.map((c) => c.localizedName))
@@ -78,7 +75,9 @@ export function ratingMetaToScoresArray(ratings: Rating[], max: number) {
 
   return criteriaNames.map((name) => {
     const scores = criterias.flatMap((criteria) =>
-      criteria.filter((c) => c.localizedName === name).map((c) => c.score)
+      criteria
+        .filter((c) => c.localizedName === name && c.affectsGrade)
+        .map((c) => c.score)
     );
 
     return {
@@ -91,11 +90,13 @@ export function ratingMetaToScoresArray(ratings: Rating[], max: number) {
 }
 
 function getRatingMeta(rating: Rating) {
-  return (JSON.parse(rating.meta) as RateCriteria[]).filter(
-    (criteria) => criteria.affectsGrade
-  );
+  return getOnlyAffectingCriterias(JSON.parse(rating.meta) as RateCriteria[]);
 }
 
 function getAverageOfCriterias(criterias: RateCriteria[]) {
   return calculateAverage(criterias.map((criteria) => criteria.score));
+}
+
+function getOnlyAffectingCriterias(criterias: RateCriteria[]) {
+  return criterias.filter((criteria) => criteria.affectsGrade);
 }
