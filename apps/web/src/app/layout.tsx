@@ -23,13 +23,18 @@ export default function RootLayout({
             redirects={[
               {
                 page: "/giris-yap",
-                to: "/",
+                to: "/profil",
                 requireAuth: false,
               },
               {
                 page: "/kayit-ol",
-                to: "/",
+                to: "/profil",
                 requireAuth: false,
+              },
+              {
+                page: "/profil",
+                to: "/giris-yap",
+                requireAuth: true,
               },
             ]}
           >
