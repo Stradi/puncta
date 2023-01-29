@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 interface LetterGradeProps extends React.ComponentPropsWithoutRef<"p"> {
-  letter: "A" | "B" | "C" | "D" | "F";
+  letter: "A" | "B" | "C" | "D" | "F" | "N/A";
   size?: "small" | "medium" | "large";
 }
 
@@ -18,6 +18,7 @@ export default function LetterGrade({
     C: "bg-yellow-500 text-yellow-900",
     D: "bg-orange-500 text-orange-900",
     F: "bg-red-500 text-red-900",
+    "N/A": "bg-gray-500 text-gray-900",
   }[letter];
 
   return (

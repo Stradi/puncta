@@ -63,7 +63,7 @@ export function InfoCard({
 }
 
 interface OverallRatingCardProps extends CardProps {
-  letterGrade: "A" | "B" | "C" | "D" | "F";
+  letterGrade: "A" | "B" | "C" | "D" | "F" | "N/A";
   gradeText?: string;
 
   scores?: {

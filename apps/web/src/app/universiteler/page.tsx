@@ -26,6 +26,7 @@ async function fetchUniversities() {
           }
           ratings {
             id
+            meta
             score
             comment
           }

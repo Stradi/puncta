@@ -16,6 +16,7 @@ async function fetchTeachers(slug: string) {
             slug
             ratings {
               id
+              meta
               score
             }
           }

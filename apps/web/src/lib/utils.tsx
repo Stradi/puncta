@@ -26,11 +26,14 @@ export function numberToLetterGrade(score: number) {
 
 export function ratingsToLetterGrade(ratings: Rating[] | undefined) {
   if (!ratings || ratings.length === 0) {
-    return "F";
+    return "N/A";
   }
 
-  const average = calculateAverage(ratings.map((rating) => rating.score));
-  return numberToLetterGrade(average);
+  const average = calculateAverage(
+    ratings.map((rating) => getAverageOfCriterias(getRatingMeta(rating)))
+  );
+
+  return numberToLetterGrade(average * 20);
 }
 
 export function toReadableDate(date: string) {
@@ -85,4 +88,13 @@ export function ratingMetaToScoresArray(ratings: Rating[], max: number) {
       info: `${name} kriteri için ${ratings.length} değerlendirme yapılmıştır.`,
     };
   });
+}
+
+// TODO: We probably only want RateCriteria.affectsGrade=true ones.
+function getRatingMeta(rating: Rating) {
+  return JSON.parse(rating.meta) as RateCriteria[];
+}
+
+function getAverageOfCriterias(criterias: RateCriteria[]) {
+  return calculateAverage(criterias.map((criteria) => criteria.score));
 }

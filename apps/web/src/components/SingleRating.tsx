@@ -1,18 +1,22 @@
-import { cn, numberToLetterGrade, toReadableDate } from "@/lib/utils";
+import { cn, ratingsToLetterGrade, toReadableDate } from "@/lib/utils";
 import LetterGrade from "./LetterGrade";
 
 interface SingleRatingProps extends Rating {}
 
 export default function SingleRating({
   id,
-  score,
+  meta,
   comment,
   createdAt,
 }: SingleRatingProps) {
   return (
     <div className={cn("flex flex-col md:flex-row")}>
       <LetterGrade
-        letter={numberToLetterGrade(score)}
+        letter={ratingsToLetterGrade([
+          {
+            meta,
+          },
+        ] as Rating[])}
         size="large"
         className="h-auto min-h-[3rem] w-full shrink-0 justify-start pl-4 text-5xl md:min-h-[7rem] md:w-28 md:justify-center md:pl-0 md:text-8xl"
       />
