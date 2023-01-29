@@ -36,18 +36,21 @@ export default forwardRef<FormikProps<any>>(function SecondUniversityForm(
           name: "sociability",
           localizedName: "Sosyallik",
           score: values.sociability,
+          affectsGrade: true,
         });
 
         rateContext.addOrUpdateCriteria({
           name: "meals",
           localizedName: "Yemekler",
           score: values.meals,
+          affectsGrade: true,
         });
 
         rateContext.addOrUpdateCriteria({
           name: "campus",
           localizedName: "Kampüs",
           score: values.campus,
+          affectsGrade: true,
         });
 
         rateContext.nextStep();

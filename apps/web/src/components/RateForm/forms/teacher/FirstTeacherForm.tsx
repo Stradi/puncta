@@ -36,18 +36,21 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
           name: "knowledge",
           localizedName: "Bilgi",
           score: values.knowledge,
+          affectsGrade: true,
         });
 
         rateContext.addOrUpdateCriteria({
           name: "communication",
           localizedName: "İletişim",
           score: values.communication,
+          affectsGrade: true,
         });
 
         rateContext.addOrUpdateCriteria({
           name: "fairness",
           localizedName: "Tarafsızlık",
           score: values.fairness,
+          affectsGrade: true,
         });
 
         rateContext.nextStep();

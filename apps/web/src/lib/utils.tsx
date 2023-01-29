@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function calculateAverage(values: number[]) {
-  return values.reduce((a, b) => a + b) / values.length;
+  return values.reduce((a, b) => a + b, 0) / values.length;
 }
 
 export function numberToLetterGrade(score: number) {
@@ -90,9 +90,10 @@ export function ratingMetaToScoresArray(ratings: Rating[], max: number) {
   });
 }
 
-// TODO: We probably only want RateCriteria.affectsGrade=true ones.
 function getRatingMeta(rating: Rating) {
-  return JSON.parse(rating.meta) as RateCriteria[];
+  return (JSON.parse(rating.meta) as RateCriteria[]).filter(
+    (criteria) => criteria.affectsGrade
+  );
 }
 
 function getAverageOfCriterias(criterias: RateCriteria[]) {

@@ -46,4 +46,5 @@ interface RateCriteria {
   name: string;
   localizedName: string;
   score: number;
+  affectsGrade?: boolean = true;
 }

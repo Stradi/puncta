@@ -36,18 +36,21 @@ export default forwardRef<FormikProps<any>>(function SecondTeacherForm(
           name: "technique",
           localizedName: "Yöntem",
           score: values.technique,
+          affectsGrade: true,
         });
 
         rateContext.addOrUpdateCriteria({
           name: "material",
           localizedName: "Materyal",
           score: values.material,
+          affectsGrade: true,
         });
 
         rateContext.addOrUpdateCriteria({
           name: "difficulty",
           localizedName: "Zorluk",
           score: values.difficulty,
+          affectsGrade: true,
         });
 
         rateContext.nextStep();
