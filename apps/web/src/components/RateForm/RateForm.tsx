@@ -38,7 +38,8 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
         </div>
       );
     }
-  }, [rateContext.step, modalContext]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rateContext.step]);
 
   async function handlePrev() {
     rateContext.prevStep();
