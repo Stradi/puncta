@@ -7,7 +7,6 @@ import Button from "@/components/Button";
 import { Card } from "@/components/Card";
 import TextInput from "@/components/TextInput";
 import { AuthContext } from "@/context/AuthContext";
-import { FormikProps } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
@@ -21,7 +20,7 @@ const LoginValidationSchema = Yup.object().shape({
     .required("Şifre boş bırakılamaz."),
 });
 
-export default function LoginForm(props: FormikProps<any>) {
+export default function LoginForm() {
   const authContext = useContext(AuthContext);
   const router = useRouter();
 
