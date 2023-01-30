@@ -1,6 +1,6 @@
 "use client";
 
-import config from "@/app/config";
+import config from "@/config";
 import { AuthContext } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
