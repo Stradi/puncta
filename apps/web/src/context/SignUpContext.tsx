@@ -1,5 +1,3 @@
-"use client";
-
 import { createContext, useState } from "react";
 import { RegisterPayload } from "./AuthContext";
 

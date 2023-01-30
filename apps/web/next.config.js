@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
+    // TODO: Removing this causes errors. I don't know why.
     appDir: true,
   },
   async redirects() {

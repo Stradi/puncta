@@ -1,5 +1,3 @@
-"use client";
-
 import { AuthContext } from "@/context/AuthContext";
 import { ModalContext } from "@/context/ModalContext";
 import { RateContext, RateProvider } from "@/context/RateContext";

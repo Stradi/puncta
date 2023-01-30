@@ -1,5 +1,3 @@
-"use client";
-
 import { ModalContext } from "@/context/ModalContext";
 import { RateContext } from "@/context/RateContext";
 import { FormikProps } from "formik";

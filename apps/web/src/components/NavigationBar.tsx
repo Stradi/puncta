@@ -1,5 +1,3 @@
-"use client";
-
 import config from "@/config";
 import { AuthContext } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";

@@ -1,5 +1,3 @@
-"use client";
-
 import Button from "@/components/Button";
 import { Card } from "@/components/Card";
 import BasicInformationForm from "@/components/pages/kayit-ol/forms/BasicInformationForm";

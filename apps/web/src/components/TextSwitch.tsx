@@ -1,5 +1,3 @@
-"use client";
-
 import { cn, joinReactChildren } from "@/lib/utils";
 import { motion, useAnimationControls } from "framer-motion";
 import Link from "next/link";

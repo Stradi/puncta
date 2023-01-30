@@ -1,5 +1,3 @@
-"use client";
-
 import { createRating } from "@/lib/rate";
 import { createContext, useContext, useState } from "react";
 import { AuthContext } from "./AuthContext";

@@ -1,5 +1,3 @@
-"use client";
-
 import { doLogin, doRegister, getNewAccessToken, getUser } from "@/lib/auth";
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
