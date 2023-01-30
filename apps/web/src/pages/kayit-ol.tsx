@@ -2,21 +2,23 @@
 
 import Button from "@/components/Button";
 import { Card } from "@/components/Card";
+import BasicInformationForm from "@/components/pages/kayit-ol/forms/BasicInformationForm";
+import FinalForm from "@/components/pages/kayit-ol/forms/FinalForm";
+import PasswordForm from "@/components/pages/kayit-ol/forms/PasswordForm";
+import UniversityForm from "@/components/pages/kayit-ol/forms/UniversityForm";
 import { AuthContext } from "@/context/AuthContext";
-import { SignUpContext } from "@/context/SignUpContext";
+import { SignUpContext, SignUpProvider } from "@/context/SignUpContext";
 import { FormikProps } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
-import { createRef, useContext } from "react";
-import BasicInformationForm from "./forms/BasicInformationForm";
-import FinalForm from "./forms/FinalForm";
-import PasswordForm from "./forms/PasswordForm";
-import UniversityForm from "./forms/UniversityForm";
+import { createRef, ReactElement, useContext } from "react";
 
-export default function Page() {
+function Page() {
   // Since we are not interested in return type of form, we can use any.
   const formRef = createRef<FormikProps<any>>();
   const signUpContext = useContext(SignUpContext);
   const authContext = useContext(AuthContext);
+
+  console.log(signUpContext);
 
   return (
     <Card className="mx-auto mt-16 max-w-lg py-16 px-8">
@@ -61,3 +63,9 @@ export default function Page() {
     </Card>
   );
 }
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <SignUpProvider>{page}</SignUpProvider>;
+};
+
+export default Page;
