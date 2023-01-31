@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import NavigationBar from "@/components/NavigationBar";
 import { AuthProvider } from "@/context/AuthContext";
 import { ModalProvider } from "@/context/ModalContext";
@@ -50,6 +51,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <ModalProvider>
           <NavigationBar />
           {getLayout(<Component {...pageProps} />)}
+          <Footer />
         </ModalProvider>
       </AuthProvider>
     </ApolloProvider>
