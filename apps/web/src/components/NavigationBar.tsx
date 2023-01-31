@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import Button from "./Button";
 import { CloseIcon, HamburgerIcon } from "./Icons";
+import Logo from "./Logo";
 
 interface NavigationBarProps extends React.ComponentPropsWithoutRef<"nav"> {}
 
@@ -39,14 +40,7 @@ export default function NavigationBar({
           "flex flex-wrap items-center justify-between sm:justify-start"
         )}
       >
-        <div
-          className={cn(
-            "inline-block select-none px-4 py-2 text-2xl font-semibold",
-            "bg-black tracking-tighter text-white"
-          )}
-        >
-          <span>{config.site.name}</span>
-        </div>
+        <Logo />
         <div className="flex sm:hidden">
           {isMenuOpen ? (
             <CloseIcon
