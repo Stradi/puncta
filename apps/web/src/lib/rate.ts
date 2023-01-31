@@ -37,6 +37,53 @@ const NEW_RATING_MUTATION = gql`
   }
 `;
 
+const RATEABLE_UNIVERSITY_QUERY = gql`
+  query RateableUniversities {
+    me {
+      university {
+        id
+        name
+        slug
+        ratings {
+          id
+          score
+          meta
+        }
+      }
+      faculty {
+        id
+        name
+        slug
+      }
+    }
+  }
+`;
+
+const RATEABLE_TEACHERS_QUERY = gql`
+  query RateableTeachers($universitySlug: String!, $facultySlug: String) {
+    teacher {
+      id
+      name
+      slug
+      ratings {
+        id
+        score
+        meta
+      }
+      university(slug: $universitySlug) {
+        id
+        name
+        slug
+      }
+      faculty(slug: $facultySlug) {
+        id
+        name
+        slug
+      }
+    }
+  }
+`;
+
 export async function createRating(payload: CreateRatingPayload) {
   const apolloClient = initializeApollo();
 
@@ -81,4 +128,40 @@ export async function createRating(payload: CreateRatingPayload) {
 
   const rating = response.data.createRating;
   return rating;
+}
+
+export async function getAllRateableEntities() {
+  const apolloClient = initializeApollo();
+  const accessToken = localStorage.getItem("accessToken");
+
+  const rateableUniversity = await apolloClient.query({
+    query: RATEABLE_UNIVERSITY_QUERY,
+    context: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  });
+
+  const rateableTeachers = await apolloClient.query<{
+    teacher: Teacher[];
+  }>({
+    query: RATEABLE_TEACHERS_QUERY,
+    variables: {
+      universitySlug: rateableUniversity.data.me.university.slug,
+      facultySlug: rateableUniversity.data.me.faculty.slug,
+    },
+    context: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  });
+
+  return {
+    university: rateableUniversity.data.me.university,
+    teachers: rateableTeachers.data.teacher.filter(
+      (t) => t.university !== null && t.faculty !== null
+    ),
+  };
 }

@@ -40,6 +40,11 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             to: "/giris-yap",
             requireAuth: true,
           },
+          {
+            page: "/degerlendir",
+            to: "/giris-yap",
+            requireAuth: true,
+          },
         ]}
       >
         <ModalProvider>
