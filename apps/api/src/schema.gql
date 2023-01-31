@@ -248,10 +248,32 @@ type User {
   ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
 
   """University that this user is associated with"""
-  university: University
+  university(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): University
 
   """Faculty that this user is associated with"""
-  faculty: Faculty
+  faculty(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): Faculty
 }
 
 type Query {
