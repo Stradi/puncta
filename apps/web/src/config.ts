@@ -9,7 +9,8 @@ interface Config {
   };
 
   navigation: {
-    primary: NavigationItem[];
+    nonAuth: NavigationItem[];
+    auth: NavigationItem[];
   };
 }
 
@@ -18,18 +19,20 @@ const config: Config = {
     name: "Puncta.",
   },
   navigation: {
-    primary: [
+    nonAuth: [
       {
-        label: "Test",
-        href: "/",
+        label: "Tüm Üniversiteler",
+        href: "/universiteler",
+      },
+    ],
+    auth: [
+      {
+        label: "Tüm Üniversiteler",
+        href: "/universiteler",
       },
       {
-        label: "Another Test",
-        href: "/",
-      },
-      {
-        label: "Yet Another Test",
-        href: "/",
+        label: "Değerlendir",
+        href: "/degerlendir",
       },
     ],
   },

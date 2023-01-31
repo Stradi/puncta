@@ -2,7 +2,7 @@ import config from "@/config";
 import { AuthContext } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "./Button";
 import { CloseIcon, HamburgerIcon } from "./Icons";
 
@@ -13,7 +13,16 @@ export default function NavigationBar({
   ...props
 }: NavigationBarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState(config.navigation.nonAuth);
   const authContext = useContext(AuthContext);
+
+  useEffect(() => {
+    if (authContext.isAuthenticated) {
+      setMenuItems(config.navigation.auth);
+    } else {
+      setMenuItems(config.navigation.nonAuth);
+    }
+  }, [authContext.isAuthenticated]);
 
   return (
     <nav
@@ -70,7 +79,7 @@ export default function NavigationBar({
               "sm:mt-0 sm:flex-row sm:border-0 sm:py-0 sm:text-sm"
             )}
           >
-            {config.navigation.primary.map((item) => (
+            {menuItems.map((item) => (
               <li key={item.label} className="hover:text-black">
                 <Link href={item.href}>{item.label}</Link>
               </li>
