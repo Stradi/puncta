@@ -25,7 +25,7 @@ export default function Page() {
   const [formik, setFormik] = useState<any>({});
 
   return (
-    <Card className="mx-auto mt-16 max-w-lg py-16 px-8">
+    <Card className="mx-auto max-w-lg py-16 px-8">
       <h1 className="mb-4 text-center text-3xl font-medium">Giriş Yap</h1>
       <AnimatePresence>
         <motion.div

@@ -9,7 +9,7 @@ interface PageProps {
 
 export default function Page({ universities }: PageProps) {
   return (
-    <div className="container mx-auto mt-16 max-w-6xl space-y-8">
+    <div className="container mx-auto max-w-6xl space-y-8">
       <div className="space-y-4 text-center">
         <h1 className="text-4xl font-bold">Tüm Üniversiteler</h1>
         <p className="mx-auto w-full max-w-2xl text-xl font-medium">

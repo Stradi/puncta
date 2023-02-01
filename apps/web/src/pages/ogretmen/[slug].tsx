@@ -17,7 +17,7 @@ export default function Page({ teacher }: PageProps) {
 
   return (
     <main>
-      <header className="container mx-auto max-w-6xl space-y-8 md:flex md:gap-8 md:space-y-0 md:py-16">
+      <header className="container mx-auto max-w-6xl md:flex md:gap-8">
         <InfoCard
           image={{
             src: "https://picsum.photos/200",
@@ -59,7 +59,7 @@ export default function Page({ teacher }: PageProps) {
         />
       </header>
       <div>
-        <h2 className="my-8 w-full bg-black py-8 text-center text-2xl font-bold text-white md:text-4xl">
+        <h2 className="my-16 w-full bg-black py-8 text-center text-2xl font-bold text-white md:text-4xl">
           <TextSwitch
             links={[
               {

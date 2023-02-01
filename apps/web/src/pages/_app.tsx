@@ -49,9 +49,11 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         ]}
       >
         <ModalProvider>
-          <NavigationBar />
-          {getLayout(<Component {...pageProps} />)}
-          <Footer />
+          <div className="space-y-16">
+            <NavigationBar />
+            {getLayout(<Component {...pageProps} />)}
+            <Footer />
+          </div>
         </ModalProvider>
       </AuthProvider>
     </ApolloProvider>
