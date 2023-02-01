@@ -1,13 +1,17 @@
 import { cn } from "@/lib/utils";
 
 interface BaseIconProps extends React.ComponentPropsWithoutRef<"i"> {
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "2xl";
   stroke?: "thinner" | "thin" | "medium" | "thick" | "thicker";
+  fillColor?: string;
+  svgClassName?: string;
 }
 
 function BaseIcon({
   size = "md",
   stroke = "medium",
+  fillColor,
+  svgClassName,
   children,
   className,
   ...props
@@ -16,7 +20,7 @@ function BaseIcon({
     <i {...props} className={className}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        fill="none"
+        fill={fillColor || "none"}
         viewBox="0 0 24 24"
         strokeWidth={cn(
           stroke == "thinner" && 0.5,
@@ -29,7 +33,9 @@ function BaseIcon({
         className={cn(
           size == "sm" && "h-4 w-4",
           size == "md" && "h-6 w-6",
-          size == "lg" && "h-8 w-8"
+          size == "lg" && "h-8 w-8",
+          size == "2xl" && "h-16 w-16",
+          svgClassName
         )}
       >
         {children}
