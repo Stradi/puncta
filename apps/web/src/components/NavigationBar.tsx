@@ -89,9 +89,19 @@ export default function NavigationBar({
           )}
         >
           {authContext.isAuthenticated ? (
-            <Button asLink href="/profil" variant="text">
-              {`${authContext.user?.firstName} ${authContext.user?.lastName}`}
-            </Button>
+            <>
+              <Button asLink href="/profil" variant="text">
+                {`${authContext.user?.firstName} ${authContext.user?.lastName}`}
+              </Button>
+              <Button
+                variant="text"
+                onClick={() => {
+                  authContext.logout();
+                }}
+              >
+                Çıkış Yap
+              </Button>
+            </>
           ) : (
             <>
               <Button asLink href="/giris-yap" variant="text" fullWidth>
