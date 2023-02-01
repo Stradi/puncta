@@ -137,7 +137,7 @@ const config: Config = {
         title: "Tamamen Anonimsin",
         subtitle:
           "Yani yapılan tüm değerlendirmeler ve yorumlar gizli, kimse göremiyor. Biz bile göremiyoruz.",
-        color: "bg-amber-500",
+        color: "bg-yellow-500",
         image: "",
       },
       {
