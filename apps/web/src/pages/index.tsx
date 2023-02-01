@@ -1,3 +1,4 @@
+import CtaInput from "@/components/pages/index/CtaInput";
 import Feature from "@/components/pages/index/Feature";
 import Stars from "@/components/pages/index/Stars";
 import Stat from "@/components/pages/index/Stat";
@@ -18,6 +19,10 @@ export default function Page() {
           <h2 className="text-center text-2xl font-medium md:text-4xl">
             Öğretmenlerini ve üniversiteni puanla
           </h2>
+          <CtaInput
+            className="mx-auto max-w-xl"
+            placeholder="Öğretmenini veya üniversiteni ara"
+          />
         </div>
       </header>
       <section className="bg-black py-8 md:py-12">
