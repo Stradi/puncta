@@ -21,6 +21,19 @@ interface Config {
   footer: {
     items: FooterItem[];
   };
+
+  landing: {
+    stats: {
+      text: string;
+      value: string;
+    }[];
+    features: {
+      title: string;
+      subtitle: string;
+      color: string;
+      image: string;
+    }[];
+  };
 }
 
 const config: Config = {
@@ -97,6 +110,49 @@ const config: Config = {
             href: "https://facebook.com/punctaapp",
           },
         ],
+      },
+    ],
+  },
+  landing: {
+    stats: [
+      {
+        text: "Değerlendirme",
+        value: "20K+",
+      },
+      {
+        text: "Üniversite",
+        value: "200+",
+      },
+      {
+        text: "Yorum",
+        value: "3K+",
+      },
+      {
+        text: "Öğretim Üyesi",
+        value: "180K+",
+      },
+    ],
+    features: [
+      {
+        title: "Tamamen Anonimsin",
+        subtitle:
+          "Yani yapılan tüm değerlendirmeler ve yorumlar gizli, kimse göremiyor. Biz bile göremiyoruz.",
+        color: "bg-amber-500",
+        image: "",
+      },
+      {
+        title: "Tüm Öğrenciler İçin",
+        subtitle:
+          "Öğrencilerin değerlendirmeleri ve yorumları öğretmenler için çok önemli.",
+        color: "bg-green-500",
+        image: "",
+      },
+      {
+        title: "Sesini Duyur",
+        subtitle:
+          "Öğretmenlerini ve üniversiteni punlayarak daha iyi bir eğitim ortamı yaratmamıza yardımcı ol.",
+        color: "bg-red-500",
+        image: "",
       },
     ],
   },
