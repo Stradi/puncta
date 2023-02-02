@@ -36,7 +36,12 @@ export class AuthService {
     // TODO: Maybe we can refactor this.
     const conditional: any = {};
     if (role === Role.TEACHER) {
-      // TODO: We should check if requested teacher already connected to another user.
+      if (await this.isTeacherConnectedToUser(args.teacher)) {
+        throw new BadRequestException(
+          'Teacher already connected to another user',
+        );
+      }
+
       conditional['isApproved'] = false;
       conditional['teacher'] = {
         connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.teacher),
@@ -166,5 +171,16 @@ export class AuthService {
       secret: this.configService.get('JWT_REFRESH_SECRET'),
       expiresIn: jwtConfig?.refreshIn,
     });
+  }
+
+  private async isTeacherConnectedToUser(identifier: any) {
+    const teacher = await this.prismaService.teacher.findUnique({
+      where: convertArgsToWhereClause(['id', 'slug', 'name'], identifier),
+      include: {
+        user: true,
+      },
+    });
+
+    return !!teacher?.user;
   }
 }

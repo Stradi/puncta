@@ -52,6 +52,7 @@ model Teacher {
 
   // -- Only for role === TEACHER --
 
+  userId Int? @unique
   user User?
 }
 
