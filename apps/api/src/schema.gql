@@ -348,6 +348,7 @@ type Query {
   ): [Teacher!]!
   rating(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]!
   isEmailExists(email: String!): IsExists!
+  isTeacherExists(name: String!): IsExists!
   me: User!
   response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
 }
