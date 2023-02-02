@@ -15,7 +15,10 @@ interface Config {
 
   navigation: {
     nonAuth: NavigationItem[];
-    auth: NavigationItem[];
+    auth: {
+      student: NavigationItem[];
+      teacher: NavigationItem[];
+    };
   };
 
   footer: {
@@ -47,16 +50,28 @@ const config: Config = {
         href: "/universiteler",
       },
     ],
-    auth: [
-      {
-        label: "Tüm Üniversiteler",
-        href: "/universiteler",
-      },
-      {
-        label: "Değerlendir",
-        href: "/degerlendir",
-      },
-    ],
+    auth: {
+      student: [
+        {
+          label: "Tüm Üniversiteler",
+          href: "/universiteler",
+        },
+        {
+          label: "Değerlendir",
+          href: "/degerlendir",
+        },
+      ],
+      teacher: [
+        {
+          label: "Tüm Üniversiteler",
+          href: "/universiteler",
+        },
+        {
+          label: "Değerlendirenler",
+          href: "/degerlendirenler",
+        },
+      ],
+    },
   },
   footer: {
     items: [

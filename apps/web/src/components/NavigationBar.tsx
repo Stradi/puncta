@@ -18,12 +18,16 @@ export default function NavigationBar({
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    if (authContext.isAuthenticated) {
-      setMenuItems(config.navigation.auth);
+    if (authContext.isAuthenticated && authContext.user) {
+      if (authContext.user.role === "STUDENT") {
+        setMenuItems(config.navigation.auth.student);
+      } else if (authContext.user.role === "TEACHER") {
+        setMenuItems(config.navigation.auth.teacher);
+      }
     } else {
       setMenuItems(config.navigation.nonAuth);
     }
-  }, [authContext.isAuthenticated]);
+  }, [authContext.isAuthenticated, authContext.user]);
 
   return (
     <nav
