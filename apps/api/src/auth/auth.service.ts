@@ -33,34 +33,7 @@ export class AuthService {
       args.password,
     );
 
-    // TODO: Maybe we can refactor this.
-    const conditional: any = {};
-    if (role === Role.TEACHER) {
-      if (await this.isTeacherConnectedToUser(args.teacher)) {
-        throw new BadRequestException(
-          'Teacher already connected to another user',
-        );
-      }
-
-      conditional['isApproved'] = false;
-      conditional['teacher'] = {
-        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.teacher),
-      };
-    } else if (role === Role.STUDENT) {
-      conditional['isApproved'] = true;
-      conditional['university'] = {
-        connect: convertArgsToWhereClause(
-          ['id', 'slug', 'name'],
-          args.university,
-        ),
-      };
-      conditional['faculty'] = {
-        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.faculty),
-      };
-    } else if (role === Role.ADMIN) {
-      conditional['isApproved'] = true;
-    }
-
+    const conditional = await this.getConditionalCreateArgs(role, args);
     try {
       const user = await this.prismaService.user.create({
         data: {
@@ -182,5 +155,51 @@ export class AuthService {
     });
 
     return !!teacher?.user;
+  }
+
+  private async getConditionalCreateArgs(role: Role, args: SignupInput) {
+    if (role === Role.TEACHER) {
+      if (await this.isTeacherConnectedToUser(args.teacher)) {
+        throw new BadRequestException('Teacher already connected to user');
+      }
+
+      return this.getConditionalTeacherCreateArgs(args);
+    } else if (role === Role.STUDENT) {
+      return this.getConditionalStudentCreateArgs(args);
+    } else if (role === Role.ADMIN) {
+      return this.getConditionalAdminCreateArgs();
+    } else {
+      throw new BadRequestException('Invalid role');
+    }
+  }
+
+  private getConditionalTeacherCreateArgs(args: SignupInput) {
+    return {
+      isApproved: false,
+      teacher: {
+        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.teacher),
+      },
+    };
+  }
+
+  private getConditionalStudentCreateArgs(args: SignupInput) {
+    return {
+      isApproved: true,
+      university: {
+        connect: convertArgsToWhereClause(
+          ['id', 'slug', 'name'],
+          args.university,
+        ),
+      },
+      faculty: {
+        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.faculty),
+      },
+    };
+  }
+
+  private getConditionalAdminCreateArgs() {
+    return {
+      isApproved: true,
+    };
   }
 }
