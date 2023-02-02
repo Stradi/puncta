@@ -47,6 +47,18 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             requireAuth: true,
           },
         ]}
+        disallowedRoutes={[
+          {
+            page: "/degerlendir",
+            to: "/",
+            allowedRoles: ["STUDENT"],
+          },
+          {
+            page: "/degerlendirenler",
+            to: "/",
+            allowedRoles: ["TEACHER"],
+          },
+        ]}
       >
         <ModalProvider>
           <div className="space-y-16">

@@ -1,6 +1,6 @@
 import { doLogin, doRegister, getNewAccessToken, getUser } from "@/lib/auth";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useLayoutEffect, useState } from "react";
 
 export interface LoginPayload {
   email: string;
@@ -39,9 +39,18 @@ interface AuthProviderProps extends React.PropsWithChildren {
     to: string;
     requireAuth: boolean;
   }[];
+  disallowedRoutes?: {
+    page: string;
+    to: string;
+    allowedRoles: string[];
+  }[];
 }
 
-export function AuthProvider({ redirects, children }: AuthProviderProps) {
+export function AuthProvider({
+  redirects,
+  disallowedRoutes,
+  children,
+}: AuthProviderProps) {
   const [user, setUser] = useState<Partial<User> | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -50,25 +59,43 @@ export function AuthProvider({ redirects, children }: AuthProviderProps) {
   const pathName = usePathname();
   const router = useRouter();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!redirects || redirects.length <= 0) {
       return;
-    }
+    } else {
+      for (const redirect of redirects) {
+        if (redirect.page === pathName) {
+          if (redirect.requireAuth && !isAuthenticated) {
+            router.push(redirect.to || "/");
+            return;
+          }
 
-    for (const redirect of redirects) {
-      if (redirect.page === pathName) {
-        if (redirect.requireAuth && !isAuthenticated) {
-          router.push(redirect.to || "/");
-          return;
-        }
-
-        if (!redirect.requireAuth && isAuthenticated) {
-          router.push(redirect.to || "/");
-          return;
+          if (!redirect.requireAuth && isAuthenticated) {
+            router.push(redirect.to || "/");
+            return;
+          }
         }
       }
     }
-  }, [pathName, router, isAuthenticated, redirects]);
+
+    if (!disallowedRoutes || disallowedRoutes.length <= 0) {
+      return;
+    } else {
+      for (const route of disallowedRoutes) {
+        if (route.page === pathName) {
+          if (!user) {
+            router.push(route.to);
+            return;
+          }
+
+          if (!route.allowedRoles.includes(user.role as string)) {
+            router.push(route.to);
+            return;
+          }
+        }
+      }
+    }
+  }, [pathName, router, isAuthenticated, redirects, disallowedRoutes, user]);
 
   // Access token or refresh token changed. We need to update the user if tokens
   // are not null.
