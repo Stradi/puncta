@@ -306,6 +306,7 @@ type User {
 
   """Whether this user (teacher) is verified or not"""
   isApproved: Boolean
+  response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
 }
 
 type Query {

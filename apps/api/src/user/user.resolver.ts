@@ -6,6 +6,8 @@ import { GetFacultyArgs } from 'src/faculty/dto/get-faculty.args';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
 import { GetRatingArgs } from 'src/rating/dto/get-rating.args';
 import { Rating } from 'src/rating/entities/rating.entity';
+import { GetResponseArgs } from 'src/response/dto/get-response.args';
+import { Response } from 'src/response/entities/response.entity';
 import { GetUniversityArgs } from 'src/university/dto/get-university.args';
 import { University } from 'src/university/entities/university.entity';
 import { User } from './entities/user.entity';
@@ -37,6 +39,12 @@ export class UserResolver {
   async faculty(@Parent() user: User, @Args() args: GetFacultyArgs) {
     const { id } = user;
     return this.userService.faculty(id, args);
+  }
+
+  @ResolveField('response', () => [Response])
+  async response(@Parent() user: User, @Args() args: GetResponseArgs) {
+    const { id } = user;
+    return this.userService.response(id, args);
   }
 
   // TODO: Add updateUser, changePassword mutations.
