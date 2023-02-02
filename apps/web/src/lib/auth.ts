@@ -81,6 +81,15 @@ const EMAIL_EXISTS_QUERY = gql`
     }
   }
 `;
+
+const TEACHER_EXISTS_QUERY = gql`
+  query TeacherExists($name: String!) {
+    isTeacherExists(name: $name) {
+      result
+    }
+  }
+`;
+
 export async function doLogin(payload: LoginPayload) {
   const apolloClient = initializeApollo();
 
@@ -235,4 +244,28 @@ export async function checkEmailExists(email: string) {
   }
 
   return response.data.isEmailExists.result;
+}
+
+export async function checkTeacherExists(name: string) {
+  const apolloClient = initializeApollo();
+
+  const response = await apolloClient.query({
+    query: TEACHER_EXISTS_QUERY,
+    variables: {
+      name,
+    },
+    errorPolicy: "ignore",
+  });
+
+  if (response.errors && response.errors.length > 0) {
+    console.log("Something happened while checking email.");
+    console.log(response.errors);
+    return null;
+  }
+
+  if (!response.data || !response.data.isTeacherExists) {
+    return null;
+  }
+
+  return response.data.isTeacherExists.result;
 }
