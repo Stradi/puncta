@@ -2,6 +2,9 @@ import { createContext, useState } from "react";
 import { RegisterPayload } from "./AuthContext";
 
 interface SignUpContextProps {
+  registrationType: "TEACHER" | "STUDENT";
+  setRegistrationType: (registrationType: "TEACHER" | "STUDENT") => void;
+
   email: string;
   setEmail: (email: string) => void;
 
@@ -32,6 +35,9 @@ export const SignUpContext = createContext<SignUpContextProps>(
 );
 
 export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
+  const [registrationType, setRegistrationType] = useState<
+    "STUDENT" | "TEACHER"
+  >("STUDENT");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -53,6 +59,7 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
 
   function getPayload() {
     return {
+      type: registrationType,
       email,
       password,
       firstName,
@@ -65,6 +72,8 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
   return (
     <SignUpContext.Provider
       value={{
+        registrationType,
+        setRegistrationType,
         email,
         setEmail,
         password,

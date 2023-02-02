@@ -59,6 +59,8 @@ const REGISTER_MUTATION = gql`
     $lastName: String!
     $university: ConnectUserUniversity!
     $faculty: ConnectUserFaculty!
+    $teacher: ConnectUserTeacher!
+    $role: String!
   ) {
     signup(
       email: $email
@@ -67,6 +69,8 @@ const REGISTER_MUTATION = gql`
       lastName: $lastName
       university: $university
       faculty: $faculty
+      teacher: $teacher
+      role: $role
     ) {
       accessToken
       refreshToken
@@ -197,6 +201,10 @@ export async function doRegister(payload: RegisterPayload) {
       faculty: {
         name: payload.faculty,
       },
+      teacher: {
+        name: `${payload.firstName} ${payload.lastName}`,
+      },
+      role: payload.type,
     },
     errorPolicy: "ignore",
   });

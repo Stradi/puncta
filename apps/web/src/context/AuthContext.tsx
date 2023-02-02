@@ -14,6 +14,7 @@ export interface RegisterPayload {
   lastName: string;
   university: string;
   faculty: string;
+  type: "STUDENT" | "TEACHER";
 }
 
 interface AuthContextProps {
