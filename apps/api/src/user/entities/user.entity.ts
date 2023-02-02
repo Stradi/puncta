@@ -1,6 +1,8 @@
 import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
 import { Rating } from 'src/rating/entities/rating.entity';
+import { Response } from 'src/response/entities/response.entity';
+import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { University } from 'src/university/entities/university.entity';
 
 @ObjectType()
@@ -53,4 +55,22 @@ export class User {
     nullable: true,
   })
   faculty: Faculty;
+
+  @Field(() => [Response], {
+    description: 'Responses that this user has created',
+    nullable: true,
+  })
+  responses: [Response];
+
+  @Field(() => Teacher, {
+    description: 'Teacher that this user is associated with',
+    nullable: true,
+  })
+  teacher: Teacher;
+
+  @Field(() => Boolean, {
+    description: 'Whether this user (teacher) is verified or not',
+    nullable: true,
+  })
+  isApproved: boolean;
 }

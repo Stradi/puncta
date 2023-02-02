@@ -222,6 +222,29 @@ type Teacher {
   ratings: [Rating!]
 }
 
+type Response {
+  """Unique identifier for the teacher"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Content of the response"""
+  content: String!
+
+  """Additional meta field for this rating"""
+  meta: String!
+
+  """The ratingg that this response belongs to"""
+  to(page: Int = 0, pageSize: Int = 10, id: Int): Rating!
+
+  """The teacher that created this response"""
+  from: User!
+}
+
 type User {
   """Unique identifier for the user"""
   id: ID!
@@ -274,6 +297,15 @@ type User {
     page: Int = 0
     pageSize: Int = 10
   ): Faculty
+
+  """Responses that this user has created"""
+  responses: [Response!]
+
+  """Teacher that this user is associated with"""
+  teacher: Teacher
+
+  """Whether this user (teacher) is verified or not"""
+  isApproved: Boolean
 }
 
 type Query {
@@ -316,6 +348,7 @@ type Query {
   rating(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]!
   isEmailExists(email: String!): IsExists!
   me: User!
+  response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
 }
 
 type Mutation {
@@ -361,6 +394,9 @@ type Mutation {
   signup(email: String!, password: String!, firstName: String!, lastName: String!, university: ConnectUserUniversity, faculty: ConnectUserFaculty, role: String, teacher: ConnectUserTeacher): Auth!
   login(email: String!, password: String!): Auth!
   refreshToken(token: JWT!): Token!
+  createResponse(content: String!, meta: String!, to: Int!): Response!
+  updateResponse(filter: UpdateResponseFilter!, set: UpdateResponseSet!): Response!
+  deleteResponse(id: Int!): Response!
 }
 
 input UpdateUniversityFilter {
@@ -531,4 +567,13 @@ input ConnectUserTeacher {
 
   """Slug of the resource"""
   slug: String
+}
+
+input UpdateResponseFilter {
+  id: Int!
+}
+
+input UpdateResponseSet {
+  content: String
+  meta: String
 }
