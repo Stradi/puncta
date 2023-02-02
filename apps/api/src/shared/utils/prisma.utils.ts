@@ -4,7 +4,8 @@ export const convertArgsToWhereClause = (priorityArray: string[], obj: any) => {
   } = {};
 
   for (const key of priorityArray) {
-    if (obj[key]) {
+    // Stupid JS accepts 0 as false...
+    if (typeof obj[key] !== 'undefined') {
       where[key] = obj[key];
       break;
     }
