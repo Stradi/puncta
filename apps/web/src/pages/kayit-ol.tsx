@@ -1,9 +1,11 @@
 import Button from "@/components/Button";
 import { Card } from "@/components/Card";
-import BasicInformationForm from "@/components/pages/kayit-ol/forms/BasicInformationForm";
 import FinalForm from "@/components/pages/kayit-ol/forms/FinalForm";
 import PasswordForm from "@/components/pages/kayit-ol/forms/PasswordForm";
-import UniversityForm from "@/components/pages/kayit-ol/forms/UniversityForm";
+import RegistrationTypeForm from "@/components/pages/kayit-ol/forms/RegistrationTypeForm";
+import StudentInformationForm from "@/components/pages/kayit-ol/forms/student/StudentInformationForm";
+import UniversityForm from "@/components/pages/kayit-ol/forms/student/UniversityForm";
+import TeacherInformationForm from "@/components/pages/kayit-ol/forms/teacher/TeacherInformationForm";
 import { AuthContext } from "@/context/AuthContext";
 import { SignUpContext, SignUpProvider } from "@/context/SignUpContext";
 import { FormikProps } from "formik";
@@ -18,6 +20,7 @@ function Page() {
 
   console.log(signUpContext);
 
+  // TODO: Please refactor this step part. PLEASE!!
   return (
     <Card className="mx-auto max-w-lg py-16 px-8">
       <h1 className="mb-4 text-center text-3xl font-medium">Kayıt Ol</h1>
@@ -28,10 +31,21 @@ function Page() {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: "0px" }}
         >
-          {signUpContext.step === 0 && <BasicInformationForm ref={formRef} />}
-          {signUpContext.step === 1 && <PasswordForm ref={formRef} />}
-          {signUpContext.step === 2 && <UniversityForm ref={formRef} />}
-          {signUpContext.step === 3 && <FinalForm />}
+          {signUpContext.step === 0 && <RegistrationTypeForm />}
+          {signUpContext.step === 1 &&
+            (signUpContext.registrationType === "STUDENT" ? (
+              <StudentInformationForm ref={formRef} />
+            ) : (
+              <TeacherInformationForm ref={formRef} />
+            ))}
+          {signUpContext.step === 2 && <PasswordForm ref={formRef} />}
+          {signUpContext.step === 3 &&
+            (signUpContext.registrationType === "STUDENT" ? (
+              <UniversityForm ref={formRef} />
+            ) : (
+              <FinalForm />
+            ))}
+          {signUpContext.step === 4 && <FinalForm />}
         </motion.div>
       </AnimatePresence>
       <div className="mt-8 flex justify-evenly">
@@ -48,10 +62,23 @@ function Page() {
         <Button
           fullWidth
           onClick={() => {
-            if (signUpContext.step === 3) {
-              authContext.register(signUpContext.getPayload());
+            if (signUpContext.step === 0) {
+              signUpContext.nextStep();
+              return;
+            }
+
+            if (signUpContext.registrationType === "STUDENT") {
+              if (signUpContext.step === 4) {
+                authContext.register(signUpContext.getPayload());
+              } else {
+                formRef.current?.submitForm();
+              }
             } else {
-              formRef.current?.submitForm();
+              if (signUpContext.step === 3) {
+                authContext.register(signUpContext.getPayload());
+              } else {
+                formRef.current?.submitForm();
+              }
             }
           }}
         >

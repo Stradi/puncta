@@ -5,8 +5,8 @@ import { FormikProps } from "formik";
 import { forwardRef, useContext, useState } from "react";
 
 import * as Yup from "yup";
-import faculties from "../data/faculties.json";
-import universities from "../data/universities.json";
+import faculties from "../../data/faculties.json";
+import universities from "../../data/universities.json";
 
 const UniversityFieldSchema = Yup.string()
   .oneOf(

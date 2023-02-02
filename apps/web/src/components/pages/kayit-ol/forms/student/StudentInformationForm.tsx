@@ -6,7 +6,7 @@ import { FormikProps } from "formik";
 import { forwardRef, useContext } from "react";
 import * as yup from "yup";
 
-const BasicInformationValidationSchema = yup.object().shape({
+const StudentInformationValidationSchema = yup.object().shape({
   email: yup
     .string()
     .email("E-posta adresi geçersiz.")
@@ -40,7 +40,7 @@ const BasicInformationValidationSchema = yup.object().shape({
     ),
 });
 
-export default forwardRef<FormikProps<any>>(function BasicInformationForm(
+export default forwardRef<FormikProps<any>>(function StudentInformationForm(
   props,
   ref
 ) {
@@ -55,7 +55,7 @@ export default forwardRef<FormikProps<any>>(function BasicInformationForm(
             ? `${signUpContext.firstName} ${signUpContext.lastName}`
             : "",
       }}
-      validationSchema={BasicInformationValidationSchema}
+      validationSchema={StudentInformationValidationSchema}
       onSubmit={(values) => {
         const arr = values.name.trim().split(" ");
         signUpContext.setEmail(values.email);
