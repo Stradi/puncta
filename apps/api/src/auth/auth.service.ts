@@ -28,10 +28,33 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(args: SignupInput, role: Role = Role.STUDENT) {
+  async signup(args: SignupInput, role: Role) {
     const hashedPassword = await this.passwordService.hashPassword(
       args.password,
     );
+
+    // TODO: Maybe we can refactor this.
+    const conditional: any = {};
+    if (role === Role.TEACHER) {
+      // TODO: We should check if requested teacher already connected to another user.
+      conditional['isApproved'] = false;
+      conditional['teacher'] = {
+        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.teacher),
+      };
+    } else if (role === Role.STUDENT) {
+      conditional['isApproved'] = true;
+      conditional['university'] = {
+        connect: convertArgsToWhereClause(
+          ['id', 'slug', 'name'],
+          args.university,
+        ),
+      };
+      conditional['faculty'] = {
+        connect: convertArgsToWhereClause(['id', 'slug', 'name'], args.faculty),
+      };
+    } else if (role === Role.ADMIN) {
+      conditional['isApproved'] = true;
+    }
 
     try {
       const user = await this.prismaService.user.create({
@@ -40,19 +63,8 @@ export class AuthService {
           firstName: args.firstName,
           lastName: args.lastName,
           password: hashedPassword,
-          role: role || Role.STUDENT,
-          university: {
-            connect: convertArgsToWhereClause(
-              ['id', 'slug', 'name'],
-              args.university,
-            ),
-          },
-          faculty: {
-            connect: convertArgsToWhereClause(
-              ['id', 'slug', 'name'],
-              args.faculty,
-            ),
-          },
+          role,
+          ...conditional,
         },
       });
 
@@ -111,6 +123,8 @@ export class AuthService {
         ratings: true,
         university: true,
         faculty: true,
+        responses: true,
+        teacher: true,
       },
     });
   }

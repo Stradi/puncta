@@ -1,5 +1,6 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { Role } from 'src/common/role/roles.enum';
 import { BaseResourceIdentifierInput } from 'src/shared/dto/resource-identifier.args';
 
 @InputType()
@@ -7,6 +8,9 @@ export class ConnectUserUniversity extends BaseResourceIdentifierInput {}
 
 @InputType()
 export class ConnectUserFaculty extends BaseResourceIdentifierInput {}
+
+@InputType()
+export class ConnectUserTeacher extends BaseResourceIdentifierInput {}
 
 @ArgsType()
 export class SignupInput {
@@ -27,11 +31,15 @@ export class SignupInput {
   @IsNotEmpty()
   lastName: string;
 
-  @Field(() => ConnectUserUniversity)
-  // @IsNotEmpty()
+  @Field(() => ConnectUserUniversity, { nullable: true })
   university?: ConnectUserUniversity;
 
-  @Field(() => ConnectUserFaculty)
-  // @IsNotEmpty()
+  @Field(() => ConnectUserFaculty, { nullable: true })
   faculty?: ConnectUserFaculty;
+
+  @Field(() => String, { nullable: true })
+  role?: Role;
+
+  @Field(() => ConnectUserTeacher, { nullable: true })
+  teacher?: ConnectUserTeacher;
 }

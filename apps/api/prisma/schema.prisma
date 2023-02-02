@@ -49,6 +49,10 @@ model Teacher {
   faculty Faculty @relation(fields: [facultyId], references: [id])
 
   ratings Rating[]
+
+  // -- Only for role === TEACHER --
+
+  user User?
 }
 
 model User {
@@ -72,6 +76,24 @@ model User {
   faculty Faculty? @relation(fields: [facultyId], references: [id])
 
   ratings Rating[]
+
+  // -- These are only for role === TEACHER --
+  // -- For user with role === STUDENT, these fields will be null --
+
+  // Comments that this teacher has created
+  responses Response[]
+
+  // Connection to the teacher model
+  teacher Teacher? @relation(fields: [teacherId], references: [id])
+  teacherId Int? @unique
+
+  // Since we need to approve teachers, we should have a field to keep track this.
+  // Otherwise, anyone can create a teacher account. This field will be set to true
+  // when the admin approves the teacher. For new STUDENT users, this field will be
+  // set to true.
+  // Teacher users that are not approved will not be able to create responses. This
+  // will be handled by creating a new Guard.
+  isApproved Boolean @default(false)
 }
 
 model Rating {
@@ -92,6 +114,26 @@ model Rating {
   teacherId Int?
   teacher Teacher? @relation(fields: [teacherId], references: [id])
 
+  // Response that this rating has received from a teacher
+  response Response?
+
   @@unique([userId,teacherId])
   @@unique([userId,universityId])
+}
+
+model Response {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  content String
+  meta String
+
+  // The rating that this comment is for
+  toId Int @unique
+  to Rating @relation(fields: [toId], references: [id])
+
+  // The user (teacher) that has created this comment
+  fromId Int
+  from User @relation(fields: [fromId], references: [id])
 }

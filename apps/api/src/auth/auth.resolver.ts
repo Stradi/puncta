@@ -1,4 +1,7 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Role } from 'src/common/role/roles.enum';
+import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
 import { AuthService } from './auth.service';
 import { LoginInput } from './dto/login.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
@@ -14,7 +17,33 @@ export class AuthResolver {
   @Mutation(() => Auth)
   async signup(@Args() args: SignupInput) {
     args.email = args.email.toLowerCase();
-    const { accessToken, refreshToken } = await this.authService.signup(args);
+    if (!args.role) {
+      args.role = Role.STUDENT;
+    }
+
+    if (args.role === Role.ADMIN) {
+      throw new UnauthorizedException(
+        'You are not allowed to create an admin account',
+      );
+    } else if (args.role === Role.TEACHER && !args.teacher) {
+      throw new GenericInvalidParameterError(
+        'teacher',
+        'Teacher field is required for teacher role',
+      );
+    } else if (
+      args.role === Role.STUDENT &&
+      (!args.university || !args.faculty)
+    ) {
+      throw new GenericInvalidParameterError(
+        ['university', 'faculty'],
+        'University and faculty fields are required for student role',
+      );
+    }
+
+    const { accessToken, refreshToken } = await this.authService.signup(
+      args,
+      args.role,
+    );
 
     return {
       accessToken,
