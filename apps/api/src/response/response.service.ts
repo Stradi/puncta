@@ -81,7 +81,7 @@ export class ResponseService {
 
   async create(args: CreateResponseInput, user: User) {
     try {
-      if (!(await this.isRatingBelongsToUser(args.to, user.id))) {
+      if (!(await this.isRatingBelongsToTeacher(args.to, user.teacher.id))) {
         throw new ForbiddenException(
           "You can't create response for this rating",
         );
@@ -178,12 +178,12 @@ export class ResponseService {
     }
   }
 
-  private async isRatingBelongsToUser(ratingId: number, userId: number) {
+  private async isRatingBelongsToTeacher(ratingId: number, teacherId: number) {
     const rating = await this.prismaService.rating.findFirst({
       where: {
         id: ratingId,
-        user: {
-          id: userId,
+        teacher: {
+          id: teacherId,
         },
       },
     });
