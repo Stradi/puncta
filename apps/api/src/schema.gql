@@ -309,6 +309,25 @@ type User {
   response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
 }
 
+type SearchResultItem {
+  """Item name"""
+  name: String!
+
+  """Item slug"""
+  slug: String!
+
+  """Item type"""
+  type: String!
+}
+
+type SearchResult {
+  """Number of results"""
+  count: Int!
+
+  """Results"""
+  results: [SearchResultItem!]!
+}
+
 type Query {
   university(
     """Unique identifier of the resource"""
@@ -351,6 +370,10 @@ type Query {
   isTeacherExists(name: String!): IsExists!
   me: User!
   response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
+  search(
+    """Search query"""
+    query: String!
+  ): SearchResult!
 }
 
 type Mutation {

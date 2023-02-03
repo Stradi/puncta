@@ -11,6 +11,7 @@ import { TeacherModule } from './teacher/teacher.module';
 import { UniversityModule } from './university/university.module';
 import { UserModule } from './user/user.module';
 import { ResponseModule } from './response/response.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ResponseModule } from './response/response.module';
     AuthModule,
     UserModule,
     ResponseModule,
+    SearchModule,
   ],
 })
 export class AppModule {}
