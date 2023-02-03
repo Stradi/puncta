@@ -1,6 +1,6 @@
 import { doLogin, doRegister, getNewAccessToken, getUser } from "@/lib/auth";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useEffect, useLayoutEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export interface LoginPayload {
   email: string;
@@ -59,7 +59,7 @@ export function AuthProvider({
   const pathName = usePathname();
   const router = useRouter();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!redirects || redirects.length <= 0) {
       return;
     } else {
