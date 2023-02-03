@@ -49,6 +49,10 @@ const config: Config = {
         label: "Tüm Üniversiteler",
         href: "/universiteler",
       },
+      {
+        label: "Arama Yap",
+        href: "/ara",
+      },
     ],
     auth: {
       student: [
@@ -60,6 +64,10 @@ const config: Config = {
           label: "Değerlendir",
           href: "/degerlendir",
         },
+        {
+          label: "Arama Yap",
+          href: "/ara",
+        },
       ],
       teacher: [
         {
@@ -69,6 +77,10 @@ const config: Config = {
         {
           label: "Değerlendirenler",
           href: "/degerlendirenler",
+        },
+        {
+          label: "Arama Yap",
+          href: "/ara",
         },
       ],
     },
