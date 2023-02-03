@@ -100,3 +100,15 @@ function getAverageOfCriterias(criterias: RateCriteria[]) {
 function getOnlyAffectingCriterias(criterias: RateCriteria[]) {
   return criterias.filter((criteria) => criteria.affectsGrade);
 }
+
+export function parseQuery<T, U extends keyof T>(
+  query: T,
+  keys: U[]
+): Pick<T, U> {
+  const returnValue = {} as Pick<T, U>;
+  keys.forEach((key) => {
+    returnValue[key] = query[key];
+  });
+
+  return returnValue;
+}
