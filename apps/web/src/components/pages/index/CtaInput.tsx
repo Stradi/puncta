@@ -11,7 +11,7 @@ const CtaInputValidationSchema = yup.object().shape({
     .min(5, "Arama terimi 5 karakterden kısa olamaz.")
     .max(50, "Arama terimi 50 karakterden uzun olamaz.")
     .required("Arama terimi boş bırakılamaz.")
-    .matches(/^[a-zA-Z0-9ğüşöçİĞÜŞÖÇ ]+$/, "Arama terimi geçersiz."),
+    .matches(/^[a-zA-Z0-9ığüşöçİĞÜŞÖÇ ]+$/, "Arama terimi geçersiz."),
 });
 
 interface CtaInputProps extends React.ComponentPropsWithoutRef<"input"> {
