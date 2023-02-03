@@ -143,3 +143,35 @@ export function CardWithRating({ ratings, title, href }: CardWithRatingProps) {
     </ConditionalWrapper>
   );
 }
+
+interface CardWithoutRatingProps extends CardProps {
+  title: string;
+  href?: string;
+}
+
+export function CardWithoutRating({ title, href }: CardWithoutRatingProps) {
+  return (
+    <ConditionalWrapper
+      condition={!!href}
+      wrapper={(children) => <Link href={href as string}>{children}</Link>}
+    >
+      <div
+        className={cn(
+          "flex h-24 items-center",
+          href && "tranisition duration-100",
+          href &&
+            "hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_rgba(0,0,0,1.0)]"
+        )}
+      >
+        <div
+          className={cn(
+            "flex h-full w-full items-center justify-center",
+            "border-2 border-black"
+          )}
+        >
+          <h2 className={cn(" p-2", "text-center text-xl")}>{title}</h2>
+        </div>
+      </div>
+    </ConditionalWrapper>
+  );
+}
