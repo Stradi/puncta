@@ -33,6 +33,7 @@ interface Config {
     features: {
       title: string;
       subtitle: string;
+      bgImage: string;
       color: string;
       image: string;
     }[];
@@ -164,21 +165,24 @@ const config: Config = {
         title: "Tamamen Anonimsin",
         subtitle:
           "Yani yapılan tüm değerlendirmeler ve yorumlar gizli, kimse göremiyor. Biz bile göremiyoruz.",
-        color: "bg-yellow-500",
+        color: "bg-primary-light",
+        bgImage: "/images/tamamen-anonimsin.png",
         image: "",
       },
       {
         title: "Tüm Öğrenciler İçin",
         subtitle:
           "Öğrencilerin değerlendirmeleri ve yorumları öğretmenler için çok önemli.",
-        color: "bg-green-500",
+        color: "bg-primary-light",
+        bgImage: "/images/tum-ogrenciler-icin.png",
         image: "",
       },
       {
         title: "Sesini Duyur",
         subtitle:
           "Öğretmenlerini ve üniversiteni punlayarak daha iyi bir eğitim ortamı yaratmamıza yardımcı ol.",
-        color: "bg-red-500",
+        color: "bg-primary-light",
+        bgImage: "/images/sesini-duyur.jpg",
         image: "",
       },
     ],

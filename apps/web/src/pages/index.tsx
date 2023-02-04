@@ -10,11 +10,10 @@ export default function Page() {
       <header className="bg-primary-light -mt-16 w-full py-16 md:py-32">
         <div className="mx-auto max-w-4xl space-y-8">
           <h1 className="text-center text-5xl font-semibold sm:text-6xl  md:text-8xl">
-            Not verme{" "}
+            Not verme sırası artık sende{" "}
             <span>
               <Stars />
-            </span>{" "}
-            sırası artık sende
+            </span>
           </h1>
           <h2 className="text-center text-2xl font-medium md:text-4xl">
             Öğretmenlerini ve üniversiteni puanla
@@ -33,6 +32,7 @@ export default function Page() {
         </div>
       </section>
       <section className="mx-auto max-w-6xl">
+        <div className="my-4">{/* TODO: Ad */}</div>
         {config.landing.features.map((feature, idx) => (
           <Feature
             key={feature.title}
@@ -40,13 +40,15 @@ export default function Page() {
             leftSide={{
               title: feature.title,
               subtitle: feature.subtitle,
+              image: feature.bgImage,
             }}
-            rightSide={<div>{/* TODO: We should put image here */}</div>}
+            rightSide={<div></div>}
             color={feature.color}
           />
         ))}
+        <div className="my-4">{/* TODO: Ad */}</div>
       </section>
-      <section className="-mb-16"></section>
+      <section className="-mb-12"></section>
     </div>
   );
 }

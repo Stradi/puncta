@@ -8,7 +8,7 @@ import * as yup from "yup";
 const CtaInputValidationSchema = yup.object().shape({
   term: yup
     .string()
-    .min(5, "Arama terimi 5 karakterden kısa olamaz.")
+    .min(3, "Arama terimi 3 karakterden kısa olamaz.")
     .max(50, "Arama terimi 50 karakterden uzun olamaz.")
     .required("Arama terimi boş bırakılamaz.")
     .matches(/^[a-zA-Z0-9ığüşöçİĞÜŞÖÇ ]+$/, "Arama terimi geçersiz."),
@@ -63,8 +63,8 @@ export default function CtaInput({
           onBlur={() => setError(null)}
           onClick={() => setError(null)}
           className={cn(
-            "w-full rounded-full px-8 py-4 outline-none",
-            "text-xl font-medium  ring-1 ring-black",
+            "w-full rounded-full p-4 outline-none sm:px-8",
+            "text-base font-medium ring-1  ring-black sm:text-xl",
             "transition duration-100",
             "focus:ring-2 group-hover:ring-2"
           )}
