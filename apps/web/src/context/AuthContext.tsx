@@ -3,12 +3,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
 export interface LoginPayload {
-  email: string;
+  username: string;
   password: string;
 }
 
 export interface RegisterPayload {
   email: string;
+  username: string;
   password: string;
   firstName: string;
   lastName: string;

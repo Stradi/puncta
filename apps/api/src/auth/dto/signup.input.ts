@@ -20,6 +20,10 @@ export class SignupInput {
 
   @Field(() => String)
   @IsNotEmpty()
+  username: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
   @MinLength(8)
   password: string;
 

@@ -58,6 +58,9 @@ export default forwardRef<FormikProps<any>>(function TeacherInformationForm(
       onSubmit={(values) => {
         const arr = values.name.trim().split(" ");
         signUpContext.setEmail(values.email);
+        signUpContext.setUsername(
+          `${arr[0].toLowerCase()}.${arr[1].toLowerCase()}`
+        );
         signUpContext.setFirstName(arr[0]);
         signUpContext.setLastName(arr[1]);
         signUpContext.nextStep();

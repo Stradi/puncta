@@ -261,6 +261,9 @@ type User {
   """Email of this user"""
   email: String!
 
+  """Username of this user"""
+  username: String!
+
   """First name of this user"""
   firstName: String
 
@@ -367,6 +370,7 @@ type Query {
   ): [Teacher!]!
   rating(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]!
   isEmailExists(email: String!): IsExists!
+  isUsernameExists(username: String!): IsExists!
   isTeacherExists(name: String!): IsExists!
   me: User!
   response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
@@ -416,8 +420,8 @@ type Mutation {
   createRating(score: Int!, comment: String, meta: String, university: ConnectRatingUniversity, teacher: ConnectRatingTeacher): Rating!
   updateRating(filter: UpdateRatingFilter!, set: UpdateRatingSet!): Rating!
   deleteRating(id: Int!): Rating!
-  signup(email: String!, password: String!, firstName: String!, lastName: String!, university: ConnectUserUniversity, faculty: ConnectUserFaculty, role: String, teacher: ConnectUserTeacher): Auth!
-  login(email: String!, password: String!): Auth!
+  signup(email: String!, username: String!, password: String!, firstName: String!, lastName: String!, university: ConnectUserUniversity, faculty: ConnectUserFaculty, role: String, teacher: ConnectUserTeacher): Auth!
+  login(username: String!, password: String!): Auth!
   refreshToken(token: JWT!): Token!
   createResponse(content: String!, meta: String!, to: Int!): Response!
   updateResponse(filter: UpdateResponseFilter!, set: UpdateResponseSet!): Response!

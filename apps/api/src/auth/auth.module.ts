@@ -49,6 +49,7 @@ export class AuthModule implements OnModuleInit {
       await this.authService.signup(
         {
           email: this.configService.getOrThrow('ADMIN_EMAIL'),
+          username: 'admin',
           password: this.configService.getOrThrow('ADMIN_PASSWORD'),
           firstName: 'ADMIN',
           lastName: 'ADMIN',

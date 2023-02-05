@@ -21,6 +21,10 @@ const StudentInformationValidationSchema = yup.object().shape({
         return !(await checkEmailExists(value as string));
       }
     ),
+  username: yup
+    .string()
+    .min(3, "Kullanıcı adı en az 3 karakter olmalıdır.")
+    .required("Kullanıcı adı boş bırakılamaz."),
   name: yup
     .string()
     .min(3, "Ad en az 3 karakter olmalıdır.")
@@ -50,6 +54,7 @@ export default forwardRef<FormikProps<any>>(function StudentInformationForm(
       ref={ref}
       initialValues={{
         email: signUpContext.email,
+        username: signUpContext.username,
         name:
           signUpContext.firstName && signUpContext.lastName
             ? `${signUpContext.firstName} ${signUpContext.lastName}`
@@ -59,6 +64,7 @@ export default forwardRef<FormikProps<any>>(function StudentInformationForm(
       onSubmit={(values) => {
         const arr = values.name.trim().split(" ");
         signUpContext.setEmail(values.email);
+        signUpContext.setUsername(values.username);
         signUpContext.setFirstName(arr[0]);
         signUpContext.setLastName(arr[1]);
         signUpContext.nextStep();
@@ -71,6 +77,7 @@ export default forwardRef<FormikProps<any>>(function StudentInformationForm(
         </p>
       </div>
       <TextInput name="name" label="Ad Soyad" type="text" />
+      <TextInput name="username" label="Kullanıcı adı" type="text" />
       <TextInput name="email" label="E-posta" type="email" />
     </BaseMultistepForm>
   );

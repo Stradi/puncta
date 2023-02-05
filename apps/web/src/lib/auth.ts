@@ -3,8 +3,8 @@ import { gql } from "@apollo/client";
 import { initializeApollo } from "./apollo";
 
 const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
       accessToken
       refreshToken
     }
@@ -21,6 +21,7 @@ const GET_ME_QUERY = gql`
       lastName
       role
       email
+      username
       university {
         slug
       }
@@ -54,6 +55,7 @@ const REFRESH_TOKEN_MUTATION = gql`
 const REGISTER_MUTATION = gql`
   mutation Signup(
     $email: String!
+    $username: String!
     $password: String!
     $firstName: String!
     $lastName: String!
@@ -64,6 +66,7 @@ const REGISTER_MUTATION = gql`
   ) {
     signup(
       email: $email
+      username: $username
       password: $password
       firstName: $firstName
       lastName: $lastName
@@ -86,6 +89,14 @@ const EMAIL_EXISTS_QUERY = gql`
   }
 `;
 
+const USERNAME_EXISTS_QUERY = gql`
+  query UsernameExists($username: String!) {
+    isUsernameExists(username: $username) {
+      result
+    }
+  }
+`;
+
 const TEACHER_EXISTS_QUERY = gql`
   query TeacherExists($name: String!) {
     isTeacherExists(name: $name) {
@@ -100,7 +111,7 @@ export async function doLogin(payload: LoginPayload) {
   const response = await apolloClient.mutate({
     mutation: LOGIN_MUTATION,
     variables: {
-      email: payload.email,
+      username: payload.username,
       password: payload.password,
     },
     errorPolicy: "ignore",
@@ -192,6 +203,7 @@ export async function doRegister(payload: RegisterPayload) {
     mutation: REGISTER_MUTATION,
     variables: {
       email: payload.email,
+      username: payload.username,
       password: payload.password,
       firstName: payload.firstName,
       lastName: payload.lastName,
@@ -254,6 +266,30 @@ export async function checkEmailExists(email: string) {
   return response.data.isEmailExists.result;
 }
 
+export async function checkUsernameExists(username: string) {
+  const apolloClient = initializeApollo();
+
+  const response = await apolloClient.query({
+    query: EMAIL_EXISTS_QUERY,
+    variables: {
+      username,
+    },
+    errorPolicy: "ignore",
+  });
+
+  if (response.errors && response.errors.length > 0) {
+    console.log("Something happened while checking username.");
+    console.log(response.errors);
+    return null;
+  }
+
+  if (!response.data || !response.data.isUsernameExists) {
+    return null;
+  }
+
+  return response.data.isUsernameExists.result;
+}
+
 export async function checkTeacherExists(name: string) {
   const apolloClient = initializeApollo();
 
@@ -266,7 +302,7 @@ export async function checkTeacherExists(name: string) {
   });
 
   if (response.errors && response.errors.length > 0) {
-    console.log("Something happened while checking email.");
+    console.log("Something happened while checking teacher.");
     console.log(response.errors);
     return null;
   }

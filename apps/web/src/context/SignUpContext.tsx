@@ -8,6 +8,9 @@ interface SignUpContextProps {
   email: string;
   setEmail: (email: string) => void;
 
+  username: string;
+  setUsername: (username: string) => void;
+
   password: string;
   setPassword: (password: string) => void;
 
@@ -39,6 +42,7 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
     "STUDENT" | "TEACHER"
   >("STUDENT");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -61,6 +65,7 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
     return {
       type: registrationType,
       email,
+      username,
       password,
       firstName,
       lastName,
@@ -76,6 +81,8 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
         setRegistrationType,
         email,
         setEmail,
+        username,
+        setUsername,
         password,
         setPassword,
         firstName,

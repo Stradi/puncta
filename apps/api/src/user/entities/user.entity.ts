@@ -26,6 +26,9 @@ export class User {
   @Field(() => String, { description: 'Email of this user' })
   email: string;
 
+  @Field(() => String, { description: 'Username of this user' })
+  username: string;
+
   @Field(() => String, {
     description: 'First name of this user',
     nullable: true,

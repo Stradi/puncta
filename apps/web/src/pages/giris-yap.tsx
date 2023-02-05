@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 const LoginValidationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Geçerli bir e-posta adresi giriniz.")
-    .required("E-posta boş bırakılamaz."),
+  username: Yup.string()
+    .min(3, "Kullanıcı adı en az 3 karakter olmalıdır.")
+    .required("Kullanıcı adı boş bırakılamaz."),
   password: Yup.string()
     .min(8, "Şifre en az 8 karakter olmalıdır.")
     .required("Şifre boş bırakılamaz."),
@@ -35,27 +35,27 @@ export default function Page() {
         >
           <BaseMultistepForm
             initialValues={{
-              email: "",
+              username: "",
               password: "",
             }}
             validationSchema={LoginValidationSchema}
             onSubmit={async (values) => {
               const response = await authContext.login({
-                email: values.email,
+                username: values.username,
                 password: values.password,
               });
               if (response) {
                 router.push("/");
               } else {
                 formik.setErrors({
-                  email: "Email hatalı.",
+                  username: "Kullanıcı adı hatalı.",
                   password: "Şifre hatalı.",
                 });
               }
             }}
             getFormik={(formik) => setFormik(formik)}
           >
-            <TextInput name="email" label="E-posta" />
+            <TextInput name="username" label="Kullanıcı Adı" />
             <TextInput name="password" label="Şifre" type="password" />
             <div className="mt-8 flex justify-evenly gap-2">
               <Button variant="primary" fullWidth type="submit">

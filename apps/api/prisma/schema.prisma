@@ -65,6 +65,7 @@ model User {
   // supported right now since we are using sqlite for development.
   role String @default("STUDENT")
 
+  username String @unique
   email String @unique
   password String
   firstName String?
