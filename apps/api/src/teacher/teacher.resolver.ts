@@ -13,6 +13,8 @@ import { Roles } from 'src/common/role/roles.decorator';
 import { Role } from 'src/common/role/roles.enum';
 import { GetFacultyArgs } from 'src/faculty/dto/get-faculty.args';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
+import { GetRatingArgs } from 'src/rating/dto/get-rating.args';
+import { Rating } from 'src/rating/entities/rating.entity';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
 import { GetUniversityArgs } from 'src/university/dto/get-university.args';
 import { University } from 'src/university/entities/university.entity';
@@ -56,6 +58,12 @@ export class TeacherResolver {
   async faculty(@Parent() teacher: Teacher, @Args() args: GetFacultyArgs) {
     const { id } = teacher;
     return await this.teacherService.faculty(id, args);
+  }
+
+  @ResolveField('ratings', () => [Rating])
+  async ratings(@Parent() teacher: Teacher, @Args() args: GetRatingArgs) {
+    const { id } = teacher;
+    return await this.teacherService.ratings(id, args);
   }
 
   @Mutation(() => Teacher)

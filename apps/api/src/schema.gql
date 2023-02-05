@@ -28,6 +28,101 @@ type IsExists {
   result: Boolean!
 }
 
+type Response {
+  """Unique identifier for the teacher"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Content of the response"""
+  content: String!
+
+  """Additional meta field for this rating"""
+  meta: String!
+
+  """The ratingg that this response belongs to"""
+  to(page: Int = 0, pageSize: Int = 10, id: Int): Rating!
+
+  """The teacher that created this response"""
+  from: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  """Unique identifier for the user"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Role of this user"""
+  role: String!
+
+  """Email of this user"""
+  email: String!
+
+  """Username of this user"""
+  username: String!
+
+  """First name of this user"""
+  firstName: String
+
+  """Last name of this user"""
+  lastName: String
+
+  """Rating that this user has made"""
+  ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
+
+  """University that this user is associated with"""
+  university(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): University
+
+  """Faculty that this user is associated with"""
+  faculty(
+    """Unique identifier of the resource"""
+    id: Int
+
+    """Name of the resource"""
+    name: String
+
+    """Slug of the resource"""
+    slug: String
+    page: Int = 0
+    pageSize: Int = 10
+  ): Faculty
+
+  """Responses that this user has created"""
+  responses: [Response!]
+
+  """Teacher that this user is associated with"""
+  teacher: Teacher
+
+  """Whether this user (teacher) is verified or not"""
+  isApproved: Boolean
+  response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
+}
+
 type Rating {
   """Unique identifier for rating"""
   id: ID!
@@ -74,12 +169,10 @@ type Rating {
     page: Int = 0
     pageSize: Int = 10
   ): Teacher
-}
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+  """The user that created this rating"""
+  user: User
+}
 
 type University {
   """Unique identifier for the university"""
@@ -126,7 +219,7 @@ type University {
   ): [Teacher!]
 
   """Ratings of this university"""
-  ratings: [Rating!]
+  ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
 }
 
 type Faculty {
@@ -219,97 +312,7 @@ type Teacher {
   ): Faculty
 
   """Ratings of this teacher"""
-  ratings: [Rating!]
-}
-
-type Response {
-  """Unique identifier for the teacher"""
-  id: ID!
-
-  """Date the this object created"""
-  createdAt: DateTime!
-
-  """Date the this object last updated"""
-  updatedAt: DateTime!
-
-  """Content of the response"""
-  content: String!
-
-  """Additional meta field for this rating"""
-  meta: String!
-
-  """The ratingg that this response belongs to"""
-  to(page: Int = 0, pageSize: Int = 10, id: Int): Rating!
-
-  """The teacher that created this response"""
-  from: User!
-}
-
-type User {
-  """Unique identifier for the user"""
-  id: ID!
-
-  """Date the this object created"""
-  createdAt: DateTime!
-
-  """Date the this object last updated"""
-  updatedAt: DateTime!
-
-  """Role of this user"""
-  role: String!
-
-  """Email of this user"""
-  email: String!
-
-  """Username of this user"""
-  username: String!
-
-  """First name of this user"""
-  firstName: String
-
-  """Last name of this user"""
-  lastName: String
-
-  """Rating that this user has made"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
-
-  """University that this user is associated with"""
-  university(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): University
-
-  """Faculty that this user is associated with"""
-  faculty(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): Faculty
-
-  """Responses that this user has created"""
-  responses: [Response!]
-
-  """Teacher that this user is associated with"""
-  teacher: Teacher
-
-  """Whether this user (teacher) is verified or not"""
-  isApproved: Boolean
-  response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
 }
 
 type SearchResultItem {

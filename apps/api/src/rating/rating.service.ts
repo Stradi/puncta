@@ -81,6 +81,21 @@ export class RatingService {
     });
   }
 
+  async user(id: number) {
+    return await this.prismaService.user.findFirst({
+      where: {
+        ratings: {
+          some: { id },
+        },
+      },
+      include: {
+        university: true,
+        faculty: true,
+        ratings: true,
+      },
+    });
+  }
+
   async create(args: CreateRatingInput, user: User) {
     let ratingTo = {};
 

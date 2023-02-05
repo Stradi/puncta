@@ -3,6 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import slugify from 'slugify';
 import { GetFacultyArgs } from 'src/faculty/dto/get-faculty.args';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { GetRatingArgs } from 'src/rating/dto/get-rating.args';
 import { TeacherNotFoundError } from 'src/shared/shared.exceptions';
 import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
 import { GetUniversityArgs } from 'src/university/dto/get-university.args';
@@ -78,6 +79,23 @@ export class TeacherService {
       include: {
         universities: true,
         teachers: true,
+      },
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+    });
+  }
+
+  async ratings(id: number, args: GetRatingArgs) {
+    return await this.prismaService.rating.findMany({
+      where: {
+        teacherId: id,
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      },
+      include: {
+        university: true,
+        teacher: true,
+        user: true,
+        response: true,
       },
       take: args.pageSize,
       skip: args.page * args.pageSize,

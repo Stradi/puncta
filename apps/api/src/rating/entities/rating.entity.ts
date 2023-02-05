@@ -7,6 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { University } from 'src/university/entities/university.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @ObjectType()
 export class Rating {
@@ -49,4 +50,10 @@ export class Rating {
     nullable: true,
   })
   teacher: Teacher;
+
+  @Field(() => User, {
+    description: 'The user that created this rating',
+    nullable: true,
+  })
+  user: User;
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { GetFacultyArgs } from 'src/faculty/dto/get-faculty.args';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { GetRatingArgs } from 'src/rating/dto/get-rating.args';
 import {
   UniversityAlreadyExistsError,
   UniversityNotFoundError,
@@ -76,6 +77,23 @@ export class UniversityService {
         university: true,
         faculty: true,
         ratings: true,
+      },
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
+    });
+  }
+
+  async ratings(id: number, args: GetRatingArgs) {
+    return await this.prismaService.rating.findMany({
+      where: {
+        universityId: id,
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+      },
+      include: {
+        university: true,
+        teacher: true,
+        user: true,
+        response: true,
       },
       take: args.pageSize,
       skip: args.page * args.pageSize,

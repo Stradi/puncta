@@ -57,6 +57,12 @@ export class RatingResolver {
     return await this.ratingService.teacher(id, args);
   }
 
+  @ResolveField('user', () => User)
+  async user(@Parent() rating: Rating) {
+    const { id } = rating;
+    return await this.ratingService.user(id);
+  }
+
   @Mutation(() => Rating)
   @UseGuards(GqlAuthGuard, RoleGuard)
   @Roles(Role.ADMIN, Role.STUDENT)
