@@ -10,15 +10,21 @@ import { GetResponseArgs } from 'src/response/dto/get-response.args';
 import { Response } from 'src/response/entities/response.entity';
 import { GetUniversityArgs } from 'src/university/dto/get-university.args';
 import { University } from 'src/university/entities/university.entity';
+import { GetUserArgs } from './dto/get-user.args';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
 @Resolver(() => User)
-@UseGuards(GqlAuthGuard)
 export class UserResolver {
   constructor(private userService: UserService) {}
 
+  @Query(() => User, { name: 'user' })
+  async find(@Args() args: GetUserArgs) {
+    return this.userService.find(args);
+  }
+
   @Query(() => User)
+  @UseGuards(GqlAuthGuard)
   async me(@UserEntity() user: User) {
     return user;
   }

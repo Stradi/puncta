@@ -71,3 +71,5 @@ export const ResponseNotFoundError = new GenericNotFoundError('response');
 export const ResponseAlreadyExistsError = new GenericAlreadyExistsError(
   'response',
 );
+
+export const UserNotFoundError = new GenericNotFoundError('user');
