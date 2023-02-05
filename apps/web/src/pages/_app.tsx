@@ -28,7 +28,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         redirects={[
           {
             page: "/giris-yap",
-            to: "/profil",
+            to: "/",
             requireAuth: false,
           },
           {
