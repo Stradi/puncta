@@ -1,4 +1,5 @@
 import AuthCardFooter from "@/components/AuthCardFooter";
+import Button from "@/components/Button";
 import { InfoCard, OverallRatingCard } from "@/components/Card";
 import SingleRating from "@/components/SingleRating";
 import TextSwitch from "@/components/TextSwitch";
@@ -71,7 +72,19 @@ export default function Page({ university, slug }: PageProps) {
               <div className="space-y-4 sm:w-full md:max-w-3xl">
                 {university.ratings && university.ratings.length > 0 ? (
                   university.ratings.map((rating) => (
-                    <SingleRating key={rating.id} {...rating} />
+                    <SingleRating key={rating.id} {...rating}>
+                      <p>
+                        <Button
+                          className="m-0 p-0"
+                          variant="text"
+                          asLink
+                          href={`/profil/${rating.user?.username}`}
+                        >
+                          {rating.user?.username}
+                        </Button>{" "}
+                        adlı kullanıcının değerlendirmesi
+                      </p>
+                    </SingleRating>
                   ))
                 ) : (
                   <p className="text-2xl font-medium">
@@ -96,7 +109,9 @@ interface Params {
 
 export async function getStaticProps({ params }: Params) {
   const apolloClient = initializeApollo();
-  const { data } = await apolloClient.query<{ university: University[] }>({
+  const { data, errors, error } = await apolloClient.query<{
+    university: University[];
+  }>({
     query: gql`
       query SingleUniversity($slug: String) {
         university(slug: $slug) {
@@ -109,6 +124,9 @@ export async function getStaticProps({ params }: Params) {
             score
             comment
             createdAt
+            user {
+              username
+            }
           }
           faculties {
             id

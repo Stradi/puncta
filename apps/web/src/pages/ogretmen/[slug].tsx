@@ -76,7 +76,19 @@ export default function Page({ teacher }: PageProps) {
             <div className="space-y-4 sm:w-full md:max-w-3xl">
               {teacher.ratings && teacher.ratings.length > 0 ? (
                 teacher.ratings.map((rating) => (
-                  <SingleRating key={rating.id} {...rating} />
+                  <SingleRating key={rating.id} {...rating}>
+                    <p>
+                      <Button
+                        className="m-0 p-0"
+                        variant="text"
+                        asLink
+                        href={`/profil/${rating.user?.username}`}
+                      >
+                        {rating.user?.username}
+                      </Button>{" "}
+                      adlı kullanıcının değerlendirmesi
+                    </p>
+                  </SingleRating>
                 ))
               ) : (
                 <p className="text-2xl font-medium">
@@ -113,6 +125,9 @@ export async function getStaticProps({ params }: Params) {
             score
             comment
             createdAt
+            user {
+              username
+            }
           }
           university {
             name
