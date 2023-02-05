@@ -36,6 +36,7 @@ interface User extends Partial<CommonResource> {
   lastName: string;
   role: string;
   email: string;
+  username: string;
 
   university?: University;
   faculty?: Faculty;
