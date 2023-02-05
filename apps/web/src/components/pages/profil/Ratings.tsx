@@ -30,19 +30,17 @@ export default function Ratings({ ratings }: RatingsProps) {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {ratings.map((rating) => (
         <SingleRating key={rating.id} {...rating}>
-          <div className="flex justify-between">
-            <p className="text-sm font-medium">
-              <Button
-                variant="text"
-                asLink
-                href={toLink(rating)}
-                className="m-0 p-0"
-              >
-                {toName(rating)}
-              </Button>{" "}
-              için yapılan değerlendirme
-            </p>
-          </div>
+          <p>
+            <Button
+              variant="text"
+              asLink
+              href={toLink(rating)}
+              className="m-0 p-0"
+            >
+              {toName(rating)}
+            </Button>{" "}
+            için yapılan değerlendirme
+          </p>
         </SingleRating>
       ))}
     </div>

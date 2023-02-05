@@ -21,6 +21,7 @@ interface Rating extends Partial<Omit<CommonResource, "name" | "slug">> {
   score: number;
   comment: string;
   meta: string;
+  user?: User;
   university?: University;
   teacher?: Teacher;
 }

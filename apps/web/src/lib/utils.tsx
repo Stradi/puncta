@@ -89,7 +89,7 @@ export function ratingMetaToScoresArray(ratings: Rating[], max: number) {
   });
 }
 
-function getRatingMeta(rating: Rating) {
+export function getRatingMeta(rating: Rating) {
   return getOnlyAffectingCriterias(JSON.parse(rating.meta) as RateCriteria[]);
 }
 
