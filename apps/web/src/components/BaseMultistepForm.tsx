@@ -61,7 +61,7 @@ function BaseMultistepForm<T extends Record<string, any>>(
           className="m-0 hidden h-0 w-0 border-0 p-0"
         />
         <div
-          className={cn("flex flex-col space-y-8", "[&>*]:flex [&>*]:flex-col")}
+          className={cn("flex flex-col space-y-6", "[&>*]:flex [&>*]:flex-col")}
         >
           {children}
         </div>
