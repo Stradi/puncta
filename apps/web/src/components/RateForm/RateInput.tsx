@@ -83,6 +83,7 @@ export default function RateInput({
             className={cn(
               "relative h-8 w-full bg-white ring-2 ring-black hover:cursor-pointer",
               "transition duration-100",
+              "active:brightness-75",
               {
                 [stepToColors[step.value]]:
                   step.value <= field.value && hoveringOn === -1,
