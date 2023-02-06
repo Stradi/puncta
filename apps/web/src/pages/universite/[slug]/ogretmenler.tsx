@@ -43,7 +43,7 @@ export default function Page({ university, slug }: PageProps) {
             } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
               university.ratings
             )} olarak hesaplanmıştır.`}
-            scores={ratingMetaToScoresArray(university.ratings as Rating[], 5)}
+            scores={ratingMetaToScoresArray(university.ratings as Rating[], 10)}
           />
         </header>
         <div>
