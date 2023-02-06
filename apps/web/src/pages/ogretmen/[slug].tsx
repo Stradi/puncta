@@ -55,7 +55,7 @@ export default function Page({ teacher }: PageProps) {
           } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
             teacher.ratings
           )} olarak hesaplanmıştır.`}
-          scores={ratingMetaToScoresArray(teacher.ratings as Rating[], 5)}
+          scores={ratingMetaToScoresArray(teacher.ratings as Rating[], 10)}
         />
       </header>
       <div>

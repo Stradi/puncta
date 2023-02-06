@@ -33,7 +33,7 @@ export function ratingsToLetterGrade(ratings: Rating[] | undefined) {
     ratings.map((rating) => getAverageOfCriterias(getRatingMeta(rating)))
   );
 
-  return numberToLetterGrade(average * 20);
+  return numberToLetterGrade(average * 10);
 }
 
 export function toReadableDate(date: string) {
@@ -111,4 +111,12 @@ export function parseQuery<T, U extends keyof T>(
   });
 
   return returnValue;
+}
+
+export function safeLogicalOr(a: any, defaultValue: any) {
+  if (typeof a === "undefined") {
+    return defaultValue;
+  }
+
+  return a;
 }

@@ -1,15 +1,18 @@
 import { RateContext } from "@/context/RateContext";
 import { FormikProps } from "formik";
 import { forwardRef, useContext } from "react";
-import RateInput from "../../RateInput";
 
 import BaseMultistepForm from "@/components/BaseMultistepForm";
+import { safeLogicalOr } from "@/lib/utils";
 import * as yup from "yup";
+import RateSlider from "../../RateSlider";
 
 const FirstTeacherFormValidationSchema = yup.object().shape({
-  knowledge: yup.number().min(1, "Bilgi düzeyi kısmı boş bırakılamaz"),
-  communication: yup.number().min(1, "İletişim kısmı boş bırakılamaz"),
-  fairness: yup.number().min(1, "Adillik kısmı boş bırakılamaz"),
+  knowledge: yup.number(),
+  technique: yup.number(),
+  communication: yup.number(),
+  material: yup.number(),
+  declamation: yup.number(),
 });
 
 export default forwardRef<FormikProps<any>>(function BaseRatingForm(
@@ -22,13 +25,26 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
     <BaseMultistepForm
       ref={ref}
       initialValues={{
-        knowledge:
-          rateContext.criterias.find((c) => c.name === "knowledge")?.score || 0,
-        communication:
-          rateContext.criterias.find((c) => c.name === "communication")
-            ?.score || 0,
-        fairness:
-          rateContext.criterias.find((c) => c.name === "fairness")?.score || 0,
+        knowledge: safeLogicalOr(
+          rateContext.criterias.find((c) => c.name === "knowledge")?.score,
+          5
+        ),
+        technique: safeLogicalOr(
+          rateContext.criterias.find((c) => c.name === "technique")?.score,
+          5
+        ),
+        communication: safeLogicalOr(
+          rateContext.criterias.find((c) => c.name === "communication")?.score,
+          5
+        ),
+        material: safeLogicalOr(
+          rateContext.criterias.find((c) => c.name === "material")?.score,
+          5
+        ),
+        declamation: safeLogicalOr(
+          rateContext.criterias.find((c) => c.name === "declamation")?.score,
+          5
+        ),
       }}
       validationSchema={FirstTeacherFormValidationSchema}
       onSubmit={(values) => {
@@ -40,6 +56,13 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
         });
 
         rateContext.addOrUpdateCriteria({
+          name: "technique",
+          localizedName: "Yöntem",
+          score: values.technique,
+          affectsGrade: true,
+        });
+
+        rateContext.addOrUpdateCriteria({
           name: "communication",
           localizedName: "İletişim",
           score: values.communication,
@@ -47,9 +70,16 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
         });
 
         rateContext.addOrUpdateCriteria({
-          name: "fairness",
-          localizedName: "Tarafsızlık",
-          score: values.fairness,
+          name: "material",
+          localizedName: "Materyal",
+          score: values.material,
+          affectsGrade: true,
+        });
+
+        rateContext.addOrUpdateCriteria({
+          name: "declamation",
+          localizedName: "Hitabet",
+          score: values.declamation,
           affectsGrade: true,
         });
 
@@ -58,90 +88,109 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
     >
       <div>
         <p className="text-lg">
-          Burada öğretmenini beş farklı kriter üzerinden değerlendirmeni
-          istiyoruz.
+          Burada öğretmeninin ders verme konusunda 5 faktörü
+          değerlendireceksiniz.
         </p>
       </div>
-      <RateInput
+      <RateSlider
         name="knowledge"
-        label="Bilgi Düzeyi"
-        info="Kişinin bilgi düzeyi ve ilgili konu hakkındaki yetkinliği."
-        steps={[
-          {
-            text: "Yetersiz",
-            value: 1,
-          },
-          {
-            text: "Az",
-            value: 2,
-          },
-          {
-            text: "Orta",
-            value: 3,
-          },
-          {
-            text: "İyi",
-            value: 4,
-          },
-          {
-            text: "Çok iyi",
-            value: 5,
-          },
-        ]}
+        label="Bilgi"
+        max={10}
+        min={0}
+        step={1}
+        valueToText={{
+          0: "0",
+          1: "1",
+          2: "2",
+          3: "3",
+          4: "4",
+          5: "5",
+          6: "6",
+          7: "7",
+          8: "8",
+          9: "9",
+          10: "10",
+        }}
       />
-      <RateInput
+      <RateSlider
+        name="technique"
+        label="Yöntem"
+        max={10}
+        min={0}
+        step={1}
+        valueToText={{
+          0: "0",
+          1: "1",
+          2: "2",
+          3: "3",
+          4: "4",
+          5: "5",
+          6: "6",
+          7: "7",
+          8: "8",
+          9: "9",
+          10: "10",
+        }}
+      />
+      <RateSlider
         name="communication"
         label="İletişim"
-        info="Kişinin iletişim becerisi ve öğrenciye karşı yaklaşımı."
-        steps={[
-          {
-            text: "Yetersiz",
-            value: 1,
-          },
-          {
-            text: "Az",
-            value: 2,
-          },
-          {
-            text: "Orta",
-            value: 3,
-          },
-          {
-            text: "İyi",
-            value: 4,
-          },
-          {
-            text: "Çok iyi",
-            value: 5,
-          },
-        ]}
+        max={10}
+        min={0}
+        step={1}
+        valueToText={{
+          0: "0",
+          1: "1",
+          2: "2",
+          3: "3",
+          4: "4",
+          5: "5",
+          6: "6",
+          7: "7",
+          8: "8",
+          9: "9",
+          10: "10",
+        }}
       />
-      <RateInput
-        name="fairness"
-        label="Adillik"
-        info="Kişinin herkese eşit mesafede olduğunu, ayrım yapmadan adil düzeyde davranması."
-        steps={[
-          {
-            text: "Yetersiz",
-            value: 1,
-          },
-          {
-            text: "Az",
-            value: 2,
-          },
-          {
-            text: "Orta",
-            value: 3,
-          },
-          {
-            text: "İyi",
-            value: 4,
-          },
-          {
-            text: "Çok iyi",
-            value: 5,
-          },
-        ]}
+      <RateSlider
+        name="material"
+        label="Materyal"
+        max={10}
+        min={0}
+        step={1}
+        valueToText={{
+          0: "0",
+          1: "1",
+          2: "2",
+          3: "3",
+          4: "4",
+          5: "5",
+          6: "6",
+          7: "7",
+          8: "8",
+          9: "9",
+          10: "10",
+        }}
+      />
+      <RateSlider
+        name="declamation"
+        label="Hitabet"
+        max={10}
+        min={0}
+        step={1}
+        valueToText={{
+          0: "0",
+          1: "1",
+          2: "2",
+          3: "3",
+          4: "4",
+          5: "5",
+          6: "6",
+          7: "7",
+          8: "8",
+          9: "9",
+          10: "10",
+        }}
       />
     </BaseMultistepForm>
   );
