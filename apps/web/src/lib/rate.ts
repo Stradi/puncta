@@ -106,7 +106,10 @@ export async function createRating(payload: CreateRatingPayload) {
     variables: {
       score: payload.rating,
       comment: payload.comment,
-      meta: JSON.stringify(payload.criterias),
+      meta: JSON.stringify({
+        criterias: payload.criterias,
+        tags: payload.tags,
+      }),
       ...ratingToObj,
     },
     context: {

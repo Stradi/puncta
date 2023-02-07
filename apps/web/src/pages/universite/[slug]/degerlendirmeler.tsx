@@ -1,11 +1,16 @@
 import AuthCardFooter from "@/components/AuthCardFooter";
 import Button from "@/components/Button";
 import { InfoCard, OverallRatingCard } from "@/components/Card";
+import Chip from "@/components/Chip";
 import SingleRating from "@/components/SingleRating";
 import TextSwitch from "@/components/TextSwitch";
 import { RateProvider } from "@/context/RateContext";
 import { initializeApollo } from "@/lib/apollo";
-import { ratingMetaToScoresArray, ratingsToLetterGrade } from "@/lib/utils";
+import {
+  mostFrequentTags,
+  ratingMetaToScoresArray,
+  ratingsToLetterGrade,
+} from "@/lib/utils";
 import { gql } from "@apollo/client";
 
 interface PageProps {
@@ -39,6 +44,12 @@ export default function Page({ university, slug }: PageProps) {
                 <AuthCardFooter />
               </RateProvider>
             }
+            tags={mostFrequentTags(university.ratings as Rating[], 3).map(
+              (tag) => {
+                const t = tag as RateTag;
+                return <Chip key={t.name} label={t.localizedName} />;
+              }
+            )}
           />
           <OverallRatingCard
             letterGrade={ratingsToLetterGrade(university.ratings)}

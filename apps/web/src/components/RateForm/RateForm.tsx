@@ -8,10 +8,14 @@ import Button from "../Button";
 import BaseRatingForm from "./forms/BaseRatingForm";
 import FinalScreen from "./forms/FinalScreen";
 import IntroScreen from "./forms/IntroScreen";
+import TagSelectForm from "./forms/TagSelectForm";
 import FirstTeacherForm from "./forms/teacher/FirstTeacherForm";
 import SecondTeacherForm from "./forms/teacher/SecondTeacherForm";
 import FirstUniversityForm from "./forms/university/FirstUniversityForm";
 import SecondUniversityForm from "./forms/university/SecondUniversityForm";
+
+import TeacherTraits from "./forms/data/teacher-traits.json";
+import UniversityTraits from "./forms/data/university-traits.json";
 
 export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
   const formRef = createRef<FormikProps<any>>();
@@ -44,9 +48,9 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
   }
 
   async function handleNext() {
-    // If we are in the last step (rateContext.step === 4), we need to
+    // If we are in the last step (rateContext.step === 5), we need to
     // rate the teacher or university.
-    if (rateContext.step === 4) {
+    if (rateContext.step === 5) {
       const isDone = await rateContext.rate();
       if (!isDone) {
         // Something happened, show error.
@@ -87,8 +91,18 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
             ) : (
               <SecondUniversityForm ref={formRef} />
             ))}
-          {rateContext.step === 3 && <BaseRatingForm ref={formRef} />}
-          {rateContext.step === 4 && <FinalScreen />}
+          {rateContext.step === 3 && (
+            <TagSelectForm
+              ref={formRef}
+              tags={
+                rateContext.ratingTo.type === "university"
+                  ? UniversityTraits
+                  : TeacherTraits
+              }
+            />
+          )}
+          {rateContext.step === 4 && <BaseRatingForm ref={formRef} />}
+          {rateContext.step === 5 && <FinalScreen />}
         </motion.div>
       </AnimatePresence>
       <div className="mt-8 flex justify-evenly">
@@ -101,7 +115,7 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
           Geri Dön
         </Button>
         <Button fullWidth onClick={handleNext}>
-          {rateContext.step === 4 ? "Paylaş" : "Devam Et"}
+          {rateContext.step === 5 ? "Paylaş" : "Devam Et"}
         </Button>
       </div>
     </div>

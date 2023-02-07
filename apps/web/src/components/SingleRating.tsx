@@ -1,9 +1,11 @@
 import {
   cn,
   getRatingMeta,
+  getRatingTags,
   ratingsToLetterGrade,
   toReadableDate,
 } from "@/lib/utils";
+import Chip from "./Chip";
 import LetterGrade from "./LetterGrade";
 
 interface SingleRatingProps extends React.PropsWithChildren<Rating> {}
@@ -16,6 +18,10 @@ export default function SingleRating({
   children,
 }: SingleRatingProps) {
   const criterias = getRatingMeta({
+    meta,
+  } as Rating);
+
+  const tags = getRatingTags({
     meta,
   } as Rating);
 
@@ -39,17 +45,25 @@ export default function SingleRating({
         <div className="text-sm font-medium">{children}</div>
         <hr></hr>
         <p className={cn("font-medium")}>{comment}</p>
-        <div className="grid gap-x-4 md:grid-cols-2 lg:grid-cols-3">
-          {criterias.map((criteria) => (
-            <div key={criteria.name} className="flex justify-between">
-              <span className="text-sm font-bold">
-                {criteria.localizedName}
-              </span>
-              <span className="font-mono text-sm font-medium">
-                {criteria.score.toFixed(2)}
-              </span>
-            </div>
-          ))}
+        <hr></hr>
+        <div className="space-y-4">
+          <div className="grid gap-x-4 md:grid-cols-2 lg:grid-cols-3">
+            {criterias.map((criteria) => (
+              <div key={criteria.name} className="flex justify-between">
+                <span className="text-sm font-bold">
+                  {criteria.localizedName}
+                </span>
+                <span className="font-mono text-sm font-medium">
+                  {criteria.score.toFixed(2)}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <Chip key={tag.name} label={tag.localizedName} />
+            ))}
+          </div>
         </div>
         <hr></hr>
         <div className="flex justify-between">

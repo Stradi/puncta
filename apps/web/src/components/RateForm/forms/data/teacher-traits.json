@@ -1,0 +1,70 @@
+[
+  {
+    "name": "smiling",
+    "localizedName": "Güler Yüzlü"
+  },
+  {
+    "name": "aggresive",
+    "localizedName": "Agresif"
+  },
+  {
+    "name": "amazing",
+    "localizedName": "Harika"
+  },
+  {
+    "name": "pop-quiz",
+    "localizedName": "Sürpriz Sınav"
+  },
+  {
+    "name": "disciplined",
+    "localizedName": "Disiplinli"
+  },
+  {
+    "name": "fun",
+    "localizedName": "Eğlenceli"
+  },
+  {
+    "name": "boring",
+    "localizedName": "Sıkıcı"
+  },
+  {
+    "name": "helpful",
+    "localizedName": "Yardımsever"
+  },
+  {
+    "name": "kind-hearted",
+    "localizedName": "İyi Kalpli"
+  },
+  {
+    "name": "strict",
+    "localizedName": "Sert"
+  },
+  {
+    "name": "lazy",
+    "localizedName": "Slaytçı"
+  },
+  {
+    "name": "smart",
+    "localizedName": "Zeki"
+  },
+  {
+    "name": "hard-working",
+    "localizedName": "Çalışkan"
+  },
+  {
+    "name": "hard-exams",
+    "localizedName": "Zor Sınavlar"
+  },
+  {
+    "name": "easy-exams",
+    "localizedName": "Kolay Sınavlar"
+  },
+  {
+    "name": "easy-assignments",
+    "localizedName": "Kolay Ödevler"
+  },
+  {
+    "name": "hard-assignments",
+    "localizedName": "Zor Ödevler"
+  }
+]

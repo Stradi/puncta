@@ -6,6 +6,7 @@ export interface CreateRatingPayload {
   rating: number;
   comment: string;
   criterias: RateCriteria[];
+  tags: RateTag[];
 
   ratingTo: ConditionalRateTo;
 }
@@ -32,6 +33,9 @@ interface RateContextProps {
   criterias: RateCriteria[];
   addOrUpdateCriteria: (criteria: RateCriteria) => void;
 
+  tags: RateTag[];
+  setTags: (tags: RateTag[]) => void;
+
   step: number;
   prevStep: () => void;
   nextStep: () => void;
@@ -55,6 +59,7 @@ export function RateProvider(props: RateProviderProps) {
   const [comment, setComment] = useState("");
 
   const [criterias, setCriterias] = useState<RateCriteria[]>([]);
+  const [tags, setTags] = useState<RateTag[]>([]);
 
   const [step, setStep] = useState(0);
 
@@ -82,6 +87,7 @@ export function RateProvider(props: RateProviderProps) {
       rating,
       comment,
       criterias,
+      tags,
       ratingTo: props,
     };
   }
@@ -105,6 +111,8 @@ export function RateProvider(props: RateProviderProps) {
         setComment,
         criterias,
         addOrUpdateCriteria,
+        tags,
+        setTags,
         rate,
         step,
         prevStep,
