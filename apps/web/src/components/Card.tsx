@@ -32,6 +32,7 @@ interface InfoCardProps extends CardProps {
   title: string;
   description: React.ReactNode;
   footer: React.ReactNode;
+  tags?: React.ReactNode;
 }
 
 export function InfoCard({
@@ -39,6 +40,7 @@ export function InfoCard({
   title,
   description,
   footer,
+  tags,
   ...props
 }: InfoCardProps) {
   return (
@@ -54,7 +56,10 @@ export function InfoCard({
             className="border-r-2 border-black"
           />
         )}
-        <h2 className={cn("grow", "text-2xl font-semibold")}>{title}</h2>
+        <div className="space-y-2">
+          {tags && <div className="flex flex-wrap gap-2">{tags}</div>}
+          <h2 className={cn("grow", "ml-1 text-2xl font-semibold")}>{title}</h2>
+        </div>
       </div>
       <div className={cn("grow p-4", "text-xl font-medium")}>{description}</div>
       <div>{footer}</div>
