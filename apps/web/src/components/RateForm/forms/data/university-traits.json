@@ -1,0 +1,46 @@
+[
+  {
+    "name": "lgbt-friendly",
+    "localizedName": "LGBT Dostu"
+  },
+  {
+    "name": "expensive",
+    "localizedName": "Pahalı"
+  },
+  {
+    "name": "great-events",
+    "localizedName": "Güzel Etkinlikler"
+  },
+  {
+    "name": "lots-of-queues",
+    "localizedName": "Her Yer Sıra"
+  },
+  {
+    "name": "bad-transportation",
+    "localizedName": "👎 Ulaşım"
+  },
+  {
+    "name": "good-transportation",
+    "localizedName": "👎 Ulaşım"
+  },
+  {
+    "name": "good-sport-facilities",
+    "localizedName": "👍 Spor Alanları"
+  },
+  {
+    "name": "bad-student-help-desk",
+    "localizedName": "👎 Öğrenci İşleri"
+  },
+  {
+    "name": "good-student-help-desk",
+    "localizedName": "👍 Öğrenci İşleri"
+  },
+  {
+    "name": "has-greenery",
+    "localizedName": "👍 Yeşil Alan"
+  },
+  {
+    "name": "no-greenery",
+    "localizedName": "👎 Yeşil Alan"
+  }
+]

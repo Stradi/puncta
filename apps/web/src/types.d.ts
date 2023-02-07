@@ -50,3 +50,13 @@ interface RateCriteria {
   score: number;
   affectsGrade?: boolean = true;
 }
+
+interface RateTag {
+  name: string;
+  localizedName: string;
+}
+
+interface RateMeta {
+  criterias: RateCriteria[];
+  tags: RateTag[];
+}

@@ -90,7 +90,31 @@ export function ratingMetaToScoresArray(ratings: Rating[], max: number) {
 }
 
 export function getRatingMeta(rating: Rating) {
-  return getOnlyAffectingCriterias(JSON.parse(rating.meta) as RateCriteria[]);
+  return getOnlyAffectingCriterias(
+    (JSON.parse(rating.meta) as RateMeta).criterias
+  );
+}
+
+export function getRatingTags(rating: Rating) {
+  return (JSON.parse(rating.meta) as RateMeta).tags;
+}
+
+export function mostFrequentTags(ratings: Rating[], count: number) {
+  const tags = ratings.flatMap((rating) => getRatingTags(rating));
+  const tagCount = tags.reduce((acc, tag) => {
+    if (acc[tag.name]) {
+      acc[tag.name] += 1;
+    } else {
+      acc[tag.name] = 1;
+    }
+
+    return acc;
+  }, {} as Record<string, number>);
+
+  return Object.entries(tagCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, count)
+    .map((entry) => tags.find((tag) => tag.name === entry[0]));
 }
 
 function getAverageOfCriterias(criterias: RateCriteria[]) {
