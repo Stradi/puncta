@@ -61,7 +61,13 @@ const RATEABLE_UNIVERSITY_QUERY = gql`
 
 const RATEABLE_TEACHERS_QUERY = gql`
   query RateableTeachers($universitySlug: String!, $facultySlug: String) {
-    teacher {
+    teacher(
+      filter: {
+        university: { slug: { equals: $universitySlug } }
+        faculty: { slug: { equals: $facultySlug } }
+      }
+      pageSize: 9999
+    ) {
       id
       name
       slug
@@ -70,12 +76,12 @@ const RATEABLE_TEACHERS_QUERY = gql`
         score
         meta
       }
-      university(slug: $universitySlug) {
+      university {
         id
         name
         slug
       }
-      faculty(slug: $facultySlug) {
+      faculty {
         id
         name
         slug

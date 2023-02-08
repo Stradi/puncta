@@ -125,7 +125,7 @@ export async function getStaticProps({ params }: Params) {
   }>({
     query: gql`
       query SingleUniversity($slug: String) {
-        university(slug: $slug) {
+        university(filter: { slug: { equals: $slug } }) {
           id
           name
           slug

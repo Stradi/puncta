@@ -109,7 +109,7 @@ export async function getStaticProps({ params }: Params) {
   const { data } = await apolloClient.query<{ university: University[] }>({
     query: gql`
       query SingleUniversityWithTeacher($slug: String) {
-        university(slug: $slug) {
+        university(filter: { slug: { equals: $slug } }) {
           id
           name
           slug
