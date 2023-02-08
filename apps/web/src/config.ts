@@ -182,7 +182,7 @@ const config: Config = {
         subtitle:
           "Öğretmenlerini ve üniversiteni punlayarak daha iyi bir eğitim ortamı yaratmamıza yardımcı ol.",
         color: "bg-primary-light",
-        bgImage: "/images/sesini-duyur.jpg",
+        bgImage: "/images/sesini-duyur.png",
         image: "",
       },
     ],
