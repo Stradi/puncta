@@ -41,7 +41,7 @@ export async function getStaticProps() {
   }>({
     query: gql`
       query {
-        university {
+        university(pageSize: 9999) {
           id
           name
           slug
