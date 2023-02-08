@@ -21,8 +21,8 @@ export default function Page({ university, slug }: PageProps) {
 
   return (
     <main>
-      <section>
-        <header className="container mx-auto max-w-6xl md:flex md:gap-8">
+      <header className="container mx-auto max-w-6xl md:flex md:gap-8">
+        <div className="h-full w-full space-y-6">
           <InfoCard
             image={{
               src: "https://picsum.photos/200",
@@ -40,60 +40,60 @@ export default function Page({ university, slug }: PageProps) {
                 <AuthCardFooter />
               </RateProvider>
             }
-            tags={mostFrequentTags(university.ratings as Rating[], 3).map(
-              (tag) => {
-                const t = tag as RateTag;
-                return <Chip key={t.name} label={t.localizedName} />;
-              }
-            )}
           />
-          <OverallRatingCard
-            letterGrade={ratingsToLetterGrade(university.ratings)}
-            gradeText={`${uniName}'nin toplam ${
-              university.ratings?.length
-            } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
-              university.ratings
-            )} olarak hesaplanmıştır.`}
-            scores={ratingMetaToScoresArray(university.ratings as Rating[], 10)}
-          />
-        </header>
-        <div>
-          <h2 className="my-16 w-full bg-black py-8 text-center font-bold text-white md:text-4xl">
-            <TextSwitch
-              links={[
-                {
-                  href: `/universite/${slug}/degerlendirmeler`,
-                  label: "Değerlendirmeler",
-                },
-                {
-                  href: `/universite/${slug}/ogretmenler`,
-                  label: "Öğretmenler",
-                },
-              ]}
-            />
-          </h2>
-        </div>
-        <div className="container mx-auto max-w-6xl">
-          <div>
-            {university.teachers && university.teachers.length > 0 ? (
-              <div className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0">
-                {university.teachers?.map((teacher) => (
-                  <CardWithRating
-                    key={teacher.id}
-                    ratings={teacher.ratings as Rating[]}
-                    title={teacher.name as string}
-                    href={`/ogretmen/${teacher.slug}`}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="text-2xl font-medium">
-                Bu üniversitenin henüz hiç öğretmeni bulunmamaktadır.
-              </p>
-            )}
+          <div className="ml-2 flex flex-wrap gap-2">
+            {mostFrequentTags(university.ratings as Rating[], 5).map((tag) => {
+              const t = tag as RateTag;
+              return <Chip key={t.name} label={t.localizedName} />;
+            })}
           </div>
         </div>
-      </section>
+        <OverallRatingCard
+          letterGrade={ratingsToLetterGrade(university.ratings)}
+          gradeText={`${uniName}'nin toplam ${
+            university.ratings?.length
+          } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
+            university.ratings
+          )} olarak hesaplanmıştır.`}
+          scores={ratingMetaToScoresArray(university.ratings as Rating[], 10)}
+        />
+      </header>
+      <div>
+        <h2 className="my-16 w-full bg-black py-8 text-center font-bold text-white md:text-4xl">
+          <TextSwitch
+            links={[
+              {
+                href: `/universite/${slug}/degerlendirmeler`,
+                label: "Değerlendirmeler",
+              },
+              {
+                href: `/universite/${slug}/ogretmenler`,
+                label: "Öğretmenler",
+              },
+            ]}
+          />
+        </h2>
+      </div>
+      <div className="container mx-auto max-w-6xl">
+        <div>
+          {university.teachers && university.teachers.length > 0 ? (
+            <div className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0">
+              {university.teachers?.map((teacher) => (
+                <CardWithRating
+                  key={teacher.id}
+                  ratings={teacher.ratings as Rating[]}
+                  title={teacher.name as string}
+                  href={`/ogretmen/${teacher.slug}`}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-2xl font-medium">
+              Bu üniversitenin henüz hiç öğretmeni bulunmamaktadır.
+            </p>
+          )}
+        </div>
+      </div>
     </main>
   );
 }

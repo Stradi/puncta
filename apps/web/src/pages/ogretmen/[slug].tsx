@@ -23,40 +23,46 @@ export default function Page({ teacher }: PageProps) {
   return (
     <main>
       <header className="container mx-auto max-w-6xl md:flex md:gap-8">
-        <InfoCard
-          image={{
-            src: "https://picsum.photos/200",
-            alt: teacherName,
-          }}
-          title={teacherName}
-          description={`${teacherName}, ${teacher.university?.name} üniversitesinde ${teacher.faculty?.name} bölümünde eğitim veriyor.`}
-          footer={
-            <>
-              <RateProvider
-                type="teacher"
-                university={
-                  teacher.university as Required<
-                    Pick<University, "name" | "slug">
-                  >
-                }
-                faculty={
-                  teacher.faculty as Required<Pick<Faculty, "name" | "slug">>
-                }
-                teacher={teacher as Required<Pick<Teacher, "name" | "slug">>}
-              >
-                <AuthCardFooter />
-              </RateProvider>
-              <div className="sm:flex sm:justify-between [&>*]:block">
-                <Button variant="text">{teacherName} siz misiniz?</Button>
-                <Button variant="text">Bilgilerde bir yanlışlık mı var?</Button>
-              </div>
-            </>
-          }
-          tags={mostFrequentTags(teacher.ratings as Rating[], 3).map((tag) => {
-            const t = tag as RateTag;
-            return <Chip key={t.name} label={t.localizedName} />;
-          })}
-        />
+        <div className="h-full w-full space-y-6">
+          <InfoCard
+            image={{
+              src: "https://picsum.photos/200",
+              alt: teacherName,
+            }}
+            title={teacherName}
+            description={`${teacherName}, ${teacher.university?.name} üniversitesinde ${teacher.faculty?.name} bölümünde eğitim veriyor.`}
+            footer={
+              <>
+                <RateProvider
+                  type="teacher"
+                  university={
+                    teacher.university as Required<
+                      Pick<University, "name" | "slug">
+                    >
+                  }
+                  faculty={
+                    teacher.faculty as Required<Pick<Faculty, "name" | "slug">>
+                  }
+                  teacher={teacher as Required<Pick<Teacher, "name" | "slug">>}
+                >
+                  <AuthCardFooter />
+                </RateProvider>
+                <div className="sm:flex sm:justify-between [&>*]:block">
+                  <Button variant="text">{teacherName} siz misiniz?</Button>
+                  <Button variant="text">
+                    Bilgilerde bir yanlışlık mı var?
+                  </Button>
+                </div>
+              </>
+            }
+          />
+          <div className="ml-2 flex flex-wrap gap-2">
+            {mostFrequentTags(teacher.ratings as Rating[], 5).map((tag) => {
+              const t = tag as RateTag;
+              return <Chip key={t.name} label={t.localizedName} shadows />;
+            })}
+          </div>
+        </div>
         <OverallRatingCard
           letterGrade={ratingsToLetterGrade(teacher.ratings)}
           gradeText={`${teacherName}'nin toplam ${
