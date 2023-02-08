@@ -1,9 +1,9 @@
-import { ArgsType, IntersectionType } from '@nestjs/graphql';
+import { ArgsType, Field } from '@nestjs/graphql';
+import { TeacherFilterInput } from 'src/shared/dto/filter.args';
 import { PaginationArgs } from 'src/shared/dto/pagination.args';
-import { BaseResourceIdentifierArgs } from 'src/shared/dto/resource-identifier.args';
 
 @ArgsType()
-export class GetTeacherArgs extends IntersectionType(
-  BaseResourceIdentifierArgs,
-  PaginationArgs,
-) {}
+export class GetTeacherArgs extends PaginationArgs {
+  @Field(() => TeacherFilterInput, { nullable: true })
+  filter?: TeacherFilterInput;
+}

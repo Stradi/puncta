@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import slugify from 'slugify';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { FacultyNotFoundError } from 'src/shared/shared.exceptions';
+import {
+  FacultyAlreadyExistsError,
+  FacultyNotFoundError,
+} from 'src/shared/shared.exceptions';
 import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
 import { GetTeacherArgs } from 'src/teacher/dto/get-teacher.args';
 import { GetUniversityArgs } from 'src/university/dto/get-university.args';
@@ -16,7 +19,18 @@ export class FacultyService {
   constructor(private prismaService: PrismaService) {}
 
   async findMany(args: GetFacultyArgs) {
+    const universityFilter = convertArgsToWhereClause(
+      ['id', 'name', 'slug'],
+      args.filter?.university || {},
+    );
+
     return await this.prismaService.faculty.findMany({
+      where: {
+        universities: {
+          some: universityFilter,
+        },
+        ...convertArgsToWhereClause(['id', 'name', 'slug'], args.filter || {}),
+      },
       take: args.pageSize,
       skip: args.page * args.pageSize,
       include: {
@@ -26,28 +40,11 @@ export class FacultyService {
     });
   }
 
-  async findOne(args: GetFacultyArgs) {
-    let faculty = null;
-    faculty = await this.prismaService.faculty.findUnique({
-      where: convertArgsToWhereClause(['id', 'slug', 'name'], args),
-      include: {
-        universities: true,
-        teachers: true,
-      },
-    });
-
-    if (!faculty) {
-      throw FacultyNotFoundError;
-    }
-
-    return faculty;
-  }
-
   async teachers(id: number, args: GetTeacherArgs) {
     return await this.prismaService.teacher.findMany({
       where: {
         facultyId: id,
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
       include: {
         university: true,
@@ -67,7 +64,7 @@ export class FacultyService {
             id,
           },
         },
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
       include: {
         faculties: true,
@@ -103,6 +100,8 @@ export class FacultyService {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
           throw FacultyNotFoundError;
+        } else if (error.code === 'P2002') {
+          throw FacultyAlreadyExistsError;
         }
       }
 

@@ -85,32 +85,10 @@ type User {
   ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
 
   """University that this user is associated with"""
-  university(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): University
+  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): University
 
   """Faculty that this user is associated with"""
-  faculty(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): Faculty
+  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput): Faculty
 
   """Responses that this user has created"""
   responses: [Response!]
@@ -121,6 +99,46 @@ type User {
   """Whether this user (teacher) is verified or not"""
   isApproved: Boolean
   response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
+}
+
+input UniversityFilterInput {
+  id: IntFilter
+  name: StringFilter
+  slug: StringFilter
+}
+
+input IntFilter {
+  equals: Float
+  in: Float
+  notIn: Float
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: Float
+}
+
+input StringFilter {
+  equals: String
+  in: String
+  notIn: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+}
+
+input FacultyFilterInput {
+  id: IntFilter
+  name: StringFilter
+  slug: StringFilter
+  university: BaseResourceIdentifierFilter
+}
+
+input BaseResourceIdentifierFilter {
+  id: IntFilter
+  name: StringFilter
+  slug: StringFilter
 }
 
 type Rating {
@@ -143,35 +161,21 @@ type Rating {
   meta: String
 
   """The university that this rating rates"""
-  university(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): University
+  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): University
 
   """The university that this rating rates"""
-  teacher(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): Teacher
+  teacher(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput): Teacher
 
   """The user that created this rating"""
   user: User
+}
+
+input TeacherFilterInput {
+  id: IntFilter
+  name: StringFilter
+  slug: StringFilter
+  university: BaseResourceIdentifierFilter
+  faculty: BaseResourceIdentifierFilter
 }
 
 type University {
@@ -191,32 +195,10 @@ type University {
   slug: String!
 
   """Faculties of this university"""
-  faculties(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): [Faculty!]
+  faculties(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput): [Faculty!]
 
   """Teachers of this university"""
-  teachers(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): [Teacher!]
+  teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput): [Teacher!]
 
   """Ratings of this university"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
@@ -239,32 +221,10 @@ type Faculty {
   slug: String!
 
   """The universities that has this faculty"""
-  universities(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): [University!]
+  universities(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): [University!]
 
   """Teachers of this faculty"""
-  teachers(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): [Teacher!]
+  teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput): [Teacher!]
 }
 
 type Teacher {
@@ -284,32 +244,10 @@ type Teacher {
   slug: String!
 
   """The university that this teacher works"""
-  university(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): University
+  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): University
 
   """The faculty that this teacher works"""
-  faculty(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): Faculty
+  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput): Faculty
 
   """Ratings of this teacher"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
@@ -335,42 +273,9 @@ type SearchResult {
 }
 
 type Query {
-  university(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): [University!]!
-  faculty(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): [Faculty!]!
-  teacher(
-    """Unique identifier of the resource"""
-    id: Int
-
-    """Name of the resource"""
-    name: String
-
-    """Slug of the resource"""
-    slug: String
-    page: Int = 0
-    pageSize: Int = 10
-  ): [Teacher!]!
+  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): [University!]!
+  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput): [Faculty!]!
+  teacher(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput): [Teacher!]!
   rating(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]!
   isEmailExists(email: String!): IsExists!
   isUsernameExists(username: String!): IsExists!

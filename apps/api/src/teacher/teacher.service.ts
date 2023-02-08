@@ -17,7 +17,22 @@ export class TeacherService {
   constructor(private prismaService: PrismaService) {}
 
   async findMany(args: GetTeacherArgs) {
+    const universityFilter = convertArgsToWhereClause(
+      ['id', 'name', 'slug'],
+      args.filter?.university || {},
+    );
+
+    const facultyFilter = convertArgsToWhereClause(
+      ['id', 'name', 'slug'],
+      args.filter?.faculty || {},
+    );
+
     return await this.prismaService.teacher.findMany({
+      where: {
+        university: universityFilter,
+        faculty: facultyFilter,
+        ...convertArgsToWhereClause(['id', 'name', 'slug'], args.filter || {}),
+      },
       take: args.pageSize,
       skip: args.page * args.pageSize,
       include: {
@@ -28,24 +43,6 @@ export class TeacherService {
     });
   }
 
-  async findOne(args: GetTeacherArgs) {
-    let teacher = null;
-    teacher = await this.prismaService.teacher.findUnique({
-      where: convertArgsToWhereClause(['id', 'slug', 'name'], args),
-      include: {
-        university: true,
-        faculty: true,
-        ratings: true,
-      },
-    });
-
-    if (!teacher) {
-      throw TeacherNotFoundError;
-    }
-
-    return teacher;
-  }
-
   async university(id: number, args: GetUniversityArgs) {
     return await this.prismaService.university.findFirst({
       where: {
@@ -54,7 +51,7 @@ export class TeacherService {
             id,
           },
         },
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
       include: {
         faculties: true,
@@ -74,7 +71,7 @@ export class TeacherService {
             id,
           },
         },
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
+        ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
       include: {
         universities: true,

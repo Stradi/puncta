@@ -31,23 +31,7 @@ export class UniversityResolver {
 
   @Query(() => [University], { name: 'university' })
   async find(@Args() args: GetUniversityArgs) {
-    // We all of the filtering arguments are absent then we should
-    // return a list of universities. Otherwise we should return
-    // the queried university (such as queries by id, slug or name).
-    if (args.id && args.id < 0) {
-      throw new GenericInvalidParameterError(
-        'id',
-        'id should be greater than zero',
-      );
-    }
-
-    // We can't just type `!args.id` because JavaScript interprets that
-    // as `!0` and that's `true`.
-    if (args.id === undefined && !args.slug && !args.name) {
-      return await this.universityService.findMany(args);
-    }
-
-    return [await this.universityService.findOne(args)];
+    return await this.universityService.findMany(args);
   }
 
   @ResolveField('faculties', () => [Faculty])

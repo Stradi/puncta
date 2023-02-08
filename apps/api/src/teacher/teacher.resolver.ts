@@ -31,18 +31,7 @@ export class TeacherResolver {
 
   @Query(() => [Teacher], { name: 'teacher' })
   async find(@Args() args: GetTeacherArgs) {
-    if (args.id && args.id < 0) {
-      throw new GenericInvalidParameterError(
-        'id',
-        'id should be greater than zero',
-      );
-    }
-
-    if (args.id === undefined && !args.slug && !args.name) {
-      return await this.teacherService.findMany(args);
-    }
-
-    return [await this.teacherService.findOne(args)];
+    return await this.teacherService.findMany(args);
   }
 
   @ResolveField('university', () => University)
