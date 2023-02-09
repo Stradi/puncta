@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 interface ModalContextProps {
   isOpen: boolean;
@@ -33,6 +33,14 @@ export function ModalProvider({ children }: React.PropsWithChildren<{}>) {
       setIsConfirmationOpen(true);
     }
   }
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isOpen]);
 
   return (
     <ModalContext.Provider
