@@ -19,6 +19,17 @@ interface PageProps {
 export default function Page({ university, slug }: PageProps) {
   const uniName = university.name as string;
 
+  let gradeText = "";
+  if (university.ratings && university.ratings?.length > 0) {
+    gradeText = `${uniName}'nin toplam ${
+      university.ratings?.length
+    } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
+      university.ratings
+    )} olarak hesaplanmıştır.`;
+  } else {
+    gradeText = `${university} henüz değerlendirilmediği için harf notu hesaplanamamıştır.`;
+  }
+
   return (
     <main>
       <header className="container mx-auto max-w-6xl md:flex md:gap-8">
@@ -50,11 +61,7 @@ export default function Page({ university, slug }: PageProps) {
         </div>
         <OverallRatingCard
           letterGrade={ratingsToLetterGrade(university.ratings)}
-          gradeText={`${uniName}'nin toplam ${
-            university.ratings?.length
-          } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
-            university.ratings
-          )} olarak hesaplanmıştır.`}
+          gradeText={gradeText}
           scores={ratingMetaToScoresArray(university.ratings as Rating[], 10)}
         />
       </header>

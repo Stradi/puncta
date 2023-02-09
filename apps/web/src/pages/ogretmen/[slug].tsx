@@ -20,6 +20,17 @@ interface PageProps {
 export default function Page({ teacher }: PageProps) {
   const teacherName = teacher.name as string;
 
+  let gradeText = "";
+  if (teacher.ratings && teacher.ratings?.length > 0) {
+    gradeText = `${teacherName}, toplam ${
+      teacher.ratings?.length
+    } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
+      teacher.ratings
+    )} olarak hesaplanmıştır.`;
+  } else {
+    gradeText = `${teacherName} henüz değerlendirilmediği için harf notu hesaplanamamıştır.`;
+  }
+
   return (
     <main>
       <header className="container mx-auto max-w-6xl md:flex md:gap-8">
@@ -65,11 +76,7 @@ export default function Page({ teacher }: PageProps) {
         </div>
         <OverallRatingCard
           letterGrade={ratingsToLetterGrade(teacher.ratings)}
-          gradeText={`${teacherName}'nin toplam ${
-            teacher.ratings?.length
-          } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
-            teacher.ratings
-          )} olarak hesaplanmıştır.`}
+          gradeText={gradeText}
           scores={ratingMetaToScoresArray(teacher.ratings as Rating[], 10)}
         />
       </header>
