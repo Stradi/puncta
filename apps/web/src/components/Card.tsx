@@ -88,22 +88,24 @@ export function OverallRatingCard({
         <LetterGrade letter={letterGrade} size="large" className="shrink-0" />
         <p className="text-lg font-medium">{gradeText}</p>
       </div>
-      <div className="space-y-4">
-        {scores?.map((score) => (
-          <div className="flex items-center gap-2" key={score.category}>
-            <InfoIcon size="sm" />
-            <p className="w-40 text-lg font-semibold">{score.category}</p>
-            <ProgressBarChart
-              value={score.value}
-              max={score.max}
-              size="small"
-            />
-            <p className="align-right w-40 text-right font-mono text-lg font-semibold">
-              {score.value.toFixed(1)} / {score.max}
-            </p>
-          </div>
-        ))}
-      </div>
+      {scores && scores.length > 0 && (
+        <div className="space-y-4">
+          {scores?.map((score) => (
+            <div className="flex items-center gap-2" key={score.category}>
+              <InfoIcon size="sm" />
+              <p className="w-40 text-lg font-semibold">{score.category}</p>
+              <ProgressBarChart
+                value={score.value}
+                max={score.max}
+                size="small"
+              />
+              <p className="align-right w-40 text-right font-mono text-lg font-semibold">
+                {score.value.toFixed(1)} / {score.max}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </Card>
   );
 }
