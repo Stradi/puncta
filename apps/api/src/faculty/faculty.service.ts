@@ -24,6 +24,11 @@ export class FacultyService {
       args.filter?.university || {},
     );
 
+    const facultySort = convertArgsToWhereClause(
+      ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+      args.sort || {},
+    );
+
     return await this.prismaService.faculty.findMany({
       where: {
         universities: {
@@ -31,6 +36,7 @@ export class FacultyService {
         },
         ...convertArgsToWhereClause(['id', 'name', 'slug'], args.filter || {}),
       },
+      orderBy: facultySort,
       take: args.pageSize,
       skip: args.page * args.pageSize,
       include: {

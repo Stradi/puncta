@@ -85,10 +85,10 @@ type User {
   ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
 
   """University that this user is associated with"""
-  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): University
+  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): University
 
   """Faculty that this user is associated with"""
-  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput): Faculty
+  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): Faculty
 
   """Responses that this user has created"""
   responses: [Response!]
@@ -128,6 +128,14 @@ input StringFilter {
   not: String
 }
 
+input UniversitySortInput {
+  id: String
+  createdAt: String
+  updatedAt: String
+  name: String
+  slug: String
+}
+
 input FacultyFilterInput {
   id: IntFilter
   name: StringFilter
@@ -139,6 +147,14 @@ input BaseResourceIdentifierFilter {
   id: IntFilter
   name: StringFilter
   slug: StringFilter
+}
+
+input FacultySortInput {
+  id: String
+  createdAt: String
+  updatedAt: String
+  name: String
+  slug: String
 }
 
 type Rating {
@@ -161,10 +177,10 @@ type Rating {
   meta: String
 
   """The university that this rating rates"""
-  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): University
+  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): University
 
   """The university that this rating rates"""
-  teacher(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput): Teacher
+  teacher(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): Teacher
 
   """The user that created this rating"""
   user: User
@@ -176,6 +192,14 @@ input TeacherFilterInput {
   slug: StringFilter
   university: BaseResourceIdentifierFilter
   faculty: BaseResourceIdentifierFilter
+}
+
+input TeacherSortInput {
+  id: String
+  createdAt: String
+  updatedAt: String
+  name: String
+  slug: String
 }
 
 type University {
@@ -195,10 +219,10 @@ type University {
   slug: String!
 
   """Faculties of this university"""
-  faculties(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput): [Faculty!]
+  faculties(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): [Faculty!]
 
   """Teachers of this university"""
-  teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput): [Teacher!]
+  teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): [Teacher!]
 
   """Ratings of this university"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
@@ -221,10 +245,10 @@ type Faculty {
   slug: String!
 
   """The universities that has this faculty"""
-  universities(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): [University!]
+  universities(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): [University!]
 
   """Teachers of this faculty"""
-  teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput): [Teacher!]
+  teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): [Teacher!]
 }
 
 type Teacher {
@@ -244,10 +268,10 @@ type Teacher {
   slug: String!
 
   """The university that this teacher works"""
-  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): University
+  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): University
 
   """The faculty that this teacher works"""
-  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput): Faculty
+  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): Faculty
 
   """Ratings of this teacher"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
@@ -273,9 +297,9 @@ type SearchResult {
 }
 
 type Query {
-  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput): [University!]!
-  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput): [Faculty!]!
-  teacher(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput): [Teacher!]!
+  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): [University!]!
+  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): [Faculty!]!
+  teacher(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): [Teacher!]!
   rating(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]!
   isEmailExists(email: String!): IsExists!
   isUsernameExists(username: String!): IsExists!

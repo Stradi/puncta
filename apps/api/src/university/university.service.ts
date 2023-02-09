@@ -24,6 +24,10 @@ export class UniversityService {
       where: {
         ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
+      orderBy: convertArgsToWhereClause(
+        ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+        args.sort || {},
+      ),
       take: args.pageSize,
       skip: args.page * args.pageSize,
       include: {
