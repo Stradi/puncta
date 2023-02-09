@@ -134,7 +134,7 @@ export async function getStaticProps({ params }: Params) {
           id
           name
           slug
-          ratings {
+          ratings(sort: { createdAt: "desc" }) {
             id
             meta
             score

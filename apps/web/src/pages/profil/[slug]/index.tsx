@@ -65,7 +65,7 @@ export async function getStaticProps({ params }: Params) {
         user(username: $username) {
           id
           username
-          ratings {
+          ratings(sort: { createdAt: "desc" }) {
             id
             comment
             meta
