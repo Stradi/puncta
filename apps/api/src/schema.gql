@@ -45,7 +45,7 @@ type Response {
   meta: String!
 
   """The ratingg that this response belongs to"""
-  to(page: Int = 0, pageSize: Int = 10, id: Int): Rating!
+  to(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): Rating!
 
   """The teacher that created this response"""
   from: User!
@@ -55,6 +55,12 @@ type Response {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+input RatingSortInput {
+  id: String
+  createdAt: String
+  updatedAt: String
+}
 
 type User {
   """Unique identifier for the user"""
@@ -82,7 +88,7 @@ type User {
   lastName: String
 
   """Rating that this user has made"""
-  ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
+  ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
 
   """University that this user is associated with"""
   university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): University
@@ -225,7 +231,7 @@ type University {
   teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): [Teacher!]
 
   """Ratings of this university"""
-  ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
+  ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
 }
 
 type Faculty {
@@ -274,7 +280,7 @@ type Teacher {
   faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): Faculty
 
   """Ratings of this teacher"""
-  ratings(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]
+  ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
 }
 
 type SearchResultItem {
@@ -300,7 +306,7 @@ type Query {
   university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): [University!]!
   faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): [Faculty!]!
   teacher(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): [Teacher!]!
-  rating(page: Int = 0, pageSize: Int = 10, id: Int): [Rating!]!
+  rating(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]!
   isEmailExists(email: String!): IsExists!
   isUsernameExists(username: String!): IsExists!
   isTeacherExists(name: String!): IsExists!

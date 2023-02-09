@@ -34,3 +34,18 @@ export class FacultySortInput extends BaseResourceIdentifierSort {}
 
 @InputType()
 export class UniversitySortInput extends BaseResourceIdentifierSort {}
+
+@InputType()
+export class RatingSortInput {
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  id?: SortOrder;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  createdAt?: SortOrder;
+
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  updatedAt?: SortOrder;
+}

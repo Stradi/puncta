@@ -17,6 +17,10 @@ export class RatingService {
 
   async findMany(args: GetRatingArgs) {
     return await this.prismaService.rating.findMany({
+      orderBy: convertArgsToWhereClause(
+        ['id', 'createdAt', 'updatedAt'],
+        args.sort || {},
+      ),
       take: args.pageSize,
       skip: args.page * args.pageSize,
       include: {
