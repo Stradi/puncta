@@ -52,6 +52,10 @@ export class FacultyService {
         facultyId: id,
         ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
+      orderBy: convertArgsToWhereClause(
+        ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+        args.sort || {},
+      ),
       include: {
         university: true,
         faculty: true,
@@ -72,6 +76,10 @@ export class FacultyService {
         },
         ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
+      orderBy: convertArgsToWhereClause(
+        ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+        args.sort || {},
+      ),
       include: {
         faculties: true,
         teachers: true,

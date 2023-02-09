@@ -94,6 +94,10 @@ export class TeacherService {
         teacherId: id,
         ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
       },
+      orderBy: convertArgsToWhereClause(
+        ['id', 'createdAt', 'updatedAt'],
+        args.sort || {},
+      ),
       include: {
         university: true,
         teacher: true,

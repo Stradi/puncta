@@ -48,6 +48,10 @@ export class UniversityService {
         },
         ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
+      orderBy: convertArgsToWhereClause(
+        ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+        args.sort || {},
+      ),
       include: {
         universities: true,
         teachers: true,
@@ -63,6 +67,10 @@ export class UniversityService {
         universityId: id,
         ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
+      orderBy: convertArgsToWhereClause(
+        ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+        args.sort || {},
+      ),
       include: {
         university: true,
         faculty: true,
@@ -79,6 +87,10 @@ export class UniversityService {
         universityId: id,
         ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
       },
+      orderBy: convertArgsToWhereClause(
+        ['id', 'createdAt', 'updatedAt'],
+        args.sort || {},
+      ),
       include: {
         university: true,
         teacher: true,
