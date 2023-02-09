@@ -55,7 +55,7 @@ export default function Page({ university, slug }: PageProps) {
           <div className="ml-2 flex flex-wrap gap-2">
             {mostFrequentTags(university.ratings as Rating[], 5).map((tag) => {
               const t = tag as RateTag;
-              return <Chip key={t.name} label={t.localizedName} />;
+              return <Chip key={t.name} label={t.localizedName} shadows />;
             })}
           </div>
         </div>
