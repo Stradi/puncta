@@ -11,21 +11,26 @@ export function toTitleCase(text) {
     .join(" ");
 }
 
+export function removeParantheties(text) {
+  return text.replace(/ *\([^)]*\) */g, "");
+}
+
 export function writeToFile(obj, path = "./output.json") {
   return fs.writeJSON(path, obj, {
     spaces: 2,
+    encoding: "utf8",
   });
 }
 
 export function promiseProgress(promises, cb) {
   const total = promises.length;
   let completed = 0;
-  cb(completed, total);
+  cb?.(completed, total);
 
   for (const promise of promises) {
     promise.then(() => {
       completed++;
-      cb(completed, total);
+      cb?.(completed, total);
     });
   }
   return Promise.all(promises);
