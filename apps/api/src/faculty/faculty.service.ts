@@ -92,8 +92,19 @@ export class FacultyService {
 
   async create(args: CreateFacultyInput) {
     try {
-      const faculty = await this.prismaService.faculty.create({
-        data: {
+      const faculty = await this.prismaService.faculty.upsert({
+        where: {
+          name: args.name,
+        },
+        update: {
+          universities: {
+            connect: convertArgsToWhereClause(
+              ['id', 'slug', 'name'],
+              args.university,
+            ),
+          },
+        },
+        create: {
           name: args.name,
           slug: slugify(args.name, { lower: true }),
           universities: {
@@ -104,8 +115,8 @@ export class FacultyService {
           },
         },
         include: {
-          universities: true,
           teachers: true,
+          universities: true,
         },
       });
 
