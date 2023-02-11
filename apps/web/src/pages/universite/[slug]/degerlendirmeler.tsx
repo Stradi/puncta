@@ -12,6 +12,7 @@ import {
   ratingsToLetterGrade,
 } from "@/lib/utils";
 import { gql } from "@apollo/client";
+import Head from "next/head";
 
 interface PageProps {
   university: University;
@@ -35,87 +36,95 @@ export default function Page({ university, slug }: PageProps) {
   }
 
   return (
-    <main>
-      <header className="container mx-auto max-w-6xl md:flex md:gap-8">
-        <div className="h-full w-full space-y-6">
-          <InfoCard
-            image={{
-              src: "https://picsum.photos/200",
-              alt: uniName,
-            }}
-            title={uniName}
-            description={`İçerisinde ${university.faculties?.length} bölüm olan ${uniName}'nin toplam ${university.teachers?.length} öğretim üyesi bulunmaktadır.`}
-            footer={
-              <RateProvider
-                type="university"
-                university={
-                  university as Required<Pick<University, "name" | "slug">>
+    <>
+      <Head>
+        <title>{`${university.name} | The Puncta`}</title>
+        <meta name="description" content={university.name} />
+      </Head>
+      <main>
+        <header className="container mx-auto max-w-6xl md:flex md:gap-8">
+          <div className="h-full w-full space-y-6">
+            <InfoCard
+              image={{
+                src: "https://picsum.photos/200",
+                alt: uniName,
+              }}
+              title={uniName}
+              description={`İçerisinde ${university.faculties?.length} bölüm olan ${uniName}'nin toplam ${university.teachers?.length} öğretim üyesi bulunmaktadır.`}
+              footer={
+                <RateProvider
+                  type="university"
+                  university={
+                    university as Required<Pick<University, "name" | "slug">>
+                  }
+                >
+                  <AuthCardFooter />
+                </RateProvider>
+              }
+            />
+            <div className="ml-2 flex flex-wrap gap-2">
+              {mostFrequentTags(university.ratings as Rating[], 5).map(
+                (tag) => {
+                  const t = tag as RateTag;
+                  return <Chip key={t.name} label={t.localizedName} shadows />;
                 }
-              >
-                <AuthCardFooter />
-              </RateProvider>
-            }
-          />
-          <div className="ml-2 flex flex-wrap gap-2">
-            {mostFrequentTags(university.ratings as Rating[], 5).map((tag) => {
-              const t = tag as RateTag;
-              return <Chip key={t.name} label={t.localizedName} shadows />;
-            })}
-          </div>
-        </div>
-        <OverallRatingCard
-          letterGrade={ratingsToLetterGrade(university.ratings)}
-          gradeText={gradeText}
-          scores={ratingMetaToScoresArray(university.ratings as Rating[], 10)}
-        />
-      </header>
-      <div>
-        <h2 className="my-16 w-full bg-black py-8 text-center font-bold text-white md:text-4xl">
-          <TextSwitch
-            links={[
-              {
-                href: `/universite/${slug}/degerlendirmeler`,
-                label: "Değerlendirmeler",
-              },
-              {
-                href: `/universite/${slug}/ogretmenler`,
-                label: "Öğretmenler",
-              },
-            ]}
-          />
-        </h2>
-      </div>
-      <div className="container mx-auto max-w-6xl">
-        <main>
-          <div className="space-y-4 md:flex md:gap-4">
-            <div className="space-y-4 sm:w-full md:max-w-3xl">
-              {university.ratings && university.ratings.length > 0 ? (
-                university.ratings.map((rating) => (
-                  <SingleRating key={rating.id} {...rating}>
-                    <p>
-                      <Button
-                        className="m-0 p-0"
-                        variant="text"
-                        asLink
-                        href={`/profil/${rating.user?.username}`}
-                      >
-                        {rating.user?.username}
-                      </Button>{" "}
-                      adlı kullanıcının değerlendirmesi
-                    </p>
-                  </SingleRating>
-                ))
-              ) : (
-                <p className="text-2xl font-medium">
-                  <span className="font-bold">{uniName}</span> için henüz
-                  değerlendirme yapılmamış.
-                </p>
               )}
             </div>
           </div>
-        </main>
-      </div>
-    </main>
+          <OverallRatingCard
+            letterGrade={ratingsToLetterGrade(university.ratings)}
+            gradeText={gradeText}
+            scores={ratingMetaToScoresArray(university.ratings as Rating[], 10)}
+          />
+        </header>
+        <div>
+          <h2 className="my-16 w-full bg-black py-8 text-center font-bold text-white md:text-4xl">
+            <TextSwitch
+              links={[
+                {
+                  href: `/universite/${slug}/degerlendirmeler`,
+                  label: "Değerlendirmeler",
+                },
+                {
+                  href: `/universite/${slug}/ogretmenler`,
+                  label: "Öğretmenler",
+                },
+              ]}
+            />
+          </h2>
+        </div>
+        <div className="container mx-auto max-w-6xl">
+          <main>
+            <div className="space-y-4 md:flex md:gap-4">
+              <div className="space-y-4 sm:w-full md:max-w-3xl">
+                {university.ratings && university.ratings.length > 0 ? (
+                  university.ratings.map((rating) => (
+                    <SingleRating key={rating.id} {...rating}>
+                      <p>
+                        <Button
+                          className="m-0 p-0"
+                          variant="text"
+                          asLink
+                          href={`/profil/${rating.user?.username}`}
+                        >
+                          {rating.user?.username}
+                        </Button>{" "}
+                        adlı kullanıcının değerlendirmesi
+                      </p>
+                    </SingleRating>
+                  ))
+                ) : (
+                  <p className="text-2xl font-medium">
+                    <span className="font-bold">{uniName}</span> için henüz
+                    değerlendirme yapılmamış.
+                  </p>
+                )}
+              </div>
+            </div>
+          </main>
+        </div>
+      </main>
+    </>
   );
 }
 

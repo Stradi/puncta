@@ -8,9 +8,15 @@ type FooterItem = {
   items: NavigationItem[];
 };
 
+type PageSEO = {
+  title: string;
+  description: string;
+};
+
 interface Config {
   site: {
     name: string;
+    seo: Record<string, PageSEO>;
   };
 
   navigation: {
@@ -43,6 +49,33 @@ interface Config {
 const config: Config = {
   site: {
     name: "Puncta.",
+    seo: {
+      homepage: {
+        title: "The Puncta | Not Verme Sırası Sende",
+        description:
+          "Üniversiteni ve öğretim üyelerini anonim olarak değerlendir, not ver ve yorumla. Puanlamalarınla sesini duyur ve daha kaliteli bir eğitim ortamı yarat.",
+      },
+      allUniversities: {
+        title: "Tüm Üniversiteler | The Puncta",
+        description: "",
+      },
+      login: {
+        title: "Giriş Yap | The Puncta",
+        description: "",
+      },
+      register: {
+        title: "Kayıt Ol | The Puncta",
+        description: "",
+      },
+      search: {
+        title: "Arama Yap | The Puncta",
+        description: "",
+      },
+      rateable: {
+        title: "Değerlendir | The Puncta",
+        description: "",
+      },
+    },
   },
   navigation: {
     nonAuth: [

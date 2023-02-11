@@ -6,10 +6,12 @@ import RegistrationTypeForm from "@/components/pages/kayit-ol/forms/Registration
 import StudentInformationForm from "@/components/pages/kayit-ol/forms/student/StudentInformationForm";
 import UniversityForm from "@/components/pages/kayit-ol/forms/student/UniversityForm";
 import TeacherInformationForm from "@/components/pages/kayit-ol/forms/teacher/TeacherInformationForm";
+import config from "@/config";
 import { AuthContext } from "@/context/AuthContext";
 import { SignUpContext, SignUpProvider } from "@/context/SignUpContext";
 import { FormikProps } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
+import Head from "next/head";
 import { createRef, ReactElement, useContext } from "react";
 
 function Page() {
@@ -22,70 +24,79 @@ function Page() {
 
   // TODO: Please refactor this step part. PLEASE!!
   return (
-    <Card className="mx-auto max-w-lg py-16 px-8">
-      <h1 className="mb-4 text-center text-3xl font-medium">Kayıt Ol</h1>
-      <AnimatePresence>
-        <motion.div
-          key={signUpContext.step}
-          initial={{ opacity: 0, height: "0px" }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: "0px" }}
-        >
-          {signUpContext.step === 0 && <RegistrationTypeForm />}
-          {signUpContext.step === 1 &&
-            (signUpContext.registrationType === "STUDENT" ? (
-              <StudentInformationForm ref={formRef} />
-            ) : (
-              <TeacherInformationForm ref={formRef} />
-            ))}
-          {signUpContext.step === 2 && <PasswordForm ref={formRef} />}
-          {signUpContext.step === 3 &&
-            (signUpContext.registrationType === "STUDENT" ? (
-              <UniversityForm ref={formRef} />
-            ) : (
-              <FinalForm />
-            ))}
-          {signUpContext.step === 4 && <FinalForm />}
-        </motion.div>
-      </AnimatePresence>
-      <div className="mt-8 flex justify-evenly">
-        <Button
-          variant="text"
-          fullWidth
-          onClick={() => {
-            signUpContext.prevStep();
-          }}
-          disabled={signUpContext.step <= 0}
-        >
-          Geri Dön
-        </Button>
-        <Button
-          fullWidth
-          onClick={() => {
-            if (signUpContext.step === 0) {
-              signUpContext.nextStep();
-              return;
-            }
+    <>
+      <Head>
+        <title>{config.site.seo.register.title}</title>
+        <meta
+          name="description"
+          content={config.site.seo.register.description}
+        />
+      </Head>
+      <Card className="mx-auto max-w-lg py-16 px-8">
+        <h1 className="mb-4 text-center text-3xl font-medium">Kayıt Ol</h1>
+        <AnimatePresence>
+          <motion.div
+            key={signUpContext.step}
+            initial={{ opacity: 0, height: "0px" }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: "0px" }}
+          >
+            {signUpContext.step === 0 && <RegistrationTypeForm />}
+            {signUpContext.step === 1 &&
+              (signUpContext.registrationType === "STUDENT" ? (
+                <StudentInformationForm ref={formRef} />
+              ) : (
+                <TeacherInformationForm ref={formRef} />
+              ))}
+            {signUpContext.step === 2 && <PasswordForm ref={formRef} />}
+            {signUpContext.step === 3 &&
+              (signUpContext.registrationType === "STUDENT" ? (
+                <UniversityForm ref={formRef} />
+              ) : (
+                <FinalForm />
+              ))}
+            {signUpContext.step === 4 && <FinalForm />}
+          </motion.div>
+        </AnimatePresence>
+        <div className="mt-8 flex justify-evenly">
+          <Button
+            variant="text"
+            fullWidth
+            onClick={() => {
+              signUpContext.prevStep();
+            }}
+            disabled={signUpContext.step <= 0}
+          >
+            Geri Dön
+          </Button>
+          <Button
+            fullWidth
+            onClick={() => {
+              if (signUpContext.step === 0) {
+                signUpContext.nextStep();
+                return;
+              }
 
-            if (signUpContext.registrationType === "STUDENT") {
-              if (signUpContext.step === 4) {
-                authContext.register(signUpContext.getPayload());
+              if (signUpContext.registrationType === "STUDENT") {
+                if (signUpContext.step === 4) {
+                  authContext.register(signUpContext.getPayload());
+                } else {
+                  formRef.current?.submitForm();
+                }
               } else {
-                formRef.current?.submitForm();
+                if (signUpContext.step === 3) {
+                  authContext.register(signUpContext.getPayload());
+                } else {
+                  formRef.current?.submitForm();
+                }
               }
-            } else {
-              if (signUpContext.step === 3) {
-                authContext.register(signUpContext.getPayload());
-              } else {
-                formRef.current?.submitForm();
-              }
-            }
-          }}
-        >
-          {signUpContext.step === 3 ? "Kayıt Ol" : "Devam Et"}
-        </Button>
-      </div>
-    </Card>
+            }}
+          >
+            {signUpContext.step === 3 ? "Kayıt Ol" : "Devam Et"}
+          </Button>
+        </div>
+      </Card>
+    </>
   );
 }
 

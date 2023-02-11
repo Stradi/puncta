@@ -3,6 +3,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { initializeApollo } from "@/lib/apollo";
 import { cn } from "@/lib/utils";
 import { gql } from "@apollo/client";
+import Head from "next/head";
 import { useContext } from "react";
 
 interface PageProps {
@@ -30,19 +31,24 @@ export default function Page({ user, slug }: PageProps) {
   }
 
   return (
-    <div className="container mx-auto max-w-6xl">
-      <header className={cn("mb-8")}>
-        <h2 className="text-3xl font-medium">
-          <b>{user.username}</b> adlı kullanıcının profili.
-        </h2>
-      </header>
-      <div>
-        <h2 className="my-16 w-full bg-black py-8 text-center text-2xl font-bold text-white md:text-4xl">
-          <TextSwitch links={switchLinks} />
-        </h2>
+    <>
+      <Head>
+        <title>{`Profilim | The Puncta`}</title>
+      </Head>
+      <div className="container mx-auto max-w-6xl">
+        <header className={cn("mb-8")}>
+          <h2 className="text-3xl font-medium">
+            <b>{user.username}</b> adlı kullanıcının profili.
+          </h2>
+        </header>
+        <div>
+          <h2 className="my-16 w-full bg-black py-8 text-center text-2xl font-bold text-white md:text-4xl">
+            <TextSwitch links={switchLinks} />
+          </h2>
+        </div>
+        <main>Ayarlar!!</main>
       </div>
-      <main>Ayarlar!!</main>
-    </div>
+    </>
   );
 }
 
