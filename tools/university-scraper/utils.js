@@ -15,8 +15,8 @@ export function removeParantheties(text) {
   return text.replace(/ *\([^)]*\) */g, "");
 }
 
-export function writeToFile(obj, path = "./output.json") {
-  return fs.writeJSON(path, obj, {
+export async function writeToFile(obj, path = "./output.json") {
+  return await fs.writeJSON(path, obj, {
     spaces: 2,
     encoding: "utf8",
   });

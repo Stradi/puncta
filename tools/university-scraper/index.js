@@ -194,6 +194,14 @@ async function main() {
   log(`Found ${allUniversities.length} universities.`);
 
   const universities = [];
+
+  process.on("SIGINT", async () => {
+    log("Writing to file...");
+    await writeToFile(universities, "universities-sigint.json");
+    log("Done.");
+    process.exit();
+  });
+
   for (const u of allUniversities) {
     const data = await scrapeSingleUniversity(u.id, (progress) => {
       log(`Scraping ${progress.id} (${progress.completed}/${progress.total})`);
@@ -202,7 +210,7 @@ async function main() {
     universities.push(data);
   }
 
-  writeToFile("universities.json", universities);
+  await writeToFile(universities, "universities.json");
 
   log("Done.");
 }
