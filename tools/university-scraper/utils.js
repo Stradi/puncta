@@ -40,3 +40,7 @@ export function log(text) {
   const time = new Date().toLocaleTimeString();
   console.log(`${chalk.blueBright.bold(`[${time}]`)}\t${chalk.white(text)}`);
 }
+
+export async function readJSON(path) {
+  return await JSON.parse(await fs.readFile(path));
+}
