@@ -30,6 +30,8 @@ export class SearchService {
           contains: args.query,
         },
       },
+      take: args.pageSize,
+      skip: args.page * args.pageSize,
     });
 
     return result.map((item: any) => ({

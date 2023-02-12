@@ -314,6 +314,9 @@ type Query {
   me: User!
   response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
   search(
+    page: Int = 0
+    pageSize: Int = 10
+
     """Search query"""
     query: String!
   ): SearchResult!
