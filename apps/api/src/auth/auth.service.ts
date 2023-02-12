@@ -182,6 +182,10 @@ export class AuthService {
 
       return this.getConditionalTeacherCreateArgs(args);
     } else if (role === Role.STUDENT) {
+      // In here we are sure that user is student. So we can check if email domain is valid
+      // or not. If it is not valid, we will throw an error. Otherwise, we will continue
+      // with the process.
+      await this.checkUserEmailDomain(args);
       return this.getConditionalStudentCreateArgs(args);
     } else if (role === Role.ADMIN) {
       return this.getConditionalAdminCreateArgs();
@@ -218,5 +222,22 @@ export class AuthService {
     return {
       isApproved: true,
     };
+  }
+
+  private async checkUserEmailDomain(args: SignupInput) {
+    const university = await this.prismaService.university.findUnique({
+      where: convertArgsToWhereClause(['id', 'name', 'slug'], args.university),
+      include: {
+        domain: true,
+      },
+    });
+
+    const requiredDomain = university?.domain?.name.toLowerCase();
+    // TODO: We can use better parsing logic here.
+    const usersDomain = args.email.split('@')[1].toLowerCase();
+
+    if (usersDomain !== requiredDomain) {
+      throw new BadRequestException('Invalid email domain');
+    }
   }
 }

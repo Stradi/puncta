@@ -6,4 +6,8 @@ export class CreateUniversityInput {
   @Field(() => String)
   @IsNotEmpty()
   name: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  domain: string;
 }

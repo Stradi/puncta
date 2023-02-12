@@ -108,6 +108,11 @@ export class UniversityService {
         data: {
           name: args.name,
           slug: slugify(args.name),
+          domain: {
+            create: {
+              name: args.domain,
+            },
+          },
         },
         include: {
           faculties: true,

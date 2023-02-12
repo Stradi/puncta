@@ -2,6 +2,7 @@ import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
 import { Rating } from 'src/rating/entities/rating.entity';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
+import { Domain } from './domain.entity';
 
 @ObjectType()
 export class University {
@@ -41,4 +42,9 @@ export class University {
     nullable: true,
   })
   ratings: [Rating];
+
+  @Field(() => Domain, {
+    description: 'Domain of this university',
+  })
+  domain: Domain;
 }

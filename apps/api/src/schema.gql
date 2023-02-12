@@ -208,6 +208,23 @@ input TeacherSortInput {
   slug: String
 }
 
+type Domain {
+  """Unique identifier for the domain"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Name of the domain"""
+  name: String!
+
+  """University of the domain"""
+  university: University!
+}
+
 type University {
   """Unique identifier for the university"""
   id: ID!
@@ -232,6 +249,9 @@ type University {
 
   """Ratings of this university"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
+
+  """Domain of this university"""
+  domain: Domain!
 }
 
 type Faculty {
@@ -323,7 +343,7 @@ type Query {
 }
 
 type Mutation {
-  createUniversity(name: String!): University!
+  createUniversity(name: String!, domain: String!): University!
   updateUniversity(filter: UpdateUniversityFilter!, set: UpdateUniversitySet!): University!
   deleteUniversity(
     """Unique identifier of the resource"""
