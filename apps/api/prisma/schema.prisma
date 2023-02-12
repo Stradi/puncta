@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model University {
@@ -41,8 +42,8 @@ model Teacher {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name String @unique
-  slug String @unique
+  name String
+  slug String
 
   universityId Int
   university University @relation(fields: [universityId], references: [id])
@@ -51,6 +52,8 @@ model Teacher {
   faculty Faculty @relation(fields: [facultyId], references: [id])
 
   ratings Rating[]
+
+  @@unique([name,slug,universityId,facultyId])
 
   // -- Only for role === TEACHER --
 
