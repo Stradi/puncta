@@ -1,5 +1,5 @@
 import axios from "axios";
-import { log, readJSON } from "./utils.js";
+import { log, modeArray, readJSON } from "./utils.js";
 
 const client = axios.create({});
 
@@ -12,11 +12,11 @@ const config = {
   },
 };
 
-async function createUniversity(name) {
+async function createUniversity(name, domain) {
   const data = {
     query: `
       mutation {
-        createUniversity(name: "${name}") {
+        createUniversity(name: "${name}", domain: "${domain}") {
           id
         }
       }
@@ -54,11 +54,37 @@ async function createTeacher(name, universityName, facultyName) {
   await client.post("http://localhost:8080/graphql", data, config);
 }
 
+function findDomainOfUniversity(university) {
+  const candidates = [];
+
+  for (const faculty of university["faculties"]) {
+    for (const teacher of faculty["teachers"]) {
+      if (teacher["email"] != null) {
+        const tld = teacher["email"].split("@")[1];
+        if (tld.endsWith(".edu.tr")) {
+          candidates.push(tld);
+        }
+
+        if (candidates.length > 10) {
+          return modeArray(candidates);
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
 async function main() {
-  const data = await readJSON("./universities.json");
+  const data = await readJSON("./universities-backup.json");
 
   for (const u of data) {
-    await createUniversity(u["name"]);
+    const domain = findDomainOfUniversity(u);
+    if (domain == null) {
+      continue;
+    }
+
+    await createUniversity(u["name"], domain);
     for (const faculty of u["faculties"]) {
       log(`${u["name"]}\t${faculty["name"]}`);
       await createFaculty(faculty["name"], u["name"]);
