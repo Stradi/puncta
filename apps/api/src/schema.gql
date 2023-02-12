@@ -329,7 +329,6 @@ type Query {
   rating(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]!
   isEmailExists(email: String!): IsExists!
   isUsernameExists(username: String!): IsExists!
-  isTeacherExists(name: String!): IsExists!
   user(username: String!): User!
   me: User!
   response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!

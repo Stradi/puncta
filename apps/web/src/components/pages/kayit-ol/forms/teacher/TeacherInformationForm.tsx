@@ -1,25 +1,10 @@
 import BaseMultistepForm from "@/components/BaseMultistepForm";
 import TextInput from "@/components/TextInput";
 import { SignUpContext } from "@/context/SignUpContext";
-import { checkEmailExists, checkTeacherExists } from "@/lib/auth";
+import { checkEmailExists } from "@/lib/auth";
 import { FormikProps } from "formik";
 import { forwardRef, useContext } from "react";
 import * as yup from "yup";
-
-const TeacherNameSchema = yup
-  .string()
-  .test(
-    "Geçerli öğretmen",
-    "Sanırım bu öğretmen sistemimizde kayıtlı değil.",
-    async (value) => {
-      if (!value) {
-        return false;
-      }
-
-      const result = await checkTeacherExists(value);
-      return result;
-    }
-  );
 
 const TeacherInformationValidationSchema = yup.object().shape({
   email: yup
@@ -36,7 +21,6 @@ const TeacherInformationValidationSchema = yup.object().shape({
         return !(await checkEmailExists(value as string));
       }
     ),
-  name: TeacherNameSchema,
 });
 
 export default forwardRef<FormikProps<any>>(function TeacherInformationForm(

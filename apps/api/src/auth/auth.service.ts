@@ -124,14 +124,6 @@ export class AuthService {
     });
   }
 
-  async isTeacherExists(name: string) {
-    return await this.prismaService.teacher.findUnique({
-      where: {
-        name,
-      },
-    });
-  }
-
   refreshToken(args: RefreshTokenInput) {
     try {
       const { id } = this.jwtService.verify(args.token, {

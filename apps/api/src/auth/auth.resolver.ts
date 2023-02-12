@@ -76,10 +76,4 @@ export class AuthResolver {
     const response = await this.authService.isUsernameExists(username);
     return response ? { result: true } : { result: false };
   }
-
-  @Query(() => IsExists)
-  async isTeacherExists(@Args('name') name: string) {
-    const response = await this.authService.isTeacherExists(name);
-    return response ? { result: true } : { result: false };
-  }
 }
