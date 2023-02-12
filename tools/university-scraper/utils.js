@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import fs from "fs-extra";
+import _slugify from "slugify";
 
 export function toTitleCase(text) {
   return text
@@ -59,4 +60,10 @@ export function modeArray(array) {
     }
   }
   return maxEl;
+}
+
+export function slugify(text) {
+  return _slugify(text, {
+    lower: true,
+  });
 }

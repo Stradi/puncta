@@ -1,58 +1,5 @@
-import axios from "axios";
-import { log, modeArray, readJSON } from "./utils.js";
-
-const client = axios.create({});
-
-const config = {
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2NzYxMzc5MjEsImV4cCI6MTY3Njc0MjcyMX0.kyfMa9pgvltwqC3HRLivIjGdgpdLV4ZdCHPNU9G3BYI",
-  },
-};
-
-async function createUniversity(name, domain) {
-  const data = {
-    query: `
-      mutation {
-        createUniversity(name: "${name}", domain: "${domain}") {
-          id
-        }
-      }
-    `,
-  };
-
-  await client.post("http://localhost:8080/graphql", data, config);
-}
-
-async function createFaculty(name, universityName) {
-  const data = {
-    query: `
-      mutation {
-        createFaculty(name: "${name}", university: { name: "${universityName}"}) {
-          id
-        }
-      }
-    `,
-  };
-
-  await client.post("http://localhost:8080/graphql", data, config);
-}
-
-async function createTeacher(name, universityName, facultyName) {
-  const data = {
-    query: `
-      mutation {
-        createTeacher(name: "${name}", university: { name: "${universityName}"}, faculty: { name: "${facultyName}"}) {
-          id
-        }
-      }
-    `,
-  };
-
-  await client.post("http://localhost:8080/graphql", data, config);
-}
+import mysql from "mysql";
+import { log, modeArray, readJSON, slugify } from "./utils.js";
 
 function findDomainOfUniversity(university) {
   const candidates = [];
@@ -75,25 +22,201 @@ function findDomainOfUniversity(university) {
   return null;
 }
 
+function createUniversity(connection, data, domain) {
+  return new Promise((resolve, reject) => {
+    // Create University
+    const createUniversityQuery =
+      "INSERT INTO `University` (name, slug, updatedAt) VALUES (?, ?, ?)";
+    const createUniversityValues = [
+      data["name"],
+      slugify(data["name"]),
+      new Date(),
+    ];
+
+    connection.query(
+      {
+        sql: createUniversityQuery,
+        values: createUniversityValues,
+      },
+      (universityError, result) => {
+        if (universityError) {
+          reject(universityError);
+        }
+
+        const createDomainQuery =
+          "INSERT INTO `Domain` (name, updatedAt, universityId) VALUES (?, ?, ?)";
+        const createDomainValues = [domain, new Date(), result.insertId];
+
+        connection.query(
+          {
+            sql: createDomainQuery,
+            values: createDomainValues,
+          },
+          (domainError) => {
+            if (domainError) {
+              reject(domainError);
+            }
+
+            resolve(result.insertId);
+          }
+        );
+      }
+    );
+  });
+}
+
+function isFacultyExists(connection, data) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM `Faculty` WHERE name = ?";
+    const values = [data["name"]];
+    connection.query(
+      {
+        sql: query,
+        values: values,
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        }
+
+        if (result.length > 0) {
+          resolve(result[0].id);
+        } else {
+          resolve(null);
+        }
+      }
+    );
+  });
+}
+
+function createFaculty(connection, data, universityId) {
+  return new Promise(async (resolve, reject) => {
+    const exists = await isFacultyExists(connection, data);
+    if (exists !== null) {
+      const relationQuery =
+        "INSERT INTO `_FacultyToUniversity` (A, B) VALUES (?, ?)";
+      const relationValues = [exists, universityId];
+
+      connection.query(
+        {
+          sql: relationQuery,
+          values: relationValues,
+        },
+        (relationError) => {
+          if (relationError) {
+            reject(relationError);
+          }
+
+          resolve(exists);
+        }
+      );
+    } else {
+      const createFacultyQuery =
+        "INSERT INTO `Faculty` (name, slug, updatedAt) VALUES (?, ?, ?)";
+      const createFacultyValues = [
+        data["name"],
+        slugify(data["name"]),
+        new Date(),
+      ];
+
+      connection.query(
+        {
+          sql: createFacultyQuery,
+          values: createFacultyValues,
+        },
+        (facultyError, result) => {
+          if (facultyError) {
+            reject(facultyError);
+          }
+
+          const relationQuery =
+            "INSERT INTO `_FacultyToUniversity` (A, B) VALUES (?, ?)";
+          const relationValues = [result.insertId, universityId];
+
+          connection.query(
+            {
+              sql: relationQuery,
+              values: relationValues,
+            },
+            (relationError) => {
+              if (relationError) {
+                reject(relationError);
+              }
+
+              resolve(result.insertId);
+            }
+          );
+        }
+      );
+    }
+  });
+}
+
+function createMultipleTeachers(connection, data, facultyId, universityId) {
+  return new Promise((resolve, reject) => {
+    const createTeacherQuery =
+      "INSERT IGNORE INTO `Teacher` (name, slug, updatedAt, universityId, facultyId) VALUES ?";
+
+    // MYSQL Automatically turns [['a', 'b'], ['c', 'd']] into ('a', 'b'), ('c', 'd').
+    // So we need to map the data to [['a', 'b'], ['c', 'd']] format.
+    const createTeacherValues = data.map((teacher) => [
+      teacher["name"],
+      slugify(teacher["name"]),
+      new Date(),
+      universityId,
+      facultyId,
+    ]);
+
+    connection.query(
+      createTeacherQuery,
+      [createTeacherValues],
+      (teacherError) => {
+        if (teacherError) {
+          reject(teacherError);
+        }
+
+        resolve();
+      }
+    );
+  });
+}
+
 async function main() {
   const data = await readJSON("./universities-backup.json");
 
+  const connection = mysql.createConnection("CONNECTION_STRING");
+  connection.connect();
+
   for (const u of data) {
+    if (u["faculties"].length === 0) {
+      continue;
+    }
+
     const domain = findDomainOfUniversity(u);
     if (domain == null) {
       continue;
     }
 
-    await createUniversity(u["name"], domain);
-    for (const faculty of u["faculties"]) {
-      log(`${u["name"]}\t${faculty["name"]}`);
-      await createFaculty(faculty["name"], u["name"]);
+    log(u["name"]);
+    const universityId = await createUniversity(connection, u, domain);
 
-      for (const teacher of faculty["teachers"]) {
-        await createTeacher(teacher["name"], u["name"], faculty["name"]);
+    for (const f of u["faculties"]) {
+      if (f["teachers"].length === 0) {
+        continue;
       }
+
+      log(`${u["name"]} - ${f["name"]}`);
+      const facultyId = await createFaculty(connection, f, universityId);
+      await createMultipleTeachers(
+        connection,
+        f["teachers"],
+        facultyId,
+        universityId
+      );
     }
   }
+
+  connection.end();
 
   log(`Done!`);
 }
