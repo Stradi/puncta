@@ -303,25 +303,6 @@ type Teacher {
   ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
 }
 
-type SearchResultItem {
-  """Item name"""
-  name: String!
-
-  """Item slug"""
-  slug: String!
-
-  """Item type"""
-  type: String!
-}
-
-type SearchResult {
-  """Number of results"""
-  count: Int!
-
-  """Results"""
-  results: [SearchResultItem!]!
-}
-
 type Query {
   university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): [University!]!
   faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): [Faculty!]!
@@ -332,13 +313,6 @@ type Query {
   user(username: String!): User!
   me: User!
   response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
-  search(
-    page: Int = 0
-    pageSize: Int = 10
-
-    """Search query"""
-    query: String!
-  ): SearchResult!
 }
 
 type Mutation {

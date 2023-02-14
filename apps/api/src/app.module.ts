@@ -7,11 +7,10 @@ import { AuthModule } from './auth/auth.module';
 import config from './common/config/config';
 import { FacultyModule } from './faculty/faculty.module';
 import { RatingModule } from './rating/rating.module';
+import { ResponseModule } from './response/response.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { UniversityModule } from './university/university.module';
 import { UserModule } from './user/user.module';
-import { ResponseModule } from './response/response.module';
-import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -30,7 +29,6 @@ import { SearchModule } from './search/search.module';
     AuthModule,
     UserModule,
     ResponseModule,
-    SearchModule,
   ],
 })
 export class AppModule {}
