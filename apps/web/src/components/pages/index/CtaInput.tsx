@@ -30,11 +30,7 @@ export default function CtaInput({
   const [term, setTerm] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<
-    {
-      name: string;
-      slug: string;
-      type: "university" | "teacher";
-    }[]
+    ((Teacher & { type: "teacher" }) | (University & { type: "university" }))[]
   >([]);
 
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -52,6 +48,7 @@ export default function CtaInput({
       });
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedChangeHandler = useCallback(debounce(handleChange, 500), []);
 
   useEffect(() => {
@@ -69,15 +66,13 @@ export default function CtaInput({
     async function getSuggestions() {
       const universities = (await searchUniversity(term)).map(
         (item: University) => ({
-          name: item.name,
-          slug: item.slug,
+          ...item,
           type: "university",
         })
       );
       if (universities.length === 0) {
         const teachers = (await searchTeacher(term)).map((item: Teacher) => ({
-          name: item.name,
-          slug: item.slug,
+          ...item,
           type: "teacher",
         }));
 
@@ -188,8 +183,17 @@ export default function CtaInput({
                     className="rounded-full hover:ring-1 hover:ring-black"
                   >
                     <Link href={`${href}/${item.slug}`}>
-                      <span className="flex w-full gap-2 py-2 px-4">
-                        {icon} {item.name}
+                      <span className="flex w-full items-center gap-2 py-2 px-4">
+                        <div>{icon}</div>
+                        <div className="flex flex-col">
+                          {item.name}
+                          {item.type === "teacher" && (
+                            <div className="text-xs text-gray-500">
+                              <span>{item.university?.name}</span>,{" "}
+                              <span>{item.faculty?.name}</span>
+                            </div>
+                          )}
+                        </div>
                       </span>
                     </Link>
                   </li>
