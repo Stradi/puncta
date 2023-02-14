@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import { TeacherIcon, UniversityIcon } from "@/components/Icons";
 import { searchTerm } from "@/lib/search";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -49,6 +50,7 @@ export default function CtaInput({
       });
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedChangeHandler = useCallback(debounce(handleChange, 100), []);
   useEffect(() => {
     return () => {
@@ -159,16 +161,22 @@ export default function CtaInput({
                 const href =
                   item.type === "university" ? "/universite" : "/ogretmen";
 
+                const icon =
+                  item.type === "university" ? (
+                    <UniversityIcon stroke="thin" />
+                  ) : (
+                    <TeacherIcon stroke="thin" />
+                  );
+
                 return (
                   <li
                     key={item.slug}
                     className="rounded-full hover:ring-1 hover:ring-black"
                   >
-                    <Link
-                      href={`${href}/${item.slug}`}
-                      className="inline-block w-full py-2 px-4"
-                    >
-                      {item.name}
+                    <Link href={`${href}/${item.slug}`}>
+                      <span className="flex w-full gap-2 py-2 px-4">
+                        {icon} {item.name}
+                      </span>
                     </Link>
                   </li>
                 );
