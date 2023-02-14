@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { slugify } from 'src/shared/utils/text.util';
 import { SearchArgs } from './dto/search.args';
 
 @Injectable()
@@ -24,10 +25,12 @@ export class SearchService {
     // since in development I am using sqlite and it doesn't support
     // full text search. In production I will use postgres and will
     // change that (if I don't forget).
+    const slugifiedQuery = slugify(args.query);
+
     const result = await (this.prismaService[resource] as any).findMany({
       where: {
         slug: {
-          contains: args.query,
+          contains: slugifiedQuery,
         },
       },
       take: args.pageSize,
