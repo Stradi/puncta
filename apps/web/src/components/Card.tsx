@@ -151,9 +151,14 @@ export function CardWithRating({ ratings, title, href }: CardWithRatingProps) {
 interface CardWithoutRatingProps extends CardProps {
   title: string;
   href?: string;
+  subtitle?: React.ReactNode;
 }
 
-export function CardWithoutRating({ title, href }: CardWithoutRatingProps) {
+export function CardWithoutRating({
+  title,
+  href,
+  subtitle,
+}: CardWithoutRatingProps) {
   return (
     <ConditionalWrapper
       condition={!!href}
@@ -169,11 +174,12 @@ export function CardWithoutRating({ title, href }: CardWithoutRatingProps) {
       >
         <div
           className={cn(
-            "flex h-full w-full items-center justify-center",
+            "flex h-full w-full flex-col items-center justify-center",
             "border-2 border-black"
           )}
         >
           <h2 className={cn(" p-2", "text-center text-xl")}>{title}</h2>
+          {subtitle && <div>{subtitle}</div>}
         </div>
       </div>
     </ConditionalWrapper>

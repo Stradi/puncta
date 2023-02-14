@@ -12,8 +12,11 @@ import { useEffect, useState } from "react";
 // remove search results.
 export default function Page() {
   const [term, setTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<any>(undefined);
+  const [searchResults, setSearchResults] = useState<
+    ((Teacher & { type: "teacher" }) | (University & { type: "university" }))[]
+  >([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const query = parseQuery(router.query, ["q"]);
@@ -37,17 +40,16 @@ export default function Page() {
     async function callApi() {
       const universities = (await searchUniversity(term)).map(
         (item: University) => ({
-          name: item.name,
-          slug: item.slug,
+          ...item,
           type: "university",
         })
       );
       const teachers = (await searchTeacher(term)).map((item: Teacher) => ({
-        name: item.name,
-        slug: item.slug,
+        ...item,
         type: "teacher",
       }));
 
+      setIsLoading(false);
       setSearchResults([...universities, ...teachers]);
     }
 
@@ -62,6 +64,8 @@ export default function Page() {
         undefined,
         { shallow: true }
       );
+
+      setIsLoading(true);
 
       setSearchResults([]);
       callApi();
@@ -90,9 +94,9 @@ export default function Page() {
           onSearch={onSearch}
           initialTerm={term}
         />
-        {searchResults && searchResults.length > 0 && (
+        {searchResults && searchResults.length > 0 && !isLoading && (
           <div className="space-y-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0">
-            {searchResults.map((result: any) => {
+            {searchResults.map((result) => {
               const href = `/${
                 result.type === "teacher" ? "ogretmen" : "universite"
               }/${result.slug}`;
@@ -100,21 +104,37 @@ export default function Page() {
               return (
                 <CardWithoutRating
                   key={result.slug}
-                  title={result.name}
+                  title={result.name as string}
                   href={href}
+                  subtitle={
+                    result.type === "teacher" && (
+                      <div className="text-center">
+                        <span>{result.university?.name}</span>,{" "}
+                        <span>{result.faculty?.name}</span>
+                      </div>
+                    )
+                  }
                 />
               );
             })}
           </div>
         )}
-        {hasSearched && searchResults && searchResults.length === 0 && (
+        {isLoading && (
           <div className="text-center">
-            <p className="text-2xl font-medium">
-              Her yeri aradık ama bulamadık. Arama terimini değiştirip tekrar
-              deneyebilirsin.
-            </p>
+            <p className="text-2xl font-medium">Aranıyor...</p>
           </div>
         )}
+        {!isLoading &&
+          hasSearched &&
+          searchResults &&
+          searchResults.length === 0 && (
+            <div className="text-center">
+              <p className="text-2xl font-medium">
+                Her yeri aradık ama bulamadık. Arama terimini değiştirip tekrar
+                deneyebilirsin.
+              </p>
+            </div>
+          )}
       </div>
     </>
   );
