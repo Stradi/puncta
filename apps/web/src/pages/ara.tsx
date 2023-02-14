@@ -1,7 +1,7 @@
 import { CardWithoutRating } from "@/components/Card";
 import SearchInput from "@/components/pages/ara/SearchInput";
 import config from "@/config";
-import { searchTerm } from "@/lib/search";
+import { searchTeacher, searchUniversity } from "@/lib/search";
 import { parseQuery } from "@/lib/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -32,10 +32,23 @@ export default function Page() {
     setTerm((query.q as string) || "");
   }, [query.q]);
 
+  // TODO: Add loading indicator
   useEffect(() => {
     async function callApi() {
-      const results = await searchTerm(term);
-      setSearchResults(results);
+      const universities = (await searchUniversity(term)).map(
+        (item: University) => ({
+          name: item.name,
+          slug: item.slug,
+          type: "university",
+        })
+      );
+      const teachers = (await searchTeacher(term)).map((item: Teacher) => ({
+        name: item.name,
+        slug: item.slug,
+        type: "teacher",
+      }));
+
+      setSearchResults([...universities, ...teachers]);
     }
 
     if (term.length > 2) {
@@ -50,6 +63,7 @@ export default function Page() {
         { shallow: true }
       );
 
+      setSearchResults([]);
       callApi();
       setHasSearched(true);
     }
@@ -76,9 +90,9 @@ export default function Page() {
           onSearch={onSearch}
           initialTerm={term}
         />
-        {searchResults && searchResults.results.length > 0 && (
+        {searchResults && searchResults.length > 0 && (
           <div className="space-y-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0">
-            {searchResults.results.map((result: any) => {
+            {searchResults.map((result: any) => {
               const href = `/${
                 result.type === "teacher" ? "ogretmen" : "universite"
               }/${result.slug}`;
@@ -93,7 +107,7 @@ export default function Page() {
             })}
           </div>
         )}
-        {hasSearched && searchResults && searchResults.results.length === 0 && (
+        {hasSearched && searchResults && searchResults.length === 0 && (
           <div className="text-center">
             <p className="text-2xl font-medium">
               Her yeri aradık ama bulamadık. Arama terimini değiştirip tekrar

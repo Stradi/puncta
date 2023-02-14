@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import { TeacherIcon, UniversityIcon } from "@/components/Icons";
-import { searchTerm } from "@/lib/search";
+import { searchTeacher, searchUniversity } from "@/lib/search";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import debounce from "lodash.debounce";
@@ -36,7 +36,9 @@ export default function CtaInput({
       type: "university" | "teacher";
     }[]
   >([]);
+
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -50,8 +52,8 @@ export default function CtaInput({
       });
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedChangeHandler = useCallback(debounce(handleChange, 100), []);
+  const debouncedChangeHandler = useCallback(debounce(handleChange, 500), []);
+
   useEffect(() => {
     return () => {
       debouncedChangeHandler.cancel();
@@ -65,18 +67,30 @@ export default function CtaInput({
 
   useEffect(() => {
     async function getSuggestions() {
-      searchTerm(term).then((res) => {
-        setSuggestions(
-          res.results.slice(0, 2).map((item: any) => ({
-            name: item.name,
-            slug: item.slug,
-            type: item.type,
-          }))
-        );
-      });
+      const universities = (await searchUniversity(term)).map(
+        (item: University) => ({
+          name: item.name,
+          slug: item.slug,
+          type: "university",
+        })
+      );
+      if (universities.length === 0) {
+        const teachers = (await searchTeacher(term)).map((item: Teacher) => ({
+          name: item.name,
+          slug: item.slug,
+          type: "teacher",
+        }));
+
+        setSuggestions([...universities, ...teachers].slice(0, 2));
+        setIsLoading(false);
+      } else {
+        setSuggestions(universities.slice(0, 2));
+        setIsLoading(false);
+      }
     }
 
     if (term.length > 2) {
+      setIsLoading(true);
       getSuggestions();
     } else {
       setSuggestions([]);
@@ -140,7 +154,7 @@ export default function CtaInput({
         </div>
       </div>
       <AnimatePresence>
-        {showSuggestions && suggestions.length > 0 && (
+        {showSuggestions && suggestions.length > 0 && !isLoading && (
           <motion.ul
             className="absolute mt-2 w-full rounded-3xl border border-black bg-white font-medium"
             initial={{
@@ -183,6 +197,11 @@ export default function CtaInput({
               })}
             </div>
           </motion.ul>
+        )}
+        {isLoading && (
+          <div className="absolute mt-2 w-full rounded-3xl border border-black bg-white px-6 py-4 text-center font-medium">
+            Sonuçlar aranıyor...
+          </div>
         )}
       </AnimatePresence>
 
