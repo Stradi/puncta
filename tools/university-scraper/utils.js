@@ -62,8 +62,20 @@ export function modeArray(array) {
   return maxEl;
 }
 
-export function slugify(text) {
-  return _slugify(text, {
+export function slugify(text, addRandom = false) {
+  return `${_slugify(text, {
     lower: true,
-  });
+  })}${addRandom ? `-${makeid(10)}` : ""}`;
+}
+
+function makeid(length) {
+  let result = "";
+  const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
 }
