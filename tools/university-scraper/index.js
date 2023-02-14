@@ -82,15 +82,36 @@ function getTeachersOfFaculty(url, client) {
         const teachers = await scrapeSinglePage(response.data);
         const nextPageHref = await handlePagination(response.data);
 
+        const $ = cheerio.load(response.data);
+
+        let realFacultyName = toTitleCase(
+          $("ul.list-group a.active")
+            .children()
+            .contents()
+            .first()
+            .text()
+            .trim()
+        );
+
+        if (realFacultyName === "") {
+          realFacultyName = undefined;
+        }
+
         if (nextPageHref) {
-          const nextTeachers = await getTeachersOfFaculty(
+          const nextPageData = await getTeachersOfFaculty(
             `https://akademik.yok.gov.tr${nextPageHref}`,
             client
           );
-          resolve([...teachers, ...nextTeachers]);
+          resolve({
+            teachers: [...teachers, ...nextPageData.teachers],
+            realFacultyName,
+          });
         }
 
-        resolve(teachers);
+        resolve({
+          teachers,
+          realFacultyName,
+        });
       })
       .catch((e) => reject(e));
   });
@@ -150,10 +171,14 @@ function scrapeSingleUniversity(universityId, cb) {
           });
         });
 
-        university["faculties"] = university["faculties"].map((faculty, i) => ({
-          ...faculty,
-          teachers: teachers[i],
-        }));
+        // Stupid YÖK, show obsolete faculty names instead of real ones...
+        university["faculties"] = university["faculties"]
+          .map((faculty, i) => ({
+            ...faculty,
+            name: teachers[i].realFacultyName || faculty.name,
+            teachers: teachers[i].teachers,
+          }))
+          .filter((v, i, a) => a.findIndex((v2) => v2.name === v.name) === i);
 
         resolve(university);
       })
@@ -206,11 +231,10 @@ async function main() {
     const data = await scrapeSingleUniversity(u.id, (progress) => {
       log(`Scraping ${progress.id} (${progress.completed}/${progress.total})`);
     });
-
     universities.push(data);
   }
 
-  await writeToFile(universities, "universities.json");
+  await writeToFile(universities, "universities-new.json");
 
   log("Done.");
 }
