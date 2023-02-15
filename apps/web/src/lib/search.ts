@@ -4,7 +4,7 @@ import { initializeApollo } from "./apollo";
 
 const SEARCH_UNIVERSITY_QUERY = gql`
   query SearchUniversity($term: String!) {
-    university(filter: { slug: { startsWith: $term } }, pageSize: 3) {
+    university(filter: { slug: { startsWith: $term } }) {
       name
       slug
     }
@@ -12,8 +12,8 @@ const SEARCH_UNIVERSITY_QUERY = gql`
 `;
 
 const SEARCH_TEACHER_QUERY = gql`
-  query SearchTeacher($term: String!) {
-    teacher(filter: { slug: { startsWith: $term } }, pageSize: 3) {
+  query SearchTeacher($term: String!, $pageSize: Int) {
+    teacher(filter: { slug: { startsWith: $term } }, pageSize: $pageSize) {
       name
       slug
       university {
@@ -54,7 +54,7 @@ export async function searchUniversity(term: string) {
   return response.data.university;
 }
 
-export async function searchTeacher(term: string) {
+export async function searchTeacher(term: string, pageSize: number = 12) {
   const slugified = slugify(term);
   const apolloClient = initializeApollo();
 
@@ -62,6 +62,7 @@ export async function searchTeacher(term: string) {
     query: SEARCH_TEACHER_QUERY,
     variables: {
       term: slugified,
+      pageSize,
     },
   });
 

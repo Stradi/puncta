@@ -71,10 +71,12 @@ export default function CtaInput({
         })
       );
       if (universities.length === 0) {
-        const teachers = (await searchTeacher(term)).map((item: Teacher) => ({
-          ...item,
-          type: "teacher",
-        }));
+        const teachers = (await searchTeacher(term, 3)).map(
+          (item: Teacher) => ({
+            ...item,
+            type: "teacher",
+          })
+        );
 
         setSuggestions([...universities, ...teachers].slice(0, 2));
         setIsLoading(false);
