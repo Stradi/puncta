@@ -9,12 +9,17 @@ interface CommonResource {
 interface Faculty extends Partial<CommonResource> {
   universities?: University[];
   teachers?: Teacher[];
+
+  universityCount?: number;
+  teacherCount?: number;
 }
 
 interface Teacher extends Partial<CommonResource> {
   university?: University;
   faculty?: Faculty;
   ratings?: Rating[];
+
+  ratingCount?: number;
 }
 
 interface Rating extends Partial<Omit<CommonResource, "name" | "slug">> {
@@ -30,6 +35,10 @@ interface University extends Partial<CommonResource> {
   faculties?: Faculty[];
   teachers?: Teacher[];
   ratings?: Rating[];
+
+  facultyCount?: number;
+  teacherCount?: number;
+  ratingCount?: number;
 }
 
 interface User extends Partial<CommonResource> {
@@ -42,6 +51,8 @@ interface User extends Partial<CommonResource> {
   university?: University;
   faculty?: Faculty;
   ratings?: Rating[];
+
+  ratingCount?: number;
 }
 
 interface RateCriteria {

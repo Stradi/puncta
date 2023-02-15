@@ -55,20 +55,10 @@ export async function getStaticProps() {
   }>({
     query: gql`
       query {
-        university(pageSize: 9999) {
+        university(pageSize: 500) {
           id
           name
           slug
-          faculties {
-            id
-            name
-            slug
-          }
-          teachers {
-            id
-            name
-            slug
-          }
           ratings {
             id
             meta

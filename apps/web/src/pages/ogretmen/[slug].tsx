@@ -20,12 +20,11 @@ interface PageProps {
 
 export default function Page({ teacher }: PageProps) {
   const teacherName = teacher.name as string;
+  const ratingCount = teacher.ratingCount as number;
 
   let gradeText = "";
   if (teacher.ratings && teacher.ratings?.length > 0) {
-    gradeText = `${teacherName}, toplam ${
-      teacher.ratings?.length
-    } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
+    gradeText = `${teacherName}, toplam ${ratingCount} değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
       teacher.ratings
     )} olarak hesaplanmıştır.`;
   } else {
@@ -152,7 +151,7 @@ export async function getStaticProps({ params }: Params) {
           id
           name
           slug
-          ratings(sort: { createdAt: "desc" }) {
+          ratings(sort: { createdAt: "desc" }, pageSize: 250) {
             id
             meta
             score
@@ -170,6 +169,7 @@ export async function getStaticProps({ params }: Params) {
             name
             slug
           }
+          ratingCount
         }
       }
     `,

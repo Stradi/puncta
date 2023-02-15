@@ -19,23 +19,22 @@ interface PageProps {
 
 export default function Page({ university, slug }: PageProps) {
   const uniName = university.name as string;
+  const ratingCount = university.ratingCount as number;
 
   let gradeText = "";
-  if (university.ratings && university.ratings?.length > 0) {
-    gradeText = `${uniName}'nin toplam ${
-      university.ratings?.length
-    } değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
+  if (ratingCount > 0) {
+    gradeText = `${uniName}'nin toplam ${ratingCount} değerlendirme sonucu aldığı harf notu ${ratingsToLetterGrade(
       university.ratings
     )} olarak hesaplanmıştır.`;
   } else {
-    gradeText = `${university.name} henüz değerlendirilmediği için harf notu hesaplanamamıştır.`;
+    gradeText = `${uniName} henüz değerlendirilmediği için harf notu hesaplanamamıştır.`;
   }
 
   return (
     <>
       <Head>
-        <title>{`${university.name} | The Puncta`}</title>
-        <meta name="description" content={university.name} />
+        <title>{`${uniName} | The Puncta`}</title>
+        <meta name="description" content={uniName} />
       </Head>
       <main>
         <header className="container mx-auto max-w-6xl md:flex md:gap-8">
@@ -46,7 +45,7 @@ export default function Page({ university, slug }: PageProps) {
                 alt: uniName,
               }}
               title={uniName}
-              description={`İçerisinde ${university.faculties?.length} bölüm olan ${uniName}'nin toplam ${university.teachers?.length} öğretim üyesi bulunmaktadır.`}
+              description={`İçerisinde ${university.facultyCount} bölüm olan ${uniName}'nin toplam ${university.teacherCount} öğretim üyesi bulunmaktadır.`}
               footer={
                 <RateProvider
                   type="university"
@@ -136,9 +135,6 @@ export async function getStaticProps({ params }: Params) {
             comment
             createdAt
           }
-          faculties {
-            id
-          }
           teachers {
             id
             name
@@ -149,6 +145,9 @@ export async function getStaticProps({ params }: Params) {
               score
             }
           }
+          ratingCount
+          facultyCount
+          teacherCount
         }
       }
     `,
