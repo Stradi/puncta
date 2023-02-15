@@ -11,12 +11,10 @@ import { GqlAuthGuard } from 'src/auth/graphql-auth.guard';
 import { RoleGuard } from 'src/common/role/role.guard';
 import { Roles } from 'src/common/role/roles.decorator';
 import { Role } from 'src/common/role/roles.enum';
-import { GetFacultyArgs } from 'src/faculty/dto/get-faculty.args';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
 import { GetRatingArgs } from 'src/rating/dto/get-rating.args';
 import { Rating } from 'src/rating/entities/rating.entity';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
-import { GetUniversityArgs } from 'src/university/dto/get-university.args';
 import { University } from 'src/university/entities/university.entity';
 import { CreateTeacherInput } from './dto/create-teacher.input';
 import { DeleteTeacherInput } from './dto/delete-teacher.input';
@@ -35,18 +33,15 @@ export class TeacherResolver {
   }
 
   @ResolveField('university', () => University)
-  async university(
-    @Parent() teacher: Teacher,
-    @Args() args: GetUniversityArgs,
-  ) {
+  async university(@Parent() teacher: Teacher) {
     const { id } = teacher;
-    return await this.teacherService.university(id, args);
+    return await this.teacherService.university(id);
   }
 
   @ResolveField('faculty', () => Faculty)
-  async faculty(@Parent() teacher: Teacher, @Args() args: GetFacultyArgs) {
+  async faculty(@Parent() teacher: Teacher) {
     const { id } = teacher;
-    return await this.teacherService.faculty(id, args);
+    return await this.teacherService.faculty(id);
   }
 
   @ResolveField('ratings', () => [Rating])

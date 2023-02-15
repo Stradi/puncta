@@ -13,9 +13,7 @@ import { RoleGuard } from 'src/common/role/role.guard';
 import { Roles } from 'src/common/role/roles.decorator';
 import { Role } from 'src/common/role/roles.enum';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
-import { GetTeacherArgs } from 'src/teacher/dto/get-teacher.args';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
-import { GetUniversityArgs } from 'src/university/dto/get-university.args';
 import { University } from 'src/university/entities/university.entity';
 import { User } from 'src/user/entities/user.entity';
 import { CreateRatingInput } from './dto/create-rating.input';
@@ -46,15 +44,15 @@ export class RatingResolver {
   }
 
   @ResolveField('university', () => University)
-  async university(@Parent() rating: Rating, @Args() args: GetUniversityArgs) {
+  async university(@Parent() rating: Rating) {
     const { id } = rating;
-    return await this.ratingService.university(id, args);
+    return await this.ratingService.university(id);
   }
 
   @ResolveField('teacher', () => Teacher)
-  async teacher(@Parent() rating: Rating, @Args() args: GetTeacherArgs) {
+  async teacher(@Parent() rating: Rating) {
     const { id } = rating;
-    return await this.ratingService.teacher(id, args);
+    return await this.ratingService.teacher(id);
   }
 
   @ResolveField('user', () => User)

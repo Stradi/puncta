@@ -2,13 +2,9 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { GqlAuthGuard } from 'src/auth/graphql-auth.guard';
 import { UserEntity } from 'src/common/decorators/user.decorator';
-import { GetFacultyArgs } from 'src/faculty/dto/get-faculty.args';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
-import { GetRatingArgs } from 'src/rating/dto/get-rating.args';
 import { Rating } from 'src/rating/entities/rating.entity';
-import { GetResponseArgs } from 'src/response/dto/get-response.args';
 import { Response } from 'src/response/entities/response.entity';
-import { GetUniversityArgs } from 'src/university/dto/get-university.args';
 import { University } from 'src/university/entities/university.entity';
 import { GetUserArgs } from './dto/get-user.args';
 import { User } from './entities/user.entity';
@@ -30,27 +26,27 @@ export class UserResolver {
   }
 
   @ResolveField('ratings', () => [Rating])
-  async ratings(@Parent() user: User, @Args() args: GetRatingArgs) {
+  async ratings(@Parent() user: User) {
     const { id } = user;
-    return this.userService.ratings(id, args);
+    return this.userService.ratings(id);
   }
 
   @ResolveField('university', () => University)
-  async university(@Parent() user: User, @Args() args: GetUniversityArgs) {
+  async university(@Parent() user: User) {
     const { id } = user;
-    return this.userService.university(id, args);
+    return this.userService.university(id);
   }
 
   @ResolveField('faculty', () => Faculty)
-  async faculty(@Parent() user: User, @Args() args: GetFacultyArgs) {
+  async faculty(@Parent() user: User) {
     const { id } = user;
-    return this.userService.faculty(id, args);
+    return this.userService.faculty(id);
   }
 
   @ResolveField('response', () => [Response])
-  async response(@Parent() user: User, @Args() args: GetResponseArgs) {
+  async response(@Parent() user: User) {
     const { id } = user;
-    return this.userService.response(id, args);
+    return this.userService.response(id);
   }
 
   // TODO: Add updateUser, changePassword mutations.

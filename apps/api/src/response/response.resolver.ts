@@ -13,7 +13,6 @@ import { UserEntity } from 'src/common/decorators/user.decorator';
 import { RoleGuard } from 'src/common/role/role.guard';
 import { Roles } from 'src/common/role/roles.decorator';
 import { Role } from 'src/common/role/roles.enum';
-import { GetRatingArgs } from 'src/rating/dto/get-rating.args';
 import { Rating } from 'src/rating/entities/rating.entity';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
 import { User } from 'src/user/entities/user.entity';
@@ -45,9 +44,9 @@ export class ResponseResolver {
   }
 
   @ResolveField('to', () => Rating)
-  async to(@Parent() response: Response, @Args() args: GetRatingArgs) {
+  async to(@Parent() response: Response) {
     const { id } = response;
-    return await this.responseService.to(id, args);
+    return await this.responseService.to(id);
   }
 
   // This field is TEACHER. Not STUDENT.

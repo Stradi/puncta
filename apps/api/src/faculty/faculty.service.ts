@@ -39,55 +39,49 @@ export class FacultyService {
       orderBy: facultySort,
       take: args.pageSize,
       skip: args.page * args.pageSize,
-      include: {
-        universities: true,
-        teachers: true,
-      },
     });
   }
 
   async teachers(id: number, args: GetTeacherArgs) {
-    return await this.prismaService.teacher.findMany({
-      where: {
-        facultyId: id,
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
-      },
-      orderBy: convertArgsToWhereClause(
-        ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
-        args.sort || {},
-      ),
-      include: {
-        university: true,
-        faculty: true,
-        ratings: true,
-      },
-      take: args.pageSize,
-      skip: args.page * args.pageSize,
-    });
+    return await this.prismaService.faculty
+      .findUnique({
+        where: { id },
+      })
+      .teachers({
+        where: {
+          ...convertArgsToWhereClause(
+            ['id', 'slug', 'name'],
+            args.filter || {},
+          ),
+        },
+        orderBy: convertArgsToWhereClause(
+          ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+          args.sort || {},
+        ),
+        take: args.pageSize,
+        skip: args.page * args.pageSize,
+      });
   }
 
   async universities(id: number, args: GetUniversityArgs) {
-    return await this.prismaService.university.findMany({
-      where: {
-        faculties: {
-          some: {
-            id,
-          },
+    return await this.prismaService.faculty
+      .findUnique({
+        where: { id },
+      })
+      .universities({
+        where: {
+          ...convertArgsToWhereClause(
+            ['id', 'slug', 'name'],
+            args.filter || {},
+          ),
         },
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
-      },
-      orderBy: convertArgsToWhereClause(
-        ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
-        args.sort || {},
-      ),
-      include: {
-        faculties: true,
-        teachers: true,
-        ratings: true,
-      },
-      take: args.pageSize,
-      skip: args.page * args.pageSize,
-    });
+        orderBy: convertArgsToWhereClause(
+          ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+          args.sort || {},
+        ),
+        take: args.pageSize,
+        skip: args.page * args.pageSize,
+      });
   }
 
   async create(args: CreateFacultyInput) {
@@ -113,10 +107,6 @@ export class FacultyService {
               args.university,
             ),
           },
-        },
-        include: {
-          teachers: true,
-          universities: true,
         },
       });
 
@@ -155,10 +145,6 @@ export class FacultyService {
         data: {
           ...setOptions,
         },
-        include: {
-          universities: true,
-          teachers: true,
-        },
       });
 
       return university;
@@ -177,10 +163,6 @@ export class FacultyService {
     try {
       const faculty = await this.prismaService.faculty.delete({
         where: convertArgsToWhereClause(['id', 'slug', 'name'], args),
-        include: {
-          universities: true,
-          teachers: true,
-        },
       });
 
       return faculty;

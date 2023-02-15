@@ -45,7 +45,7 @@ type Response {
   meta: String!
 
   """The ratingg that this response belongs to"""
-  to(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): Rating!
+  to: Rating!
 
   """The teacher that created this response"""
   from: User!
@@ -55,12 +55,6 @@ type Response {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
-
-input RatingSortInput {
-  id: String
-  createdAt: String
-  updatedAt: String
-}
 
 type User {
   """Unique identifier for the user"""
@@ -88,13 +82,13 @@ type User {
   lastName: String
 
   """Rating that this user has made"""
-  ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
+  ratings: [Rating!]
 
   """University that this user is associated with"""
-  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): University
+  university: University
 
   """Faculty that this user is associated with"""
-  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): Faculty
+  faculty: Faculty
 
   """Responses that this user has created"""
   responses: [Response!]
@@ -104,63 +98,7 @@ type User {
 
   """Whether this user (teacher) is verified or not"""
   isApproved: Boolean
-  response(page: Int = 0, pageSize: Int = 10, id: Int): [Response!]!
-}
-
-input UniversityFilterInput {
-  id: IntFilter
-  name: StringFilter
-  slug: StringFilter
-}
-
-input IntFilter {
-  equals: Float
-  in: Float
-  notIn: Float
-  lt: Float
-  lte: Float
-  gt: Float
-  gte: Float
-  not: Float
-}
-
-input StringFilter {
-  equals: String
-  in: String
-  notIn: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: String
-}
-
-input UniversitySortInput {
-  id: String
-  createdAt: String
-  updatedAt: String
-  name: String
-  slug: String
-}
-
-input FacultyFilterInput {
-  id: IntFilter
-  name: StringFilter
-  slug: StringFilter
-  university: BaseResourceIdentifierFilter
-}
-
-input BaseResourceIdentifierFilter {
-  id: IntFilter
-  name: StringFilter
-  slug: StringFilter
-}
-
-input FacultySortInput {
-  id: String
-  createdAt: String
-  updatedAt: String
-  name: String
-  slug: String
+  response: [Response!]!
 }
 
 type Rating {
@@ -183,29 +121,13 @@ type Rating {
   meta: String
 
   """The university that this rating rates"""
-  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): University
+  university: University
 
   """The university that this rating rates"""
-  teacher(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): Teacher
+  teacher: Teacher
 
   """The user that created this rating"""
   user: User
-}
-
-input TeacherFilterInput {
-  id: IntFilter
-  name: StringFilter
-  slug: StringFilter
-  university: BaseResourceIdentifierFilter
-  faculty: BaseResourceIdentifierFilter
-}
-
-input TeacherSortInput {
-  id: String
-  createdAt: String
-  updatedAt: String
-  name: String
-  slug: String
 }
 
 type Domain {
@@ -254,6 +176,70 @@ type University {
   domain: Domain!
 }
 
+input FacultyFilterInput {
+  id: IntFilter
+  name: StringFilter
+  slug: StringFilter
+  university: BaseResourceIdentifierFilter
+}
+
+input IntFilter {
+  equals: Float
+  in: Float
+  notIn: Float
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: Float
+}
+
+input StringFilter {
+  equals: String
+  in: String
+  notIn: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: String
+}
+
+input BaseResourceIdentifierFilter {
+  id: IntFilter
+  name: StringFilter
+  slug: StringFilter
+}
+
+input FacultySortInput {
+  id: String
+  createdAt: String
+  updatedAt: String
+  name: String
+  slug: String
+}
+
+input TeacherFilterInput {
+  id: IntFilter
+  name: StringFilter
+  slug: StringFilter
+  university: BaseResourceIdentifierFilter
+  faculty: BaseResourceIdentifierFilter
+}
+
+input TeacherSortInput {
+  id: String
+  createdAt: String
+  updatedAt: String
+  name: String
+  slug: String
+}
+
+input RatingSortInput {
+  id: String
+  createdAt: String
+  updatedAt: String
+}
+
 type Faculty {
   """Unique identifier for the faculty"""
   id: ID!
@@ -277,6 +263,20 @@ type Faculty {
   teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): [Teacher!]
 }
 
+input UniversityFilterInput {
+  id: IntFilter
+  name: StringFilter
+  slug: StringFilter
+}
+
+input UniversitySortInput {
+  id: String
+  createdAt: String
+  updatedAt: String
+  name: String
+  slug: String
+}
+
 type Teacher {
   """Unique identifier for the teacher"""
   id: ID!
@@ -294,10 +294,10 @@ type Teacher {
   slug: String!
 
   """The university that this teacher works"""
-  university(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): University
+  university: University
 
   """The faculty that this teacher works"""
-  faculty(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): Faculty
+  faculty: Faculty
 
   """Ratings of this teacher"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]

@@ -1,12 +1,10 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { GetRatingArgs } from 'src/rating/dto/get-rating.args';
 import {
   RatingNotFoundError,
   ResponseNotFoundError,
 } from 'src/shared/shared.exceptions';
-import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
 import { User } from 'src/user/entities/user.entity';
 import { CreateResponseInput } from './dto/create-response.input';
 import { DeleteResponseInput } from './dto/delete-response.input';
@@ -21,10 +19,6 @@ export class ResponseService {
     return await this.prismaService.response.findMany({
       take: args.pageSize,
       skip: args.page * args.pageSize,
-      include: {
-        from: true,
-        to: true,
-      },
     });
   }
 
@@ -33,10 +27,6 @@ export class ResponseService {
     response = await this.prismaService.response.findUnique({
       where: {
         id: args.id,
-      },
-      include: {
-        from: true,
-        to: true,
       },
     });
 
@@ -47,36 +37,22 @@ export class ResponseService {
     return response;
   }
 
-  async to(id: number, args: GetRatingArgs) {
-    return await this.prismaService.rating.findFirst({
-      where: {
-        response: {
+  async to(id: number) {
+    return await this.prismaService.response
+      .findUnique({
+        where: {
           id,
         },
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
-      },
-      include: {
-        university: true,
-        teacher: true,
-        response: true,
-      },
-    });
+      })
+      .to();
   }
 
   async from(id: number) {
-    return await this.prismaService.user.findFirst({
-      where: {
-        responses: {
-          some: { id },
-        },
-      },
-      // We don't need university, faculty or rating fields since
-      // this user is teacher (students can't create responses).
-      include: {
-        responses: true,
-        teacher: true,
-      },
-    });
+    return await this.prismaService.response
+      .findUnique({
+        where: { id },
+      })
+      .from();
   }
 
   async create(args: CreateResponseInput, user: User) {
@@ -101,10 +77,6 @@ export class ResponseService {
               id: args.to,
             },
           },
-        },
-        include: {
-          from: true,
-          to: true,
         },
       });
 
@@ -138,10 +110,6 @@ export class ResponseService {
         data: {
           ...setOptions,
         },
-        include: {
-          from: true,
-          to: true,
-        },
       });
 
       return response;
@@ -160,10 +128,6 @@ export class ResponseService {
     try {
       const response = await this.prismaService.response.delete({
         where: { id: args.id },
-        include: {
-          from: true,
-          to: true,
-        },
       });
 
       return response;

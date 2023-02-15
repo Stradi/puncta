@@ -30,76 +30,67 @@ export class UniversityService {
       ),
       take: args.pageSize,
       skip: args.page * args.pageSize,
-      include: {
-        faculties: true,
-        teachers: true,
-        ratings: true,
-      },
     });
   }
 
   async faculties(id: number, args: GetFacultyArgs) {
-    return await this.prismaService.faculty.findMany({
-      where: {
-        universities: {
-          some: {
-            id,
-          },
+    return await this.prismaService.university
+      .findUnique({
+        where: { id },
+      })
+      .faculties({
+        where: {
+          ...convertArgsToWhereClause(
+            ['id', 'slug', 'name'],
+            args.filter || {},
+          ),
         },
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
-      },
-      orderBy: convertArgsToWhereClause(
-        ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
-        args.sort || {},
-      ),
-      include: {
-        universities: true,
-        teachers: true,
-      },
-      take: args.pageSize,
-      skip: args.page * args.pageSize,
-    });
+        orderBy: convertArgsToWhereClause(
+          ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+          args.sort || {},
+        ),
+        take: args.pageSize,
+        skip: args.page * args.pageSize,
+      });
   }
 
   async teachers(id: number, args: GetTeacherArgs) {
-    return await this.prismaService.teacher.findMany({
-      where: {
-        universityId: id,
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
-      },
-      orderBy: convertArgsToWhereClause(
-        ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
-        args.sort || {},
-      ),
-      include: {
-        university: true,
-        faculty: true,
-        ratings: true,
-      },
-      take: args.pageSize,
-      skip: args.page * args.pageSize,
-    });
+    return this.prismaService.university
+      .findUnique({
+        where: { id },
+      })
+      .teachers({
+        where: {
+          ...convertArgsToWhereClause(
+            ['id', 'slug', 'name'],
+            args.filter || {},
+          ),
+        },
+        orderBy: convertArgsToWhereClause(
+          ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+          args.sort || {},
+        ),
+        take: args.pageSize,
+        skip: args.page * args.pageSize,
+      });
   }
 
   async ratings(id: number, args: GetRatingArgs) {
-    return await this.prismaService.rating.findMany({
-      where: {
-        universityId: id,
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
-      },
-      orderBy: convertArgsToWhereClause(
-        ['id', 'createdAt', 'updatedAt'],
-        args.sort || {},
-      ),
-      include: {
-        university: true,
-        teacher: true,
-        user: true,
-        response: true,
-      },
-      take: args.pageSize,
-      skip: args.page * args.pageSize,
-    });
+    return this.prismaService.university
+      .findUnique({
+        where: { id },
+      })
+      .ratings({
+        where: {
+          ...convertArgsToWhereClause(['id', 'slug', 'name'], args || {}),
+        },
+        orderBy: convertArgsToWhereClause(
+          ['id', 'createdAt', 'updatedAt', 'name', 'slug'],
+          args.sort || {},
+        ),
+        take: args.pageSize,
+        skip: args.page * args.pageSize,
+      });
   }
 
   async create(args: CreateUniversityInput) {
@@ -113,11 +104,6 @@ export class UniversityService {
               name: args.domain,
             },
           },
-        },
-        include: {
-          faculties: true,
-          teachers: true,
-          ratings: true,
         },
       });
 
@@ -155,11 +141,6 @@ export class UniversityService {
         data: {
           ...setOptions,
         },
-        include: {
-          faculties: true,
-          teachers: true,
-          ratings: true,
-        },
       });
 
       return university;
@@ -178,11 +159,6 @@ export class UniversityService {
     try {
       const university = await this.prismaService.university.delete({
         where: convertArgsToWhereClause(['id', 'slug', 'name'], args),
-        include: {
-          faculties: true,
-          teachers: true,
-          ratings: true,
-        },
       });
 
       return university;

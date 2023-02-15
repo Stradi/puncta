@@ -3,8 +3,6 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RatingNotFoundError } from 'src/shared/shared.exceptions';
 import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
-import { GetTeacherArgs } from 'src/teacher/dto/get-teacher.args';
-import { GetUniversityArgs } from 'src/university/dto/get-university.args';
 import { User } from 'src/user/entities/user.entity';
 import { CreateRatingInput } from './dto/create-rating.input';
 import { DeleteRatingInput } from './dto/delete-rating.input';
@@ -23,10 +21,6 @@ export class RatingService {
       ),
       take: args.pageSize,
       skip: args.page * args.pageSize,
-      include: {
-        university: true,
-        teacher: true,
-      },
     });
   }
 
@@ -35,10 +29,6 @@ export class RatingService {
     rating = await this.prismaService.rating.findUnique({
       where: {
         id: args.id,
-      },
-      include: {
-        university: true,
-        teacher: true,
       },
     });
 
@@ -49,55 +39,28 @@ export class RatingService {
     return rating;
   }
 
-  async university(id: number, args: GetUniversityArgs) {
-    return await this.prismaService.university.findFirst({
-      where: {
-        ratings: {
-          some: { id },
-        },
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
-      },
-      include: {
-        faculties: true,
-        teachers: true,
-        ratings: true,
-      },
-      take: args.pageSize,
-      skip: args.page * args.pageSize,
-    });
+  async university(id: number) {
+    return await this.prismaService.rating
+      .findUnique({
+        where: { id },
+      })
+      .university();
   }
 
-  async teacher(id: number, args: GetTeacherArgs) {
-    return await this.prismaService.teacher.findFirst({
-      where: {
-        ratings: {
-          some: { id },
-        },
-        ...convertArgsToWhereClause(['id', 'slug', 'name'], args),
-      },
-      include: {
-        university: true,
-        faculty: true,
-        ratings: true,
-      },
-      take: args.pageSize,
-      skip: args.page * args.pageSize,
-    });
+  async teacher(id: number) {
+    return await this.prismaService.rating
+      .findUnique({
+        where: { id },
+      })
+      .teacher();
   }
 
   async user(id: number) {
-    return await this.prismaService.user.findFirst({
-      where: {
-        ratings: {
-          some: { id },
-        },
-      },
-      include: {
-        university: true,
-        faculty: true,
-        ratings: true,
-      },
-    });
+    return await this.prismaService.rating
+      .findUnique({
+        where: { id },
+      })
+      .user();
   }
 
   async create(args: CreateRatingInput, user: User) {
@@ -148,10 +111,6 @@ export class RatingService {
           },
           ...ratingTo,
         },
-        include: {
-          university: true,
-          teacher: true,
-        },
       });
 
       return rating;
@@ -189,10 +148,6 @@ export class RatingService {
         data: {
           ...setOptions,
         },
-        include: {
-          university: true,
-          teacher: true,
-        },
       });
 
       return rating;
@@ -211,10 +166,6 @@ export class RatingService {
     try {
       const rating = await this.prismaService.rating.delete({
         where: { id: args.id },
-        include: {
-          university: true,
-          teacher: true,
-        },
       });
 
       return rating;
