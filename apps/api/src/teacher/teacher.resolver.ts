@@ -50,6 +50,12 @@ export class TeacherResolver {
     return await this.teacherService.ratings(id, args);
   }
 
+  @ResolveField('ratingCount', () => Number)
+  async ratingCount(@Parent() teacher: Teacher) {
+    const { id } = teacher;
+    return await this.teacherService.ratingCount(id);
+  }
+
   @Mutation(() => Teacher)
   @UseGuards(GqlAuthGuard, RoleGuard)
   @Roles(Role.ADMIN)

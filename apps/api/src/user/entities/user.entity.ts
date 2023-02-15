@@ -1,4 +1,10 @@
-import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
+import {
+  Field,
+  GraphQLISODateTime,
+  ID,
+  Int,
+  ObjectType,
+} from '@nestjs/graphql';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
 import { Rating } from 'src/rating/entities/rating.entity';
 import { Response } from 'src/response/entities/response.entity';
@@ -47,6 +53,12 @@ export class User {
   })
   ratings: [Rating];
 
+  @Field(() => Int, {
+    description: 'Number of ratings that this user has made',
+    nullable: true,
+  })
+  ratingCount: number;
+
   @Field(() => University, {
     description: 'University that this user is associated with',
     nullable: true,
@@ -64,6 +76,12 @@ export class User {
     nullable: true,
   })
   responses: [Response];
+
+  @Field(() => Int, {
+    description: 'Number of responses that this user has created',
+    nullable: true,
+  })
+  responseCount: number;
 
   @Field(() => Teacher, {
     description: 'Teacher that this user is associated with',

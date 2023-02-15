@@ -38,6 +38,12 @@ export class FacultyResolver {
     return await this.facultyService.teachers(id, args);
   }
 
+  @ResolveField('teacherCount', () => Number)
+  async teacherCount(@Parent() faculty: Faculty) {
+    const { id } = faculty;
+    return await this.facultyService.teacherCount(id);
+  }
+
   @ResolveField('universities', () => [University])
   async universities(
     @Parent() university: University,
@@ -45,6 +51,12 @@ export class FacultyResolver {
   ) {
     const { id } = university;
     return await this.facultyService.universities(id, args);
+  }
+
+  @ResolveField('universityCount', () => Number)
+  async universityCount(@Parent() university: University) {
+    const { id } = university;
+    return await this.facultyService.universityCount(id);
   }
 
   @Mutation(() => Faculty)

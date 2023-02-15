@@ -63,6 +63,14 @@ export class FacultyService {
       });
   }
 
+  async teacherCount(id: number) {
+    return await this.prismaService.teacher.count({
+      where: {
+        facultyId: id,
+      },
+    });
+  }
+
   async universities(id: number, args: GetUniversityArgs) {
     return await this.prismaService.faculty
       .findUnique({
@@ -82,6 +90,18 @@ export class FacultyService {
         take: args.pageSize,
         skip: args.page * args.pageSize,
       });
+  }
+
+  async universityCount(id: number) {
+    return await this.prismaService.university.count({
+      where: {
+        faculties: {
+          some: {
+            id,
+          },
+        },
+      },
+    });
   }
 
   async create(args: CreateFacultyInput) {

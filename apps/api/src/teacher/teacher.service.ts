@@ -78,6 +78,14 @@ export class TeacherService {
       });
   }
 
+  async ratingCount(id: number) {
+    return await this.prismaService.rating.count({
+      where: {
+        teacher: { id },
+      },
+    });
+  }
+
   async create(args: CreateTeacherInput) {
     try {
       const teacher = await this.prismaService.teacher.create({

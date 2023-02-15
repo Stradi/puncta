@@ -84,6 +84,9 @@ type User {
   """Rating that this user has made"""
   ratings: [Rating!]
 
+  """Number of ratings that this user has made"""
+  ratingCount: Int
+
   """University that this user is associated with"""
   university: University
 
@@ -92,6 +95,9 @@ type User {
 
   """Responses that this user has created"""
   responses: [Response!]
+
+  """Number of responses that this user has created"""
+  responseCount: Int
 
   """Teacher that this user is associated with"""
   teacher: Teacher
@@ -166,11 +172,20 @@ type University {
   """Faculties of this university"""
   faculties(page: Int = 0, pageSize: Int = 10, filter: FacultyFilterInput, sort: FacultySortInput): [Faculty!]
 
+  """Number of faculties of this university"""
+  facultyCount: Int
+
   """Teachers of this university"""
   teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): [Teacher!]
 
+  """Number of teachers of this university"""
+  teacherCount: Int
+
   """Ratings of this university"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
+
+  """Number of ratings of this university"""
+  ratingCount: Int
 
   """Domain of this university"""
   domain: Domain!
@@ -259,8 +274,14 @@ type Faculty {
   """The universities that has this faculty"""
   universities(page: Int = 0, pageSize: Int = 10, filter: UniversityFilterInput, sort: UniversitySortInput): [University!]
 
+  """Number of universities that has this faculty"""
+  universityCount: Int
+
   """Teachers of this faculty"""
   teachers(page: Int = 0, pageSize: Int = 10, filter: TeacherFilterInput, sort: TeacherSortInput): [Teacher!]
+
+  """Number of teachers of this faculty"""
+  teacherCount: Int
 }
 
 input UniversityFilterInput {
@@ -301,6 +322,9 @@ type Teacher {
 
   """Ratings of this teacher"""
   ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
+
+  """Number of ratings of this teacher"""
+  ratingCount: Int
 }
 
 type Query {

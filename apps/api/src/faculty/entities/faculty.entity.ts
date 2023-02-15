@@ -1,4 +1,10 @@
-import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
+import {
+  Field,
+  GraphQLISODateTime,
+  ID,
+  Int,
+  ObjectType,
+} from '@nestjs/graphql';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { University } from 'src/university/entities/university.entity';
 
@@ -29,9 +35,21 @@ export class Faculty {
   })
   universities: [University];
 
+  @Field(() => Int, {
+    description: 'Number of universities that has this faculty',
+    nullable: true,
+  })
+  universityCount: number;
+
   @Field(() => [Teacher], {
     description: 'Teachers of this faculty',
     nullable: true,
   })
   teachers: [Teacher];
+
+  @Field(() => Int, {
+    description: 'Number of teachers of this faculty',
+    nullable: true,
+  })
+  teacherCount: number;
 }

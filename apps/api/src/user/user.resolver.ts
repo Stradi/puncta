@@ -31,6 +31,12 @@ export class UserResolver {
     return this.userService.ratings(id);
   }
 
+  @ResolveField('ratingCount', () => Number)
+  async ratingCount(@Parent() user: User) {
+    const { id } = user;
+    return this.userService.ratingCount(id);
+  }
+
   @ResolveField('university', () => University)
   async university(@Parent() user: User) {
     const { id } = user;
@@ -47,6 +53,12 @@ export class UserResolver {
   async response(@Parent() user: User) {
     const { id } = user;
     return this.userService.response(id);
+  }
+
+  @ResolveField('responseCount', () => Number)
+  async responseCount(@Parent() user: User) {
+    const { id } = user;
+    return this.userService.responseCount(id);
   }
 
   // TODO: Add updateUser, changePassword mutations.

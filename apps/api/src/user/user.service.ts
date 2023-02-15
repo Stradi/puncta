@@ -30,6 +30,14 @@ export class UserService {
       .ratings();
   }
 
+  async ratingCount(id: number) {
+    return await this.prismaService.rating.count({
+      where: {
+        userId: id,
+      },
+    });
+  }
+
   async university(id: number) {
     return await this.prismaService.user
       .findUnique({
@@ -52,5 +60,13 @@ export class UserService {
         where: { id },
       })
       .responses();
+  }
+
+  async responseCount(id: number) {
+    return await this.prismaService.response.count({
+      where: {
+        fromId: id,
+      },
+    });
   }
 }
