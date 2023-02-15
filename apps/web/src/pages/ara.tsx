@@ -35,18 +35,19 @@ export default function Page() {
     setTerm((query.q as string) || "");
   }, [query.q]);
 
-  // TODO: Add loading indicator
   useEffect(() => {
     async function callApi() {
-      const universities = (await searchUniversity(term)).map(
-        (item: University) => ({
-          ...item,
-          type: "university",
-        })
-      );
-      const teachers = (await searchTeacher(term)).map((item: Teacher) => ({
+      const searchPromises = [searchTeacher(term, 12), searchUniversity(term)];
+      const results = await Promise.all(searchPromises);
+
+      const teachers = results[0].map((item: Teacher) => ({
         ...item,
         type: "teacher",
+      }));
+
+      const universities = results[1].map((item: University) => ({
+        ...item,
+        type: "university",
       }));
 
       setIsLoading(false);

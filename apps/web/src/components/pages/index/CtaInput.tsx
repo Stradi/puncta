@@ -64,26 +64,23 @@ export default function CtaInput({
 
   useEffect(() => {
     async function getSuggestions() {
-      const universities = (await searchUniversity(term)).map(
-        (item: University) => ({
-          ...item,
-          type: "university",
-        })
-      );
-      if (universities.length === 0) {
-        const teachers = (await searchTeacher(term, 3)).map(
-          (item: Teacher) => ({
-            ...item,
-            type: "teacher",
-          })
-        );
+      const searchPromises = [searchTeacher(term, 3), searchUniversity(term)];
+      const results = await Promise.all(searchPromises);
 
-        setSuggestions([...universities, ...teachers].slice(0, 2));
-        setIsLoading(false);
-      } else {
-        setSuggestions(universities.slice(0, 2));
-        setIsLoading(false);
-      }
+      const teachers = results[0].map((item: Teacher) => ({
+        ...item,
+        type: "teacher",
+      }));
+
+      const universities = results[1].map((item: University) => ({
+        ...item,
+        type: "university",
+      }));
+
+      const allSuggestions = [...teachers, ...universities];
+
+      setSuggestions(allSuggestions);
+      setIsLoading(false);
     }
 
     if (term.length > 2) {
