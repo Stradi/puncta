@@ -26,7 +26,10 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: npm ci --ignore-scripts
-      - name: Run university-scraper project
+      - name: Run scraper
         run: node tools/university-scraper/index.js
+      - name: Save output artifacts
+        uses: actions/upload-artifact@v3
+        path: tools/university-scraper/output.json
       - name: Upload data to database
-        run: node tools/university-scraper/database.json
+        run: node tools/university-scraper/database.js
