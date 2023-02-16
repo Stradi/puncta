@@ -1,6 +1,6 @@
 name: Scrape YOK
 on:
-  workflow-dispatch:
+  workflow_dispatch:
     inputs:
       database_url:
         description: "URL of MySQL database"
