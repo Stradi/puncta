@@ -32,6 +32,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: output
-          path: tools/university-scraper/output.json
+          path: ./tools/university-scraper/output.json
       - name: Upload data to database
         run: node tools/university-scraper/database.js

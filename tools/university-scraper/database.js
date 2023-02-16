@@ -1,4 +1,6 @@
 import * as dotenv from "dotenv";
+import { readJSON } from "fs-extra";
+import * as mysql from "mysql";
 import { modeArray, slugify } from "./utils.js";
 
 dotenv.config();
