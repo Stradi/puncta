@@ -2,6 +2,7 @@ import axios from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import chalk from "chalk";
 import cheerio from "cheerio";
+import * as dotenv from "dotenv";
 import promiseLimit from "promise-limit";
 import { CookieJar } from "tough-cookie";
 import {
@@ -11,6 +12,8 @@ import {
   toTitleCase,
   writeToFile,
 } from "./utils.js";
+
+dotenv.config();
 
 const jar = new CookieJar();
 const axiosClient = wrapper(
@@ -24,7 +27,9 @@ const UNIVERSITY_PATH = "lisans-univ.php?u=";
 
 // We are limiting concurrent requests to 10 because server
 // blocks us if we send too many requests at once.
-const limit = promiseLimit(10);
+const limit = promiseLimit(
+  Number.parseInt(process.env.CONCURRENT_REQUESTS) || 10
+);
 
 function getTeachersOfFaculty(url, client) {
   function handlePagination(data) {
@@ -234,8 +239,7 @@ async function main() {
     universities.push(data);
   }
 
-  await writeToFile(universities, "universities-new.json");
-
+  await writeToFile(universities, "output.json");
   log("Done.");
 }
 

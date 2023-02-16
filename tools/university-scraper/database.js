@@ -1,5 +1,7 @@
-import mysql from "mysql";
-import { log, modeArray, readJSON, slugify } from "./utils.js";
+import * as dotenv from "dotenv";
+import { modeArray, slugify } from "./utils.js";
+
+dotenv.config();
 
 function findDomainOfUniversity(university) {
   const candidates = [];
@@ -182,9 +184,9 @@ function createMultipleTeachers(connection, data, facultyId, universityId) {
 }
 
 async function main() {
-  const data = await readJSON("./universities-backup.json");
+  const data = await readJSON("./output.json");
 
-  const connection = mysql.createConnection("CONNECTION_STRING");
+  const connection = mysql.createConnection(process.env.DATABASE_URL);
   connection.connect();
 
   for (const u of data) {
@@ -217,8 +219,10 @@ async function main() {
   }
 
   connection.end();
-
   log(`Done!`);
+
+  // I don't know why but it doesn't exit without this line.
+  process.exit(0);
 }
 
 main();

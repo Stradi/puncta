@@ -1,0 +1,32 @@
+name: Scrape YOK
+on:
+  workflow-dispatch:
+    inputs:
+      database_url:
+        description: "URL of MySQL database"
+        required: true
+        type: string
+      concurrent_requests:
+        description: "How many concurrent requests should be made during scraping"
+        required: false
+        type: string
+jobs:
+  scrape:
+    name: Scrapes all universities and teachers from YOK
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ inputs.database_url }}
+      CONCURRENT_REQUESTS: ${{ inputs.concurrent_requests }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Run university-scraper project
+        run: node tools/university-scraper/index.js
+      - name: Upload data to database
+        run: node tools/university-scraper/database.json
