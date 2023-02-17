@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 import fs from "fs-extra";
 import * as mysql from "mysql";
-import { modeArray, slugify } from "./utils.js";
+import { log, modeArray, slugify } from "./utils.js";
 
 dotenv.config();
 
