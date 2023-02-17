@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { readJSON } from "fs-extra";
+import fs from "fs-extra";
 import * as mysql from "mysql";
 import { modeArray, slugify } from "./utils.js";
 
@@ -186,7 +186,7 @@ function createMultipleTeachers(connection, data, facultyId, universityId) {
 }
 
 async function main() {
-  const data = await readJSON("./output.json");
+  const data = await fs.readJSON("./output.json");
 
   const connection = mysql.createConnection(process.env.DATABASE_URL);
   connection.connect();
