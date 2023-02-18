@@ -46,7 +46,7 @@ export default function RateInput({
       <div className="flex items-center gap-2">
         {info && (
           <InfoIcon
-            size="md"
+            size="sm"
             onClick={() => {
               setIsInfoOpen((prev) => !prev);
             }}
@@ -63,7 +63,7 @@ export default function RateInput({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <span className="text-sm">{info}</span>
+            <span className="text-sm font-medium">{info}</span>
           </motion.div>
         )}
       </AnimatePresence>

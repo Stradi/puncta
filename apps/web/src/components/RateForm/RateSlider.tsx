@@ -1,11 +1,13 @@
 import { useField } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
+import { InfoIcon } from "../Icons";
 import RateSliderStyles from "./RateSlider.module.css";
 
 interface RateSliderProps extends React.ComponentPropsWithoutRef<"input"> {
   name: string;
   label: string;
+  info?: string;
 
   valueToText: {
     [key: number]: string;
@@ -15,11 +17,13 @@ interface RateSliderProps extends React.ComponentPropsWithoutRef<"input"> {
 export default function RateSlider({
   name,
   label,
+  info,
   valueToText,
   ...props
 }: RateSliderProps) {
   const [field, meta, helpers] = useField({ name });
   const [valueText, setValueText] = useState("");
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   useMemo(() => {
     const closestValue = Object.keys(valueToText).reduce((prev, curr) => {
@@ -33,9 +37,39 @@ export default function RateSlider({
   }, [field.value, valueToText]);
   return (
     <div>
-      <label htmlFor={name} className="font-medium text-neutral-700">
-        {label}
-      </label>
+      <div className="flex items-center gap-1">
+        {info && (
+          <InfoIcon
+            size="sm"
+            onClick={() => {
+              setIsInfoOpen((prev) => !prev);
+            }}
+          />
+        )}
+        <label htmlFor={name} className="font-medium text-neutral-700">
+          {label}
+        </label>
+      </div>
+      <AnimatePresence>
+        {isInfoOpen && (
+          <motion.div
+            initial={{
+              height: 0,
+              opacity: 0,
+            }}
+            animate={{
+              height: "auto",
+              opacity: 1,
+            }}
+            exit={{
+              height: 0,
+              opacity: 0,
+            }}
+          >
+            <span className="text-sm font-medium">{info}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="flex items-center justify-between gap-2">
         <input
           {...field}

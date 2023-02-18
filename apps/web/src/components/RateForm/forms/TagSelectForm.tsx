@@ -15,7 +15,7 @@ const TagSelectFormValidationSchema = yup.object().shape({
         localizedName: yup.string().required(),
       })
     )
-    .min(2, "En az üç etiket seçmelisin."),
+    .min(1, "En az bir etiket seçmelisin."),
 });
 
 interface TagSelectFormProps {

@@ -95,6 +95,7 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
       <RateSlider
         name="knowledge"
         label="Bilgi"
+        info="Öğretmenin ders konusunda ne kadar bilgi sahibi olduğunu belirler."
         max={10}
         min={0}
         step={1}
@@ -115,6 +116,7 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
       <RateSlider
         name="technique"
         label="Yöntem"
+        info="Öğretmenin ders verme yöntemlerini ne kadar iyi kullandığının göstergesi."
         max={10}
         min={0}
         step={1}
@@ -135,6 +137,7 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
       <RateSlider
         name="communication"
         label="İletişim"
+        info="Öğretmenin ders verirken ne kadar iyi iletişim kurduğunun göstergesi."
         max={10}
         min={0}
         step={1}
@@ -155,6 +158,7 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
       <RateSlider
         name="material"
         label="Materyal"
+        info="Öğretmenin ders içi ve dışı materyallerinin yeterliliği."
         max={10}
         min={0}
         step={1}
@@ -175,6 +179,7 @@ export default forwardRef<FormikProps<any>>(function BaseRatingForm(
       <RateSlider
         name="declamation"
         label="Hitabet"
+        info="Öğretmenin öğrencileriyle hitap etme şekli."
         max={10}
         min={0}
         step={1}

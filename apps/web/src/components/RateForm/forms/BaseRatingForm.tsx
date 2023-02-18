@@ -12,7 +12,6 @@ const BaseRatingFormValidationSchema = yup.object().shape({
   comment: yup
     .string()
     .max(200, "Yorum 200 karakterden uzun olamaz")
-    .min(10, "Yorum 10 karakterden kısa olamaz")
     .required("Yorum boş bırakılamaz"),
 });
 
