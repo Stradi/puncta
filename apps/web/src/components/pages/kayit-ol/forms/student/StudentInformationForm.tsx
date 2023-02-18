@@ -1,7 +1,7 @@
 import BaseMultistepForm from "@/components/BaseMultistepForm";
 import TextInput from "@/components/TextInput";
 import { SignUpContext } from "@/context/SignUpContext";
-import { checkEmailExists } from "@/lib/auth";
+import { checkEmailExists, checkUsernameExists } from "@/lib/auth";
 import { FormikProps } from "formik";
 import { forwardRef, useContext } from "react";
 import * as yup from "yup";
@@ -24,7 +24,17 @@ const StudentInformationValidationSchema = yup.object().shape({
   username: yup
     .string()
     .min(3, "Kullanıcı adı en az 3 karakter olmalıdır.")
-    .required("Kullanıcı adı boş bırakılamaz."),
+    .required("Kullanıcı adı boş bırakılamaz.")
+    .test(
+      "Kayıtlı kullanıcı adı",
+      "Bu kullanıcı adı zaten kayıtlı.",
+      async function (value) {
+        if (!value) {
+          return false;
+        }
+        return !(await checkUsernameExists(value as string));
+      }
+    ),
   name: yup
     .string()
     .min(3, "Ad en az 3 karakter olmalıdır.")
@@ -73,7 +83,10 @@ export default forwardRef<FormikProps<any>>(function StudentInformationForm(
       <div>
         <h2 className="text-xl font-medium">Genel Bilgiler</h2>
         <p className="text-sm">
-          E-postan ve adın senin kim olduğunu anlamamız için önemlidir.
+          E-postan ve adın sizin gerçekten öğrenci olup olmadığını kontrol etmek
+          için kullanılacak. Bunun için üniversite e-postanı kullanman
+          gerekiyor. Ayrıca kullanıcı adında kendini tanıtabilecek bir şey
+          kullanmamanı öneririz.
         </p>
       </div>
       <TextInput name="name" label="Ad Soyad" type="text" />

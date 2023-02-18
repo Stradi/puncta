@@ -70,8 +70,9 @@ export default forwardRef<FormikProps<any>>(function UniversityForm(
       <div>
         <h2 className="text-xl font-medium">Üniversite ve Bölüm</h2>
         <p className="text-sm">
-          Sadece kendi üniversitendeki öğretmenleri puanlaman için üniversiteni
-          ve bölümünü girmelisin.
+          Sadece kendi bölümündeki öğretmenleri ve kendi üniversiteni puanlaman
+          için üniversiteni ve bölümünü girmelisin. Unutma kayıt olurken
+          kullandığın e-posta adresi üniversite e-posta adresin olmalı.
         </p>
       </div>
       <SearchInput

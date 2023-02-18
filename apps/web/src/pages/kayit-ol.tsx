@@ -12,13 +12,15 @@ import { SignUpContext, SignUpProvider } from "@/context/SignUpContext";
 import { FormikProps } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import Head from "next/head";
-import { createRef, ReactElement, useContext } from "react";
+import { createRef, ReactElement, useContext, useState } from "react";
 
 function Page() {
   // Since we are not interested in return type of form, we can use any.
   const formRef = createRef<FormikProps<any>>();
   const signUpContext = useContext(SignUpContext);
   const authContext = useContext(AuthContext);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   // TODO: Please refactor this step part. PLEASE!!
   return (
@@ -30,7 +32,15 @@ function Page() {
           content={config.site.seo.register.description}
         />
       </Head>
-      <Card className="mx-auto max-w-lg py-16 px-8">
+      <Card className="relative mx-auto max-w-lg py-16 px-8">
+        {isLoading && (
+          <div className="absolute top-0 left-0 z-50 flex h-full w-full flex-col items-center justify-center gap-4 bg-black/80">
+            <div className="border-primary-normal h-16 w-16 animate-spin rounded-full border-y-2 border-r-4"></div>
+            <p className="text-xl font-medium text-white">
+              Kaydını tamamlıyoruz. Lütfen biraz bekle.
+            </p>
+          </div>
+        )}
         <h1 className="mb-4 text-center text-3xl font-medium">Kayıt Ol</h1>
         <AnimatePresence>
           <motion.div
@@ -77,9 +87,11 @@ function Page() {
 
               if (signUpContext.registrationType === "STUDENT") {
                 if (signUpContext.step === 4) {
+                  setIsLoading(true);
                   authContext
                     .register(signUpContext.getPayload())
                     .then((isSuccessfull) => {
+                      setIsLoading(false);
                       if (!isSuccessfull) {
                         // TODO: Show email domain error.
                         signUpContext.setStep(1);

@@ -31,7 +31,10 @@ export default forwardRef<FormikProps<any>>(function PasswordForm(props, ref) {
     >
       <div>
         <h2 className="text-xl font-medium">Şifre</h2>
-        <p className="text-sm">Kendine güvenli bir şifre seçmeyi unutma.</p>
+        <p className="text-sm">
+          Şimdi de kendine en az sekiz karakterden oluşan güvenli bir parola
+          seç.
+        </p>
       </div>
       <TextInput name="password" label="Şifre" type="password" />
       <TextInput name="confirmation" label="Şifre Tekrarı" type="password" />

@@ -262,7 +262,7 @@ export async function checkUsernameExists(username: string) {
   const apolloClient = initializeApollo();
 
   const response = await apolloClient.query({
-    query: EMAIL_EXISTS_QUERY,
+    query: USERNAME_EXISTS_QUERY,
     variables: {
       username,
     },

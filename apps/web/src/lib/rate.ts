@@ -66,7 +66,7 @@ const RATEABLE_TEACHERS_QUERY = gql`
         university: { slug: { equals: $universitySlug } }
         faculty: { slug: { equals: $facultySlug } }
       }
-      pageSize: 9999
+      pageSize: 26
     ) {
       id
       name
@@ -75,16 +75,6 @@ const RATEABLE_TEACHERS_QUERY = gql`
         id
         score
         meta
-      }
-      university {
-        id
-        name
-        slug
-      }
-      faculty {
-        id
-        name
-        slug
       }
     }
   }
