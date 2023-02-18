@@ -11,6 +11,8 @@ export default function LetterGrade({
   className,
   ...props
 }: LetterGradeProps) {
+  const titleText = letter === "N/A" ? "Harf notu yok" : `Harf notu ${letter}`;
+
   // TODO: Change colors
   const styling = {
     A: "bg-primary-normal text-primary-darker",
@@ -33,7 +35,7 @@ export default function LetterGrade({
         size === "large" && "h-20 w-20",
         className
       )}
-      title={`Letter grade is ${letter}`}
+      title={titleText}
       {...props}
     >
       {letter}
