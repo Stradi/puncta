@@ -56,7 +56,7 @@ export default function TagCloudInput({
               "hover:cursor-pointer hover:ring-2",
               "active:ring-1",
               isValueSelected(tag)
-                ? "bg-primary-normal hover:bg-primary-normal-hover ring-2"
+                ? "bg-primary-normal ring-2 hover:bg-primary-normal-hover"
                 : "bg-primary-light hover:bg-primary-light-hover"
             )}
           >

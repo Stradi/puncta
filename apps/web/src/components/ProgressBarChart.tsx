@@ -37,7 +37,7 @@ export function ProgressBarChart({
         "relative w-full",
         // Normally we should use border and border-black in here,
         // but I couldn't get inner and outer border to merge. :(
-        "bg-primary-darker rounded-full ring-1 ring-black",
+        "rounded-full bg-primary-darker ring-1 ring-black",
         size === "small" && "h-2",
         size === "medium" && "h-4",
         size === "large" && "h-6"

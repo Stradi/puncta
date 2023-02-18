@@ -33,7 +33,7 @@ export default function NavigationBar({
     <nav
       className={cn(
         "w-full",
-        "bg-primary-light border-b border-black",
+        "border-b border-black bg-primary-light",
         className
       )}
       {...props}
@@ -73,7 +73,7 @@ export default function NavigationBar({
             className={cn(
               "flex flex-col gap-4 py-4 pl-4",
               "border-t border-t-black",
-              "text-primary-darker font-medium",
+              "font-medium text-primary-darker",
               "sm:mt-0 sm:flex-row sm:border-0 sm:py-0 sm:text-sm"
             )}
           >

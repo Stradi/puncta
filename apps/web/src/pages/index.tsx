@@ -16,7 +16,7 @@ export default function Page() {
         />
       </Head>
       <div>
-        <header className="bg-primary-light -mt-16 w-full py-16 md:py-32">
+        <header className="-mt-16 w-full bg-primary-light py-16 md:py-32">
           <div className="mx-auto max-w-4xl space-y-8">
             <h1 className="text-center text-5xl font-semibold sm:text-6xl  md:text-8xl">
               Not verme sırası artık sende{" "}

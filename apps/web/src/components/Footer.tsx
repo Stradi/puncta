@@ -4,7 +4,7 @@ import Logo from "./Logo";
 
 export default function Footer() {
   return (
-    <footer className="bg-primary-light text-primary-darker w-full border-y border-black pt-8">
+    <footer className="w-full border-y border-black bg-primary-light pt-8 text-primary-darker">
       <div className="grid grid-cols-2 gap-8 sm:mx-auto sm:max-w-6xl md:grid-cols-4 lg:grid-cols-5">
         <div className="-mt-8 w-full sm:-my-8 sm:min-w-max sm:max-w-max">
           <Logo />

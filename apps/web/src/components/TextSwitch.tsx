@@ -37,7 +37,7 @@ export default function TextSwitch({ links, className }: TextSwitchProps) {
                 <Link
                   href={link.href}
                   className={cn(
-                    "text-primary-darker hover:text-primary-dark transition duration-100",
+                    "text-primary-darker transition duration-100 hover:text-primary-dark",
                     className
                   )}
                 >

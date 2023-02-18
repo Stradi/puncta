@@ -7,7 +7,7 @@ export default function Stars() {
       <div
         className={cn(
           "flex rounded-full px-4 py-1 md:px-6 md:py-2",
-          "bg-primary-normal border-4 border-black text-black",
+          "border-4 border-black bg-primary-normal text-black",
           "translate-x-1 translate-y-1 transition duration-100",
           "hover:shadow-[4px_4px_0_0_rgba(0,0,0,1.0)]",
           "hover:translate-x-0 hover:translate-y-0"

@@ -35,7 +35,7 @@ function Page() {
       <Card className="relative mx-auto max-w-lg py-16 px-8">
         {isLoading && (
           <div className="absolute top-0 left-0 z-50 flex h-full w-full flex-col items-center justify-center gap-4 bg-black/80">
-            <div className="border-primary-normal h-16 w-16 animate-spin rounded-full border-y-2 border-r-4"></div>
+            <div className="h-16 w-16 animate-spin rounded-full border-y-2 border-r-4 border-primary-normal"></div>
             <p className="text-xl font-medium text-white">
               Kaydını tamamlıyoruz. Lütfen biraz bekle.
             </p>

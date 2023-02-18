@@ -16,7 +16,7 @@ export default function TextProfileImage({
     <div
       title={`${name} için profil resmi`}
       className={cn(
-        "bg-primary-light-active flex aspect-square select-none items-center justify-center",
+        "flex aspect-square select-none items-center justify-center bg-primary-light-active",
         className
       )}
       {...rest}
