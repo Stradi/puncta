@@ -14,7 +14,7 @@ export default function Footer() {
             <h2 className="font-semibold text-black">{item.heading}</h2>
             <ul className="flex flex-col gap-2 text-sm font-medium">
               {item.items.map((link) => (
-                <li key={link.label} className="hover:text-black">
+                <li key={link.label} className="py-1 pr-2 hover:text-black">
                   <Link href={link.href}>{link.label}</Link>
                 </li>
               ))}
