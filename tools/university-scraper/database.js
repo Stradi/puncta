@@ -27,8 +27,7 @@ function findDomainOfUniversity(university) {
 }
 
 function createUniversity(connection, data, domain) {
-  return new Promise((resolve, reject) => {
-    // Create University
+  return new Promise((resolve) => {
     const createUniversityQuery =
       "INSERT INTO `University` (name, slug, updatedAt) VALUES (?, ?, ?)";
     const createUniversityValues = [
@@ -44,7 +43,10 @@ function createUniversity(connection, data, domain) {
       },
       (universityError, result) => {
         if (universityError) {
-          reject(universityError);
+          log(`Error while creating university ${data["name"]}`);
+          log(universityError);
+          resolve(null);
+          return;
         }
 
         const createDomainQuery =
@@ -58,7 +60,10 @@ function createUniversity(connection, data, domain) {
           },
           (domainError) => {
             if (domainError) {
-              reject(domainError);
+              log(`Error while creating domain ${domain}`);
+              log(domainError);
+              resolve(null);
+              return;
             }
 
             resolve(result.insertId);
@@ -70,7 +75,7 @@ function createUniversity(connection, data, domain) {
 }
 
 function isFacultyExists(connection, data) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const query = "SELECT * FROM `Faculty` WHERE name = ?";
     const values = [data["name"]];
     connection.query(
@@ -80,13 +85,17 @@ function isFacultyExists(connection, data) {
       },
       (error, result) => {
         if (error) {
-          reject(error);
+          log(`Error while checking faculty ${data["name"]}`);
+          log(error);
+          resolve(null);
+          return;
         }
 
         if (result.length > 0) {
           resolve(result[0].id);
         } else {
           resolve(null);
+          return;
         }
       }
     );
@@ -94,7 +103,7 @@ function isFacultyExists(connection, data) {
 }
 
 function createFaculty(connection, data, universityId) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     const exists = await isFacultyExists(connection, data);
     if (exists !== null) {
       const relationQuery =
@@ -108,7 +117,10 @@ function createFaculty(connection, data, universityId) {
         },
         (relationError) => {
           if (relationError) {
-            reject(relationError);
+            log(`Error while connecting faculty ${data["name"]}`);
+            log(relationError);
+            resolve(null);
+            return;
           }
 
           resolve(exists);
@@ -130,7 +142,10 @@ function createFaculty(connection, data, universityId) {
         },
         (facultyError, result) => {
           if (facultyError) {
-            reject(facultyError);
+            log(`Error while creating faculty ${data["name"]}`);
+            log(facultyError);
+            resolve(null);
+            return;
           }
 
           const relationQuery =
@@ -144,7 +159,10 @@ function createFaculty(connection, data, universityId) {
             },
             (relationError) => {
               if (relationError) {
-                reject(relationError);
+                log(`Error while connecting faculty ${data["name"]}`);
+                log(relationError);
+                resolve(null);
+                return;
               }
 
               resolve(result.insertId);
@@ -157,7 +175,7 @@ function createFaculty(connection, data, universityId) {
 }
 
 function createMultipleTeachers(connection, data, facultyId, universityId) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const createTeacherQuery =
       "INSERT IGNORE INTO `Teacher` (name, slug, updatedAt, universityId, facultyId) VALUES ?";
 
@@ -165,7 +183,7 @@ function createMultipleTeachers(connection, data, facultyId, universityId) {
     // So we need to map the data to [['a', 'b'], ['c', 'd']] format.
     const createTeacherValues = data.map((teacher) => [
       teacher["name"],
-      slugify(teacher["name"]),
+      slugify(teacher["name"], true),
       new Date(),
       universityId,
       facultyId,
@@ -176,7 +194,10 @@ function createMultipleTeachers(connection, data, facultyId, universityId) {
       [createTeacherValues],
       (teacherError) => {
         if (teacherError) {
-          reject(teacherError);
+          log(`Error while creating teachers`);
+          log(teacherError);
+          resolve(null);
+          return;
         }
 
         resolve();
@@ -202,11 +223,8 @@ async function main() {
     }
 
     log(u["name"]);
-    let universityId = null;
-    try {
-      universityId = await createUniversity(connection, u, domain);
-    } catch (e) {
-      log(e);
+    const universityId = await createUniversity(connection, u, domain);
+    if (universityId == null) {
       continue;
     }
 
@@ -216,25 +234,17 @@ async function main() {
       }
 
       log(`${u["name"]} - ${f["name"]}`);
-      let facultyId = null;
-      try {
-        facultyId = await createFaculty(connection, f, universityId);
-      } catch (e) {
-        log(e);
+      const facultyId = await createFaculty(connection, f, universityId);
+      if (facultyId == null) {
         continue;
       }
 
-      try {
-        await createMultipleTeachers(
-          connection,
-          f["teachers"],
-          facultyId,
-          universityId
-        );
-      } catch (e) {
-        log(e);
-        continue;
-      }
+      await createMultipleTeachers(
+        connection,
+        f["teachers"],
+        facultyId,
+        universityId
+      );
     }
   }
 

@@ -65,12 +65,14 @@ export function modeArray(array) {
 export function slugify(text, addRandom = false) {
   return `${_slugify(text, {
     lower: true,
-  })}${addRandom ? `-${makeid(10)}` : ""}`;
+  })}${addRandom ? `-${makeid(5)}` : ""}`;
 }
+
+// batin-evirgen-08975
 
 function makeid(length) {
   let result = "";
-  const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "0123456789";
   const charactersLength = characters.length;
   let counter = 0;
   while (counter < length) {
