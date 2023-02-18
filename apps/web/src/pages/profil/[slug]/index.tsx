@@ -37,8 +37,8 @@ export default function Page({ user, slug }: PageProps) {
         <title>{`Profilim | The Puncta`}</title>
       </Head>
       <div className="container mx-auto max-w-6xl">
-        <header className={cn("mb-8")}>
-          <h2 className="text-3xl font-medium">
+        <header className={cn("mb-8 px-4")}>
+          <h2 className="text-2xl font-medium sm:text-3xl">
             <b>{user.username}</b> adlı kullanıcının profili.
           </h2>
         </header>

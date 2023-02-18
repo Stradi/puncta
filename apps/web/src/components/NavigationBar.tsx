@@ -2,6 +2,7 @@ import config from "@/config";
 import { AuthContext } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Button from "./Button";
 import { CloseIcon, HamburgerIcon } from "./Icons";
@@ -16,6 +17,12 @@ export default function NavigationBar({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuItems, setMenuItems] = useState(config.navigation.nonAuth);
   const authContext = useContext(AuthContext);
+
+  const pathName = usePathname();
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathName]);
 
   useEffect(() => {
     if (authContext.isAuthenticated && authContext.user) {
@@ -33,7 +40,7 @@ export default function NavigationBar({
     <nav
       className={cn(
         "w-full",
-        "border-b border-black bg-primary-light",
+        "bg-primary-light border-b border-black",
         className
       )}
       {...props}
@@ -73,7 +80,7 @@ export default function NavigationBar({
             className={cn(
               "flex flex-col gap-4 py-4 pl-4",
               "border-t border-t-black",
-              "font-medium text-primary-darker",
+              "text-primary-darker font-medium",
               "sm:mt-0 sm:flex-row sm:border-0 sm:py-0 sm:text-sm"
             )}
           >

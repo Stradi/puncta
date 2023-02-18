@@ -68,8 +68,8 @@ export default function CtaInput({
           onBlur={() => setError(null)}
           onClick={() => setError(null)}
           className={cn(
-            "w-full rounded-full px-8 py-4 outline-none",
-            "text-xl font-medium  ring-1 ring-black",
+            "w-full rounded-full p-4 outline-none sm:px-8 sm:py-4",
+            "text-sm font-medium ring-1 ring-black sm:text-xl",
             "transition duration-100",
             "focus:ring-2 group-hover:ring-2"
           )}
@@ -82,7 +82,7 @@ export default function CtaInput({
           )}
         >
           <Button
-            className="h-full"
+            className="h-full px-4 text-sm sm:px-6 sm:text-base"
             onClick={() => {
               validate();
             }}

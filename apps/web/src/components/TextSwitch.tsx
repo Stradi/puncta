@@ -37,7 +37,7 @@ export default function TextSwitch({ links, className }: TextSwitchProps) {
                 <Link
                   href={link.href}
                   className={cn(
-                    "text-primary-darker transition duration-100 hover:text-primary-dark",
+                    "text-primary-darker hover:text-primary-dark transition duration-100",
                     className
                   )}
                 >
@@ -51,7 +51,7 @@ export default function TextSwitch({ links, className }: TextSwitchProps) {
         )),
         <motion.span animate={switchIconAnim}>
           <SwitchIcon
-            size="lg"
+            svgClassName="md:h-8 md:w-8 h-5 w-5 mt-1 md:mt-0"
             stroke="thicker"
             className="mx-2 inline-block text-white"
           />

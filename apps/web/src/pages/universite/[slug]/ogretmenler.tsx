@@ -37,7 +37,7 @@ export default function Page({ university, slug }: PageProps) {
         <meta name="description" content={uniName} />
       </Head>
       <main>
-        <header className="container mx-auto max-w-6xl md:flex md:gap-8">
+        <header className="container mx-auto max-w-6xl px-2 md:flex md:gap-8">
           <div className="h-full w-full space-y-6">
             <InfoCard
               title={uniName}
@@ -69,7 +69,7 @@ export default function Page({ university, slug }: PageProps) {
           />
         </header>
         <div>
-          <h2 className="my-16 w-full bg-black py-8 text-center font-bold text-white md:text-4xl">
+          <h2 className="my-8 w-full bg-black py-8 text-center font-bold text-white sm:my-16 md:text-4xl">
             <TextSwitch
               links={[
                 {
@@ -84,10 +84,10 @@ export default function Page({ university, slug }: PageProps) {
             />
           </h2>
         </div>
-        <div className="container mx-auto max-w-6xl">
+        <div className="container mx-auto max-w-6xl px-2">
           <div>
             {university.teachers && university.teachers.length > 0 ? (
-              <div className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {university.teachers?.map((teacher) => (
                   <CardWithRating
                     key={teacher.id}
@@ -98,7 +98,7 @@ export default function Page({ university, slug }: PageProps) {
                 ))}
               </div>
             ) : (
-              <p className="text-2xl font-medium">
+              <p className="text-xl font-medium sm:text-2xl">
                 Bu üniversitenin henüz hiç öğretmeni bulunmamaktadır.
               </p>
             )}

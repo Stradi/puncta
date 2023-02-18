@@ -92,7 +92,7 @@ export default function Page({ teacher }: PageProps) {
           />
         </header>
         <div>
-          <h2 className="my-16 w-full bg-black py-8 text-center text-2xl font-bold text-white md:text-4xl">
+          <h2 className="my-8 w-full bg-black py-8 text-center text-2xl font-bold text-white sm:my-16 md:text-4xl">
             <TextSwitch
               links={[
                 {
@@ -103,7 +103,7 @@ export default function Page({ teacher }: PageProps) {
             />
           </h2>
         </div>
-        <div className="container mx-auto max-w-6xl">
+        <div className="container mx-auto max-w-6xl px-2">
           <main>
             <div className="space-y-4 md:flex md:gap-4">
               <div className="space-y-4 sm:w-full md:max-w-3xl">
@@ -124,7 +124,7 @@ export default function Page({ teacher }: PageProps) {
                     </SingleRating>
                   ))
                 ) : (
-                  <p className="text-2xl font-medium">
+                  <p className="text-xl font-medium sm:text-2xl">
                     <span className="font-bold">{teacherName}</span> için henüz
                     değerlendirme yapılmamış.
                   </p>

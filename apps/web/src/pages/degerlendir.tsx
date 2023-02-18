@@ -27,7 +27,7 @@ export default function Page() {
           content={config.site.seo.rateable.description}
         />
       </Head>
-      <div className="container mx-auto max-w-6xl space-y-8">
+      <div className="container mx-auto max-w-6xl space-y-8 px-2">
         <div className="space-y-4 text-center">
           <h1 className="text-4xl font-bold">Değerlendir</h1>
           <p className="mx-auto w-full max-w-lg text-xl font-medium">

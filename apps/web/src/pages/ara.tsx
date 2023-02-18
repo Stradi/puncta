@@ -81,10 +81,10 @@ export default function Page() {
         <title>{config.site.seo.search.title}</title>
         <meta name="description" content={config.site.seo.search.description} />
       </Head>
-      <div className="container mx-auto max-w-6xl space-y-8">
+      <div className="container mx-auto max-w-6xl space-y-8 px-2">
         <div className="space-y-4 text-center">
-          <h1 className="text-4xl font-bold">Arama Yap</h1>
-          <p className="mx-auto w-full max-w-2xl text-xl font-medium">
+          <h1 className="text-2xl font-bold sm:text-4xl">Arama Yap</h1>
+          <p className="mx-auto w-full max-w-2xl text-lg font-medium sm:text-xl">
             Burada öğretmenini veya üniversiteni arayabilirsin. Çıkan arama
             sonuçlarına tıklayarak da değerlendirmelerine ulaşabilirsin.
           </p>
@@ -96,7 +96,7 @@ export default function Page() {
           initialTerm={term}
         />
         {searchResults && searchResults.length > 0 && !isLoading && (
-          <div className="space-y-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {searchResults.map((result) => {
               const href = `/${
                 result.type === "teacher" ? "ogretmen" : "universite"

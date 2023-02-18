@@ -44,10 +44,14 @@ export function InfoCard({
           className="w-24 border-r-2 border-black"
         />
         <div className="space-y-2">
-          <h2 className={cn("grow", "text-2xl font-semibold")}>{title}</h2>
+          <h2 className={cn("grow", "text-xl font-semibold sm:text-2xl")}>
+            {title}
+          </h2>
         </div>
       </div>
-      <div className={cn("grow p-4", "text-xl font-medium")}>{description}</div>
+      <div className={cn("grow p-4", "text-lg font-medium sm:text-xl")}>
+        {description}
+      </div>
       <div>{footer}</div>
     </Card>
   );
@@ -73,8 +77,12 @@ export function OverallRatingCard({
 }: OverallRatingCardProps) {
   return (
     <Card {...props} className={cn("space-y-4 p-4")}>
-      <div className="flex items-center gap-4">
-        <LetterGrade letter={letterGrade} size="large" className="shrink-0" />
+      <div className="space-y-2 sm:flex sm:items-center sm:gap-4">
+        <LetterGrade
+          letter={letterGrade}
+          size="large"
+          className="sm:shrink-0"
+        />
         <p className="text-lg font-medium">{gradeText}</p>
       </div>
       {scores && scores.length > 0 && (
@@ -130,7 +138,9 @@ export function CardWithRating({ ratings, title, href }: CardWithRatingProps) {
             "border-y-2 border-r-2 border-black"
           )}
         >
-          <h2 className={cn(" p-2", "text-xl font-medium")}>{title}</h2>
+          <h2 className={cn(" p-2", "text-lg font-medium sm:text-xl")}>
+            {title}
+          </h2>
         </div>
       </div>
     </ConditionalWrapper>
