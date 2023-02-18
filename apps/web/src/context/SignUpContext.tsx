@@ -27,6 +27,7 @@ interface SignUpContextProps {
   setFaculty: (faculty: string) => void;
 
   step: number;
+  setStep: (step: number) => void;
   nextStep: () => void;
   prevStep: () => void;
 
@@ -94,6 +95,7 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
         faculty,
         setFaculty,
         step,
+        setStep,
         nextStep,
         prevStep,
         getPayload,

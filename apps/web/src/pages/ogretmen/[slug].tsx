@@ -4,6 +4,7 @@ import { InfoCard, OverallRatingCard } from "@/components/Card";
 import Chip from "@/components/Chip";
 import SingleRating from "@/components/SingleRating";
 import TextSwitch from "@/components/TextSwitch";
+import { AuthContext } from "@/context/AuthContext";
 import { RateProvider } from "@/context/RateContext";
 import { initializeApollo } from "@/lib/apollo";
 import {
@@ -13,6 +14,7 @@ import {
 } from "@/lib/utils";
 import { gql } from "@apollo/client";
 import Head from "next/head";
+import { useContext } from "react";
 
 interface PageProps {
   teacher: Teacher;
@@ -21,6 +23,8 @@ interface PageProps {
 export default function Page({ teacher }: PageProps) {
   const teacherName = teacher.name as string;
   const ratingCount = teacher.ratingCount as number;
+
+  const authContext = useContext(AuthContext);
 
   let gradeText = "";
   if (teacher.ratings && teacher.ratings?.length > 0) {
@@ -68,7 +72,9 @@ export default function Page({ teacher }: PageProps) {
                     <AuthCardFooter />
                   </RateProvider>
                   <div className="sm:flex sm:justify-between [&>*]:block">
-                    <Button variant="text">{teacherName} siz misiniz?</Button>
+                    {!authContext.isAuthenticated && (
+                      <Button variant="text">{teacherName} siz misiniz?</Button>
+                    )}
                     <Button variant="text">
                       Bilgilerde bir yanlışlık mı var?
                     </Button>

@@ -33,7 +33,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           },
           {
             page: "/kayit-ol",
-            to: "/profil",
+            to: "/degerlendir",
             requireAuth: false,
           },
           {

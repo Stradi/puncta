@@ -20,8 +20,6 @@ function Page() {
   const signUpContext = useContext(SignUpContext);
   const authContext = useContext(AuthContext);
 
-  console.log(signUpContext);
-
   // TODO: Please refactor this step part. PLEASE!!
   return (
     <>
@@ -79,7 +77,14 @@ function Page() {
 
               if (signUpContext.registrationType === "STUDENT") {
                 if (signUpContext.step === 4) {
-                  authContext.register(signUpContext.getPayload());
+                  authContext
+                    .register(signUpContext.getPayload())
+                    .then((isSuccessfull) => {
+                      if (!isSuccessfull) {
+                        // TODO: Show email domain error.
+                        signUpContext.setStep(1);
+                      }
+                    });
                 } else {
                   formRef.current?.submitForm();
                 }

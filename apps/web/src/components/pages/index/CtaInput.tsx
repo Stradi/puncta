@@ -55,6 +55,7 @@ export default function CtaInput({
     return () => {
       debouncedChangeHandler.cancel();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -165,7 +166,7 @@ export default function CtaInput({
             }}
           >
             <div className="p-2">
-              {suggestions.slice(0, 2).map((item) => {
+              {suggestions.map((item) => {
                 const href =
                   item.type === "university" ? "/universite" : "/ogretmen";
 
