@@ -1,10 +1,10 @@
 import { cn, ratingsToLetterGrade } from "@/lib/utils";
-import Image from "next/image";
 import Link from "next/link";
 import ConditionalWrapper from "./ConditionalWrapper";
 import { InfoIcon } from "./Icons";
 import LetterGrade from "./LetterGrade";
 import { ProgressBarChart } from "./ProgressBarChart";
+import TextProfileImage from "./TextProfileImage";
 
 interface CardProps extends React.ComponentPropsWithoutRef<"div"> {}
 
@@ -25,17 +25,12 @@ export function Card({ children, className, ...props }: CardProps) {
 }
 
 interface InfoCardProps extends CardProps {
-  image?: {
-    src: string;
-    alt: string;
-  };
   title: string;
   description: React.ReactNode;
   footer: React.ReactNode;
 }
 
 export function InfoCard({
-  image,
   title,
   description,
   footer,
@@ -44,16 +39,10 @@ export function InfoCard({
   return (
     <Card {...props} className={cn("flex flex-col", "divide-y-2 divide-black")}>
       <div className={cn("flex items-center gap-2 sm:gap-6")}>
-        {image && (
-          <Image
-            src={image.src}
-            alt={image.alt}
-            width={100}
-            height={100}
-            unoptimized
-            className="border-r-2 border-black"
-          />
-        )}
+        <TextProfileImage
+          name={title}
+          className="w-24 border-r-2 border-black"
+        />
         <div className="space-y-2">
           <h2 className={cn("grow", "text-2xl font-semibold")}>{title}</h2>
         </div>

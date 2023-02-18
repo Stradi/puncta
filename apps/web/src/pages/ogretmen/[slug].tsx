@@ -45,10 +45,6 @@ export default function Page({ teacher }: PageProps) {
         <header className="container mx-auto max-w-6xl md:flex md:gap-8">
           <div className="h-full w-full space-y-6">
             <InfoCard
-              image={{
-                src: "https://picsum.photos/200",
-                alt: teacherName,
-              }}
               title={teacherName}
               description={`${teacherName}, ${teacher.university?.name} üniversitesinde ${teacher.faculty?.name} bölümünde eğitim veriyor.`}
               footer={

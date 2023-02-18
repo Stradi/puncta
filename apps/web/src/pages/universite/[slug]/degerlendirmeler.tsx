@@ -44,10 +44,6 @@ export default function Page({ university, slug }: PageProps) {
         <header className="container mx-auto max-w-6xl md:flex md:gap-8">
           <div className="h-full w-full space-y-6">
             <InfoCard
-              image={{
-                src: "https://picsum.photos/200",
-                alt: uniName,
-              }}
               title={uniName}
               description={`İçerisinde ${university.facultyCount} bölüm olan ${uniName}'nin toplam ${university.teacherCount} öğretim üyesi bulunmaktadır.`}
               footer={
