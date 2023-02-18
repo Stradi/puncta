@@ -202,7 +202,13 @@ async function main() {
     }
 
     log(u["name"]);
-    const universityId = await createUniversity(connection, u, domain);
+    let universityId = null;
+    try {
+      universityId = await createUniversity(connection, u, domain);
+    } catch (e) {
+      log(e);
+      continue;
+    }
 
     for (const f of u["faculties"]) {
       if (f["teachers"].length === 0) {
@@ -210,13 +216,25 @@ async function main() {
       }
 
       log(`${u["name"]} - ${f["name"]}`);
-      const facultyId = await createFaculty(connection, f, universityId);
-      await createMultipleTeachers(
-        connection,
-        f["teachers"],
-        facultyId,
-        universityId
-      );
+      let facultyId = null;
+      try {
+        facultyId = await createFaculty(connection, f, universityId);
+      } catch (e) {
+        log(e);
+        continue;
+      }
+
+      try {
+        await createMultipleTeachers(
+          connection,
+          f["teachers"],
+          facultyId,
+          universityId
+        );
+      } catch (e) {
+        log(e);
+        continue;
+      }
     }
   }
 
