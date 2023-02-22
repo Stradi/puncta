@@ -30,8 +30,8 @@ export default function Page() {
               </p>
             </div>
           </blockquote>
-          <div className="space-y-8 text-lg md:text-xl">
-            <p className="">
+          <div className="prose prose-neutral prose-lg mx-auto">
+            <p>
               The Puncta, tüm üniversite öğrencilerinin eleştirilerini,
               şikayetlerini, taleplerini ya da akademik düşüncelerini anonim
               olarak ya da olmadan özgürce değerlendirebilecekleri bir
@@ -43,33 +43,31 @@ export default function Page() {
               sağlayarak, eğitim gördükleri kurumlara ve öğretmenlerine “Not
               Verme” imkanı veriyoruz.
             </p>
-            <p className="">
+            <p>
               The Puncta, kurumların kalitesine doğrudan etki etmek ve akademik
               eğitimde ki gelişimin, öğrenciler ve üniversite üyelerinin tecrübe
               ya da taleplerine dayanarak birinci elden katkı sağlamasını
               amaçlar.
             </p>
-          </div>
-          <div className="space-y-8">
-            <h2 className="text-center text-3xl font-bold">Neden Gerekli?</h2>
-            <div className="relative space-y-4 text-lg">
+            <h2>Neden Gerekli?</h2>
+            <div className="relative">
               <CheckIcon
                 stroke="thick"
                 svgClassName="absolute right-0 top-1/2 -translate-y-1/2 w-24 h-24 text-gray-200 -z-10"
               />
-              <h3 className="text-2xl font-medium">Çözüm Arayışı</h3>
+              <h3>Çözüm Arayışı</h3>
               <p>
                 Üniversite öğrencilerinin akademik hayatta yaşadığı çeşitli
                 sorunlar karşısında çözümsüz ve muhatapsız kalması durumlarının
                 önüne geçmek için.
               </p>
             </div>
-            <div className="relative space-y-4 text-lg">
+            <div className="relative">
               <PathIcon
                 stroke="thick"
                 svgClassName="absolute right-0 top-1/2 -translate-y-1/2 w-24 h-24 text-gray-200 -z-10"
               />
-              <h3 className="text-2xl font-medium">Tercih Dönemleri</h3>
+              <h3>Tercih Dönemleri</h3>
               <p>
                 Üniversite tercih dönemlerinde adayların yerleşmek istedikleri
                 üniversiteler hakkında detaylı bilgi sahibi olabilmeleri ve daha
@@ -77,14 +75,12 @@ export default function Page() {
                 arasında karşılaştırma yapabilmesi için.
               </p>
             </div>
-            <div className="relative space-y-4 text-lg">
+            <div className="relative">
               <SearchIcon
                 stroke="thick"
                 svgClassName="absolute right-0 top-1/2 -translate-y-1/2 w-24 h-24 text-gray-200 -z-10"
               />
-              <h3 className="text-2xl font-medium">
-                Kurumlar İçin Gözlem Fırsatı
-              </h3>
+              <h3>Kurumlar İçin Gözlem Fırsatı</h3>
               <p>
                 Yapılan değerlendirme, yorum ve taleplere göre eğitim verenlerin
                 ve ya üniversitelerin çözümsüz kalan sorunları, eksiklikleri,
