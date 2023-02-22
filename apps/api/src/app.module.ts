@@ -11,6 +11,7 @@ import { ResponseModule } from './response/response.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { UniversityModule } from './university/university.module';
 import { UserModule } from './user/user.module';
+import { RevalidateModule } from './revalidate/revalidate.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     UserModule,
     ResponseModule,
+    RevalidateModule,
   ],
 })
 export class AppModule {}
