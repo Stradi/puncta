@@ -3,7 +3,7 @@ import { RateContext } from "@/context/RateContext";
 import { FormikProps } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { createRef, useContext, useEffect } from "react";
+import { createRef, useContext, useEffect, useState } from "react";
 import Button from "../Button";
 import BaseRatingForm from "./forms/BaseRatingForm";
 import FinalScreen from "./forms/FinalScreen";
@@ -23,6 +23,7 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
   const modalContext = useContext(ModalContext);
 
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (rateContext.step === 0) {
@@ -51,11 +52,18 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
     // If we are in the last step (rateContext.step === 5), we need to
     // rate the teacher or university.
     if (rateContext.step === 5) {
-      const isDone = await rateContext.rate();
-      if (!isDone) {
-        // Something happened, show error.
-        return;
-      }
+      setIsLoading(true);
+      rateContext.rate().then((isSuccessfull) => {
+        setIsLoading(false);
+        if (isSuccessfull) {
+          modalContext.setIsOpen(false);
+          router.refresh();
+        } else {
+          // Something happened, show error.
+          setIsLoading(false);
+          return;
+        }
+      });
 
       modalContext.setIsOpen(false);
       router.refresh();
@@ -70,6 +78,14 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
 
   return (
     <div className="py-8 px-2">
+      {isLoading && (
+        <div className="absolute top-0 left-0 z-50 flex h-full w-full flex-col items-center justify-center gap-4 bg-black/80">
+          <div className="border-primary-normal h-16 w-16 animate-spin rounded-full border-y-2 border-r-4"></div>
+          <p className="px-4 text-center text-xl font-medium text-white">
+            Değerlendirmen paylaşılıyor. Lütfen biraz bekle.
+          </p>
+        </div>
+      )}
       <h1 className="mb-4 text-center text-3xl font-medium">Değerlendir</h1>
       <AnimatePresence>
         <motion.div

@@ -70,14 +70,14 @@ export default function RateSlider({
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="flex items-center justify-between gap-2">
+      <div className="-mb-0.5 flex items-center justify-between gap-2">
         <input
           {...field}
           {...props}
           type="range"
           className={RateSliderStyles.input}
         />
-        <span className="mb-1 h-full w-8 text-center font-mono text-2xl font-bold">
+        <span className="mb-1 h-full w-8 text-center font-mono text-lg font-bold md:text-2xl">
           {valueText}
         </span>
       </div>

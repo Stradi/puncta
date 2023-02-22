@@ -1,9 +1,9 @@
 .input {
-  @apply appearance-none h-5 w-full;
+  @apply appearance-none w-full;
 }
 
 .input::-webkit-slider-thumb {
-  @apply appearance-none bg-primary-normal -my-0.5 ring-2 ring-black h-6 w-6 rounded-full;
+  @apply appearance-none bg-primary-normal -my-0.5 ring-2 ring-black h-4 w-4 md:h-6 md:w-6 rounded-full;
   @apply transition duration-100 hover:scale-110;
 }
 

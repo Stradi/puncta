@@ -26,6 +26,8 @@ export default function Page() {
 
   const [formik, setFormik] = useState<any>({});
 
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
       <Head>
@@ -33,7 +35,15 @@ export default function Page() {
         <meta name="description" content={config.site.seo.login.description} />
       </Head>
       <div className="px-2">
-        <Card className="mx-auto max-w-lg py-16 px-8">
+        <Card className="relative mx-auto max-w-lg py-16 px-8">
+          {isLoading && (
+            <div className="absolute top-0 left-0 z-50 flex h-full w-full flex-col items-center justify-center gap-4 bg-black/80">
+              <div className="border-primary-normal h-16 w-16 animate-spin rounded-full border-y-2 border-r-4"></div>
+              <p className="px-4 text-center text-xl font-medium text-white">
+                Giriş yapılıyor. Lütfen biraz bekle.
+              </p>
+            </div>
+          )}
           <h1 className="mb-4 text-center text-3xl font-medium">Giriş Yap</h1>
           <AnimatePresence>
             <motion.div
@@ -48,18 +58,23 @@ export default function Page() {
                 }}
                 validationSchema={LoginValidationSchema}
                 onSubmit={async (values) => {
-                  const response = await authContext.login({
-                    username: values.username,
-                    password: values.password,
-                  });
-                  if (response) {
-                    router.push("/");
-                  } else {
-                    formik.setErrors({
-                      username: "Kullanıcı adı hatalı.",
-                      password: "Şifre hatalı.",
+                  setIsLoading(true);
+                  authContext
+                    .login({
+                      username: values.username,
+                      password: values.password,
+                    })
+                    .then((isSuccessfull) => {
+                      setIsLoading(false);
+                      if (!isSuccessfull) {
+                        formik.setErrors({
+                          username: "Kullanıcı adı hatalı.",
+                          password: "Şifre hatalı.",
+                        });
+                      } else {
+                        router.push("/");
+                      }
                     });
-                  }
                 }}
                 getFormik={(formik) => setFormik(formik)}
               >
