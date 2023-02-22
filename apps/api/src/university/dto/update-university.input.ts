@@ -14,6 +14,10 @@ export class UpdateUniversitySet {
   @Field(() => String, { nullable: true })
   @IsOptional()
   slug?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  image?: string;
 }
 
 @ArgsType()

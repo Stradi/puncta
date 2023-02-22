@@ -105,7 +105,7 @@ export class UniversityResolver {
       );
     }
 
-    if (!args.set.name && !args.set.slug) {
+    if (!args.set.name && !args.set.slug && !args.set.image) {
       throw new GenericInvalidParameterError(
         'set',
         'At least one set parameter should be passed',

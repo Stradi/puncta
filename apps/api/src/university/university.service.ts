@@ -14,13 +14,14 @@ import { CreateUniversityInput } from './dto/create-university.input';
 import { DeleteUniversityInput } from './dto/delete-university.input';
 import { GetUniversityArgs } from './dto/get-university.args';
 import { UpdateUniversityInput } from './dto/update-university.input';
+import { University } from '@prisma/client';
 
 @Injectable()
 export class UniversityService {
   constructor(private prismaService: PrismaService) {}
 
   async findMany(args: GetUniversityArgs) {
-    return await this.prismaService.university.findMany({
+    const response = await this.prismaService.university.findMany({
       where: {
         ...convertArgsToWhereClause(['id', 'slug', 'name'], args.filter || {}),
       },
@@ -31,6 +32,8 @@ export class UniversityService {
       take: args.pageSize,
       skip: args.page * args.pageSize,
     });
+
+    return response.map(this.convertImageBufferToBase64);
   }
 
   async faculties(id: number, args: GetFacultyArgs) {
@@ -125,7 +128,7 @@ export class UniversityService {
         },
       });
 
-      return university;
+      return this.convertImageBufferToBase64(university);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -153,6 +156,10 @@ export class UniversityService {
       setOptions['slug'] = args.set.slug;
     }
 
+    if (args.set.image) {
+      setOptions['image'] = this.convertBase64ToImageBuffer(args.set.image);
+    }
+
     try {
       const university = await this.prismaService.university.update({
         where: convertArgsToWhereClause(['id', 'slug', 'name'], args.filter),
@@ -161,7 +168,7 @@ export class UniversityService {
         },
       });
 
-      return university;
+      return this.convertImageBufferToBase64(university);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
@@ -179,7 +186,7 @@ export class UniversityService {
         where: convertArgsToWhereClause(['id', 'slug', 'name'], args),
       });
 
-      return university;
+      return this.convertImageBufferToBase64(university);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
@@ -189,5 +196,24 @@ export class UniversityService {
 
       throw error;
     }
+  }
+
+  convertImageBufferToBase64(university: University) {
+    if (!university.image) {
+      return university;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - We should convert Buffer to Base64, but TypeScript still
+    // complains about it.
+    university['image'] = Buffer.from(university.image, 'base64').toString(
+      'ascii',
+    );
+
+    return university;
+  }
+
+  convertBase64ToImageBuffer(base64: string) {
+    return Buffer.from(base64);
   }
 }

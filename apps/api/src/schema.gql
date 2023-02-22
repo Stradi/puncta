@@ -189,6 +189,9 @@ type University {
 
   """Domain of this university"""
   domain: Domain!
+
+  """Logo of this university"""
+  image: String
 }
 
 input FacultyFilterInput {
@@ -401,6 +404,7 @@ input UpdateUniversityFilter {
 input UpdateUniversitySet {
   name: String
   slug: String
+  image: String
 }
 
 input ConnectFacultyUniversity {

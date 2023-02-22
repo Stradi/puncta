@@ -71,4 +71,10 @@ export class University {
     description: 'Domain of this university',
   })
   domain: Domain;
+
+  @Field(() => String, {
+    description: 'Logo of this university',
+    nullable: true,
+  })
+  image: string;
 }
