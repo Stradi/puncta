@@ -13,7 +13,7 @@ export default function Page() {
             Gizlilik Politikası
           </h1>
         </header>
-        <section className="prose prose-neutral mx-auto">
+        <section className="prose prose-neutral prose-lg mx-auto">
           <p className="text-sm font-medium">
             Son güncelleme tarihi: 22.02.2023
           </p>
