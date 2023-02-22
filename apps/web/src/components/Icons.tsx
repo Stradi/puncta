@@ -127,3 +127,47 @@ export function TeacherIcon({ ...props }: BaseIconProps) {
     </BaseIcon>
   );
 }
+
+export function QuoteIcon({ ...props }: BaseIconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path>
+      <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path>
+    </BaseIcon>
+  );
+}
+
+export function CheckIcon({ ...props }: BaseIconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
+      />
+    </BaseIcon>
+  );
+}
+
+export function PathIcon({ ...props }: BaseIconProps) {
+  return (
+    <BaseIcon {...props}>
+      <circle cx="18" cy="18" r="3"></circle>
+      <circle cx="6" cy="6" r="3"></circle>
+      <path d="M13 6h3a2 2 0 0 1 2 2v7"></path>
+      <path d="M11 18H8a2 2 0 0 1-2-2V9"></path>
+    </BaseIcon>
+  );
+}
+
+export function SearchIcon({ ...props }: BaseIconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+      />
+    </BaseIcon>
+  );
+}
