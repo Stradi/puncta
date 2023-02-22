@@ -42,8 +42,8 @@ export default function Page({ teacher }: PageProps) {
         <meta name="description" content={teacher.name} />
       </Head>
       <main>
-        <header className="container mx-auto max-w-6xl md:flex md:gap-8">
-          <div className="h-full w-full space-y-6">
+        <header className="container mx-auto max-w-6xl px-4 md:flex md:gap-8">
+          <div className="flex h-full w-full flex-col gap-4">
             <InfoCard
               title={teacherName}
               description={`${teacherName}, ${teacher.university?.name} üniversitesinde ${teacher.faculty?.name} bölümünde eğitim veriyor.`}
@@ -78,7 +78,7 @@ export default function Page({ teacher }: PageProps) {
                 </>
               }
             />
-            <div className="ml-2 flex flex-wrap gap-2">
+            <div className="my-4 ml-2 flex flex-wrap gap-2 pb-4">
               {mostFrequentTags(teacher.ratings as Rating[], 5).map((tag) => {
                 const t = tag as RateTag;
                 return <Chip key={t.name} label={t.localizedName} shadows />;
@@ -103,7 +103,7 @@ export default function Page({ teacher }: PageProps) {
             />
           </h2>
         </div>
-        <div className="container mx-auto max-w-6xl px-2">
+        <div className="container mx-auto max-w-6xl px-4">
           <main>
             <div className="space-y-4 md:flex md:gap-4">
               <div className="space-y-4 sm:w-full md:max-w-3xl">

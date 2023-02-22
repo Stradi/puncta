@@ -25,7 +25,7 @@ export default function Modal({
     >
       <div
         className={cn(
-          "relative top-1/2 mx-auto -translate-y-1/2",
+          "relative h-full md:top-1/2 md:mx-auto md:-translate-y-1/2",
           "border-2 border-black bg-white",
           {
             "max-w-md": maxWidth === "sm",

@@ -28,7 +28,7 @@ export default function LetterGrade({
       className={cn(
         "flex select-none items-center justify-center",
         "border-2 border-black",
-        "font-mono text-5xl font-bold",
+        "font-mono text-4xl font-bold md:text-5xl",
         styling,
         size === "small" && "h-12 w-12 text-4xl",
         size === "medium" && "h-16 w-16",

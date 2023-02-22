@@ -41,8 +41,8 @@ export default function Page({ university, slug }: PageProps) {
         <meta name="description" content={uniName} />
       </Head>
       <main>
-        <header className="container mx-auto max-w-6xl px-2 md:flex md:gap-8">
-          <div className="h-full w-full space-y-6">
+        <header className="container mx-auto max-w-6xl px-4 md:flex md:gap-8">
+          <div className="flex h-full w-full flex-col gap-4">
             <InfoCard
               title={uniName}
               description={`İçerisinde ${university.facultyCount} bölüm olan ${uniName}'nin toplam ${university.teacherCount} öğretim üyesi bulunmaktadır.`}
@@ -58,7 +58,7 @@ export default function Page({ university, slug }: PageProps) {
               }
               image={university.image}
             />
-            <div className="ml-2 flex flex-wrap gap-2">
+            <div className="my-4 ml-2 flex flex-wrap gap-2 pb-4">
               {mostFrequentTags(university.ratings as Rating[], 5).map(
                 (tag) => {
                   const t = tag as RateTag;

@@ -47,7 +47,7 @@ export default function Page({ user, slug }: PageProps) {
             <TextSwitch links={switchLinks} />
           </h2>
         </div>
-        <main>
+        <main className="px-2">
           {user.ratings && user.ratings.length > 0 && (
             <Ratings ratings={user.ratings} />
           )}

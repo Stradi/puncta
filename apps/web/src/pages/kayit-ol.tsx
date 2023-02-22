@@ -37,7 +37,7 @@ function Page() {
           {isLoading && (
             <div className="absolute top-0 left-0 z-50 flex h-full w-full flex-col items-center justify-center gap-4 bg-black/80">
               <div className="border-primary-normal h-16 w-16 animate-spin rounded-full border-y-2 border-r-4"></div>
-              <p className="text-xl font-medium text-white">
+              <p className="px-4 text-center text-xl font-medium text-white">
                 Kaydını tamamlıyoruz. Lütfen biraz bekle.
               </p>
             </div>
