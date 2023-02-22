@@ -144,3 +144,32 @@ export function safeLogicalOr(a: any, defaultValue: any) {
 
   return a;
 }
+
+import { NextApiRequest, NextApiResponse } from "next";
+
+type HandlerObject = {
+  [key: string]: (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+};
+
+export function apiHandler(handler: HandlerObject) {
+  return async (req: NextApiRequest, res: NextApiResponse) => {
+    const method = req.method as string;
+    if (!handler[method]) {
+      return res.status(405).end(`Method ${req.method} not allowed`);
+    }
+
+    try {
+      await handler[method](req, res);
+    } catch (e: unknown) {
+      errorHandler(e, req, res);
+    }
+  };
+}
+
+const errorHandler = (
+  err: unknown,
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  return res.status(500).json({ error: err });
+};
