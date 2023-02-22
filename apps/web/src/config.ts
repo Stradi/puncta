@@ -129,10 +129,6 @@ const config: Config = {
             href: "/hakkimizda",
           },
           {
-            label: "Vizyon & Misyon",
-            href: "/vizyon-misyon",
-          },
-          {
             label: "İletişim",
             href: "/iletisim",
           },
