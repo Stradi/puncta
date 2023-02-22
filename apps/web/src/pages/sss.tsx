@@ -1,4 +1,3 @@
-import { CheckIcon, PathIcon, QuoteIcon, SearchIcon } from "@/components/Icons";
 import Head from "next/head";
 
 export default function Page() {
