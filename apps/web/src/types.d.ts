@@ -39,6 +39,8 @@ interface University extends Partial<CommonResource> {
   facultyCount?: number;
   teacherCount?: number;
   ratingCount?: number;
+
+  image?: string;
 }
 
 interface User extends Partial<CommonResource> {

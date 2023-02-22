@@ -1,4 +1,4 @@
-import { CardWithRating } from "@/components/Card";
+import { CardWithImage, CardWithRating } from "@/components/Card";
 import config from "@/config";
 import { initializeApollo } from "@/lib/apollo";
 import { cn } from "@/lib/utils";
@@ -31,9 +31,9 @@ export default function Page({ universities }: PageProps) {
 
         <div className={cn("grid grid-cols-1 gap-4 sm:grid-cols-2")}>
           {universities.map((university) => (
-            <CardWithRating
+            <CardWithImage
               key={university.id}
-              ratings={university.ratings as Rating[]}
+              image={university.image}
               title={university.name as string}
               href={`/universite/${university.slug}`}
             />
@@ -55,12 +55,7 @@ export async function getStaticProps() {
           id
           name
           slug
-          ratings {
-            id
-            meta
-            score
-            comment
-          }
+          image
         }
       }
     `,

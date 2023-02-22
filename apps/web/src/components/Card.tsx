@@ -1,4 +1,5 @@
 import { cn, ratingsToLetterGrade } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import ConditionalWrapper from "./ConditionalWrapper";
 import { InfoIcon } from "./Icons";
@@ -28,21 +29,35 @@ interface InfoCardProps extends CardProps {
   title: string;
   description: React.ReactNode;
   footer: React.ReactNode;
+  image?: string;
 }
 
 export function InfoCard({
   title,
   description,
   footer,
+  image,
   ...props
 }: InfoCardProps) {
   return (
     <Card {...props} className={cn("flex flex-col", "divide-y-2 divide-black")}>
       <div className={cn("flex items-center gap-2 sm:gap-6")}>
-        <TextProfileImage
-          name={title}
-          className="w-24 border-r-2 border-black"
-        />
+        {image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`data:image/jpeg;base64,${image}`}
+            alt={title}
+            title={`${title}`}
+            width={256}
+            height={256}
+            className="w-24 border-r-2 border-black"
+          />
+        ) : (
+          <TextProfileImage
+            name={title}
+            className="w-24 border-r-2 border-black"
+          />
+        )}
         <div className="space-y-2">
           <h2 className={cn("grow", "text-xl font-semibold sm:text-2xl")}>
             {title}
@@ -179,6 +194,57 @@ export function CardWithoutRating({
         >
           <h2 className={cn(" p-2", "text-center text-xl")}>{title}</h2>
           {subtitle && <div>{subtitle}</div>}
+        </div>
+      </div>
+    </ConditionalWrapper>
+  );
+}
+
+interface CardWithImageProps extends CardProps {
+  image?: string;
+  title: string;
+  href?: string;
+}
+
+export function CardWithImage({ image, title, href }: CardWithImageProps) {
+  return (
+    <ConditionalWrapper
+      condition={!!href}
+      wrapper={(children) => <Link href={href as string}>{children}</Link>}
+    >
+      <div
+        className={cn(
+          "flex h-24 items-center",
+          href && "tranisition duration-100",
+          href &&
+            "hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_rgba(0,0,0,1.0)]"
+        )}
+      >
+        {image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`data:image/jpeg;base64,${image}`}
+            alt={title}
+            title={title}
+            width={256}
+            height={256}
+            className="w-24 border-2 border-black"
+          />
+        ) : (
+          <TextProfileImage
+            name={title}
+            className="h-full border-2 border-black"
+          />
+        )}
+        <div
+          className={cn(
+            "flex h-full w-full items-center",
+            "border-y-2 border-r-2 border-black"
+          )}
+        >
+          <h2 className={cn(" p-2", "text-lg font-medium sm:text-xl")}>
+            {title}
+          </h2>
         </div>
       </div>
     </ConditionalWrapper>

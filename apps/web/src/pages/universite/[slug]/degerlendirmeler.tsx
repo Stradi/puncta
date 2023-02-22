@@ -56,6 +56,7 @@ export default function Page({ university, slug }: PageProps) {
                   <AuthCardFooter />
                 </RateProvider>
               }
+              image={university.image}
             />
             <div className="ml-2 flex flex-wrap gap-2">
               {mostFrequentTags(university.ratings as Rating[], 5).map(
@@ -140,6 +141,7 @@ export async function getStaticProps({ params }: Params) {
           id
           name
           slug
+          image
           ratings(sort: { createdAt: "desc" }) {
             id
             meta
