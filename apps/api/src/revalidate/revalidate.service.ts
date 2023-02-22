@@ -11,6 +11,16 @@ export class RevalidateService {
     private httpService: HttpService,
   ) {}
 
+  async revalidateTeachers(slugs: string[]) {
+    const paths = slugs.map((slug) => `/ogretmen/${slug}`);
+    return this.revalidate(paths);
+  }
+
+  async revalidateUniversities(slugs: string[]) {
+    const paths = slugs.map((slug) => `/universite/${slug}/degerlendirmeler`);
+    return this.revalidate(paths);
+  }
+
   async revalidate(paths: string[]) {
     const revalidateUrl = this.configService.get('REVALIDATE_URL');
     const revalidateToken = this.configService.get('REVALIDATE_SECRET');

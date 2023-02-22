@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RevalidateService } from 'src/revalidate/revalidate.service';
 import { RatingNotFoundError } from 'src/shared/shared.exceptions';
 import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
 import { User } from 'src/user/entities/user.entity';
@@ -11,7 +12,10 @@ import { UpdateRatingInput } from './dto/update-rating.input';
 
 @Injectable()
 export class RatingService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private revalidateService: RevalidateService,
+  ) {}
 
   async findMany(args: GetRatingArgs) {
     return await this.prismaService.rating.findMany({
@@ -111,7 +115,20 @@ export class RatingService {
           },
           ...ratingTo,
         },
+        include: {
+          teacher: true,
+          university: true,
+        },
       });
+
+      // We are not awaiting these calls because it's not critical to the
+      // user experience. We can do it in the background. If it fails,
+      // it fails.
+      if (rating.teacher && args.teacher) {
+        this.revalidateService.revalidateTeachers([rating.teacher.slug]);
+      } else if (rating.university && args.university) {
+        this.revalidateService.revalidateUniversities([rating.university.slug]);
+      }
 
       return rating;
     } catch (error) {
@@ -148,7 +165,17 @@ export class RatingService {
         data: {
           ...setOptions,
         },
+        include: {
+          teacher: true,
+          university: true,
+        },
       });
+
+      if (rating.teacher) {
+        this.revalidateService.revalidateTeachers([rating.teacher.slug]);
+      } else if (rating.university) {
+        this.revalidateService.revalidateUniversities([rating.university.slug]);
+      }
 
       return rating;
     } catch (error) {
@@ -166,7 +193,17 @@ export class RatingService {
     try {
       const rating = await this.prismaService.rating.delete({
         where: { id: args.id },
+        include: {
+          teacher: true,
+          university: true,
+        },
       });
+
+      if (rating.teacher) {
+        this.revalidateService.revalidateTeachers([rating.teacher.slug]);
+      } else if (rating.university) {
+        this.revalidateService.revalidateUniversities([rating.university.slug]);
+      }
 
       return rating;
     } catch (error) {
