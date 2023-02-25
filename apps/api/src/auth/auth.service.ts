@@ -177,7 +177,8 @@ export class AuthService {
       // In here we are sure that user is student. So we can check if email domain is valid
       // or not. If it is not valid, we will throw an error. Otherwise, we will continue
       // with the process.
-      await this.checkUserEmailDomain(args);
+      // TODO: Uncomment this line when we want email domain validation
+      // await this.checkUserEmailDomain(args);
       return this.getConditionalStudentCreateArgs(args);
     } else if (role === Role.ADMIN) {
       return this.getConditionalAdminCreateArgs();
