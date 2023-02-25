@@ -13,12 +13,12 @@ export class RevalidateService {
 
   async revalidateTeachers(slugs: string[]) {
     const paths = slugs.map((slug) => `/ogretmen/${slug}`);
-    return this.revalidate(paths);
+    return await this.revalidate(paths);
   }
 
   async revalidateUniversities(slugs: string[]) {
     const paths = slugs.map((slug) => `/universite/${slug}/degerlendirmeler`);
-    return this.revalidate(paths);
+    return await this.revalidate(paths);
   }
 
   async revalidate(paths: string[]) {
