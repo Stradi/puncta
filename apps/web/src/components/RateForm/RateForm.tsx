@@ -50,11 +50,9 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<'div'>) {
       setIsLoading(true);
       rateContext.rate().then((isSuccessfull) => {
         if (isSuccessfull) {
-          setTimeout(() => {
-            setIsLoading(false);
-            modalContext.setIsOpen(false);
-            router.refresh();
-          }, 1000);
+          setIsLoading(false);
+          modalContext.setIsOpen(false);
+          router.refresh();
         } else {
           setIsLoading(false);
           modalContext.setContent(
