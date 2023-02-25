@@ -58,7 +58,26 @@ export default function Page() {
         setIsLoading(false);
         setError(true);
       } else {
-        setUser(data.user);
+        if (!data.user.ratings) {
+          setUser({
+            ...data.user,
+            ratings: [],
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        const sortedRatings = [...data.user.ratings].sort((a, b) => {
+          const aDate = new Date(a.createdAt as string);
+          const bDate = new Date(b.createdAt as string);
+
+          return bDate.getTime() - aDate.getTime();
+        });
+
+        setUser({
+          ...data.user,
+          ratings: sortedRatings,
+        });
         setIsLoading(false);
       }
     }
@@ -100,6 +119,11 @@ export default function Page() {
                 <TextSwitch links={switchLinks} />
               </h2>
             </div>
+            {user.ratings && user.ratings.length === 0 && (
+              <h2 className="px-2 text-2xl font-medium sm:text-3xl">
+                <b>{user.username}</b> adlı kullanıcının henüz bir değerlendirmesi bulunmuyor.
+              </h2>
+            )}
             <main className="px-2">{user.ratings && user.ratings.length > 0 && <Ratings ratings={user.ratings} />}</main>
           </>
         )}
