@@ -121,13 +121,14 @@ export class RatingService {
         },
       });
 
-      // We are not awaiting these calls because it's not critical to the
-      // user experience. We can do it in the background. If it fails,
-      // it fails.
+      // Looks like we should wait for the revalidation to finish. This causes
+      // the request to take longer but it's better than having stale data.
       if (rating.teacher && args.teacher) {
-        this.revalidateService.revalidateTeachers([rating.teacher.slug]);
+        await this.revalidateService.revalidateTeachers([rating.teacher.slug]);
       } else if (rating.university && args.university) {
-        this.revalidateService.revalidateUniversities([rating.university.slug]);
+        await this.revalidateService.revalidateUniversities([
+          rating.university.slug,
+        ]);
       }
 
       return rating;
