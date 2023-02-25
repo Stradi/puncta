@@ -51,19 +51,21 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<'div'>) {
       rateContext.rate().then((isSuccessfull) => {
         if (isSuccessfull) {
           setTimeout(() => {
-            modalContext.setIsOpen(false);
             setIsLoading(false);
+            modalContext.setIsOpen(false);
             router.refresh();
           }, 1000);
         } else {
-          // Something happened, show error.
           setIsLoading(false);
-          return;
+          modalContext.setContent(
+            <div>
+              <h1 className="mb-4 text-2xl font-medium">Değerlendirmen kaydedilemedi.</h1>
+              <p className="mb-4">Bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+            </div>
+          );
+          modalContext.setCloseConfirmation(false);
         }
       });
-
-      modalContext.setIsOpen(false);
-      router.refresh();
     } else {
       if (rateContext.step === 0) {
         rateContext.nextStep();
