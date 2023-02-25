@@ -1,11 +1,11 @@
-import Ratings from "@/components/pages/profil/Ratings";
-import TextSwitch from "@/components/TextSwitch";
-import { AuthContext } from "@/context/AuthContext";
-import { initializeApollo } from "@/lib/apollo";
-import { cn } from "@/lib/utils";
-import { gql } from "@apollo/client";
-import Head from "next/head";
-import { useContext } from "react";
+import Ratings from '@/components/pages/profil/Ratings';
+import TextSwitch from '@/components/TextSwitch';
+import { AuthContext } from '@/context/AuthContext';
+import { initializeApollo } from '@/lib/apollo';
+import { cn } from '@/lib/utils';
+import { gql } from '@apollo/client';
+import Head from 'next/head';
+import { useContext, useEffect, useState } from 'react';
 
 interface PageProps {
   user: User;
@@ -17,17 +17,14 @@ export default function Page({ user, slug }: PageProps) {
   const switchLinks = [
     {
       href: `/profil/${slug}`,
-      label: "Değerlendirmeler",
+      label: 'Değerlendirmeler',
     },
   ];
 
-  if (
-    authContext.isAuthenticated &&
-    authContext.user?.username === user.username
-  ) {
+  if (authContext.isAuthenticated && authContext.user?.username === user.username) {
     switchLinks.push({
       href: `/profil/${slug}/ayarlar`,
-      label: "Ayarlar",
+      label: 'Ayarlar',
     });
   }
 
@@ -37,7 +34,7 @@ export default function Page({ user, slug }: PageProps) {
         <title>{`Profilim | The Puncta`}</title>
       </Head>
       <div className="container mx-auto max-w-6xl">
-        <header className={cn("mb-8 px-4")}>
+        <header className={cn('mb-8 px-4')}>
           <h2 className="text-2xl font-medium sm:text-3xl">
             <b>{user.username}</b> adlı kullanıcının profili.
           </h2>
@@ -47,11 +44,7 @@ export default function Page({ user, slug }: PageProps) {
             <TextSwitch links={switchLinks} />
           </h2>
         </div>
-        <main className="px-2">
-          {user.ratings && user.ratings.length > 0 && (
-            <Ratings ratings={user.ratings} />
-          )}
-        </main>
+        <main className="px-2">{user.ratings && user.ratings.length > 0 && <Ratings ratings={user.ratings} />}</main>
       </div>
     </>
   );
@@ -93,7 +86,7 @@ export async function getStaticProps({ params }: Params) {
     variables: {
       username: params.slug,
     },
-    errorPolicy: "ignore",
+    errorPolicy: 'ignore',
   });
 
   if (!data || !data.user) {
@@ -107,12 +100,13 @@ export async function getStaticProps({ params }: Params) {
       user: data.user,
       slug: params.slug,
     },
+    revalidate: 1,
   };
 }
 
 export async function getStaticPaths() {
   return {
     paths: [],
-    fallback: "blocking",
+    fallback: 'blocking',
   };
 }
