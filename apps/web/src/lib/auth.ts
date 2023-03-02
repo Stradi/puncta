@@ -110,8 +110,6 @@ export async function doLogin(payload: LoginPayload) {
   });
 
   if (response.errors && response.errors.length > 0) {
-    console.log("Something happened while logging in.");
-    console.log(response.errors);
     return null;
   }
 
@@ -122,11 +120,11 @@ export async function doLogin(payload: LoginPayload) {
   const { accessToken, refreshToken } = response.data.login;
 
   if (!accessToken || !refreshToken) {
-    console.log("Access token or refresh token doesn't exists.");
-    console.log(response.data.login);
     return null;
   }
 
+  localStorage.setItem("accessToken", response.data.login.accessToken);
+  localStorage.setItem("refreshToken", response.data.login.refreshToken);
   return { accessToken, refreshToken };
 }
 
@@ -147,16 +145,12 @@ export async function getUser(accessToken: string) {
 
   // Probably access token is expired.
   if (response.errors && response.errors.length > 0) {
-    console.log("Something happened while getting user.");
-    console.log(response.errors);
     return null;
   }
 
   if (!response.data || !response.data.me) {
     return null;
   }
-
-  console.log(response.data);
 
   return response.data.me;
 }
@@ -169,19 +163,10 @@ export async function getNewAccessToken(refreshToken: string) {
     variables: {
       token: refreshToken,
     },
-    errorPolicy: "ignore",
   });
 
-  if (response.errors && response.errors.length > 0) {
-    console.log("Something happened while refreshing token.");
-    console.log(response.errors);
-    return null;
-  }
-
-  if (!response.data || !response.data.refreshToken) {
-    return null;
-  }
-
+  localStorage.setItem("accessToken", response.data.refreshToken.accessToken);
+  localStorage.setItem("refreshToken", response.data.refreshToken.refreshToken);
   return {
     accessToken: response.data.refreshToken.accessToken,
     refreshToken: response.data.refreshToken.refreshToken,
@@ -214,8 +199,6 @@ export async function doRegister(payload: RegisterPayload) {
   });
 
   if (response.errors && response.errors.length > 0) {
-    console.log("Something happened while registering.");
-    console.log(response.errors);
     return null;
   }
 
@@ -226,10 +209,11 @@ export async function doRegister(payload: RegisterPayload) {
   const { accessToken, refreshToken } = response.data.signup;
 
   if (!accessToken || !refreshToken) {
-    console.log("Access token or refresh token doesn't exists.");
-    console.log(response.data.signup);
     return null;
   }
+
+  localStorage.setItem("accessToken", response.data.signup.accessToken);
+  localStorage.setItem("refreshToken", response.data.signup.refreshToken);
 
   return { accessToken, refreshToken };
 }
@@ -246,8 +230,6 @@ export async function checkEmailExists(email: string) {
   });
 
   if (response.errors && response.errors.length > 0) {
-    console.log("Something happened while checking email.");
-    console.log(response.errors);
     return null;
   }
 
@@ -270,8 +252,6 @@ export async function checkUsernameExists(username: string) {
   });
 
   if (response.errors && response.errors.length > 0) {
-    console.log("Something happened while checking username.");
-    console.log(response.errors);
     return null;
   }
 

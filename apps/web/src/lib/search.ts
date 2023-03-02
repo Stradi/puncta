@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client';
-import { default as _slugify } from 'slugify';
-import { initializeApollo } from './apollo';
+import { gql } from "@apollo/client";
+import { default as _slugify } from "slugify";
+import { initializeApollo } from "./apollo";
 
 const SEARCH_UNIVERSITY_QUERY = gql`
   query SearchUniversity($term: String!) {
@@ -42,8 +42,6 @@ export async function searchUniversity(term: string) {
   });
 
   if (response.errors && response.errors.length > 0) {
-    console.log('Something happened while registering.');
-    console.log(response.errors);
     return null;
   }
 
@@ -67,8 +65,6 @@ export async function searchTeacher(term: string, pageSize: number = 12) {
   });
 
   if (response.errors && response.errors.length > 0) {
-    console.log('Something happened while registering.');
-    console.log(response.errors);
     return null;
   }
 

@@ -1,24 +1,23 @@
 import {
   ApolloClient,
-  HttpLink,
+  ApolloLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
 
 import { useMemo } from "react";
+import authLink from "./apollo/AuthLink";
+import errorLink from "./apollo/ErrorLink";
+import httpLink from "./apollo/HttpLink";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> = null as any;
 
 export function createApolloClient() {
   const ssrMode = typeof window === "undefined";
-  const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_API_URL,
-    credentials: "same-origin",
-  });
 
   return new ApolloClient({
     ssrMode,
-    link: httpLink,
+    link: ApolloLink.from([errorLink, authLink, httpLink]),
     cache: new InMemoryCache(),
   });
 }

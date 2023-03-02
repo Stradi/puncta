@@ -116,8 +116,6 @@ export async function createRating(payload: CreateRatingPayload) {
   });
 
   if (response.errors && response.errors.length > 0) {
-    console.log("Something happened while registering.");
-    console.log(response.errors);
     return null;
   }
 

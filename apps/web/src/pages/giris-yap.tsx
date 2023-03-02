@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import BaseMultistepForm from "@/components/BaseMultistepForm";
 import Button from "@/components/Button";
@@ -27,6 +27,13 @@ export default function Page() {
   const [formik, setFormik] = useState<any>({});
 
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (authContext.isAuthenticated) {
+      router.push("/degerlendir");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authContext.isAuthenticated]);
 
   return (
     <>
@@ -72,7 +79,7 @@ export default function Page() {
                           password: "Şifre hatalı.",
                         });
                       } else {
-                        router.push("/");
+                        router.push("/degerlendir");
                       }
                     });
                 }}

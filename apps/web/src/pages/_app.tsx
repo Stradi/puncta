@@ -24,42 +24,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <AuthProvider
-        redirects={[
-          {
-            page: "/giris-yap",
-            to: "/",
-            requireAuth: false,
-          },
-          {
-            page: "/kayit-ol",
-            to: "/degerlendir",
-            requireAuth: false,
-          },
-          {
-            page: "/profil",
-            to: "/giris-yap",
-            requireAuth: true,
-          },
-          {
-            page: "/degerlendir",
-            to: "/giris-yap",
-            requireAuth: true,
-          },
-        ]}
-        disallowedRoutes={[
-          {
-            page: "/degerlendir",
-            to: "/",
-            allowedRoles: ["STUDENT"],
-          },
-          {
-            page: "/degerlendirenler",
-            to: "/",
-            allowedRoles: ["TEACHER"],
-          },
-        ]}
-      >
+      <AuthProvider>
         <ModalProvider>
           <div className="space-y-8 sm:space-y-16">
             <NavigationBar />

@@ -12,15 +12,29 @@ import { SignUpContext, SignUpProvider } from "@/context/SignUpContext";
 import { FormikProps } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import Head from "next/head";
-import { createRef, ReactElement, useContext, useState } from "react";
-
+import {
+  createRef,
+  ReactElement,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useRouter } from "next/navigation";
 function Page() {
   // Since we are not interested in return type of form, we can use any.
   const formRef = createRef<FormikProps<any>>();
   const signUpContext = useContext(SignUpContext);
   const authContext = useContext(AuthContext);
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (authContext.isAuthenticated) {
+      router.push("/degerlendir");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authContext.isAuthenticated]);
 
   // TODO: Please refactor this step part. PLEASE!!
   return (
@@ -96,6 +110,8 @@ function Page() {
                         if (!isSuccessfull) {
                           // TODO: Show email domain error.
                           signUpContext.setStep(1);
+                        } else {
+                          router.push("/degerlendir");
                         }
                       });
                   } else {
