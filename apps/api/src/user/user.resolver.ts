@@ -63,6 +63,4 @@ export class UserResolver {
     const { id } = user;
     return this.userService.responseCount(id);
   }
-
-  // TODO: Add updateUser, changePassword mutations.
 }

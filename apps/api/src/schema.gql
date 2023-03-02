@@ -2,143 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Token {
-  """JWT access token"""
-  accessToken: JWT!
-
-  """JWT refresh token"""
-  refreshToken: JWT!
-}
-
-"""
-A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
-"""
-scalar JWT
-
-type Auth {
-  """JWT access token"""
-  accessToken: JWT!
-
-  """JWT refresh token"""
-  refreshToken: JWT!
-}
-
-type IsExists {
-  """Is exists"""
-  result: Boolean!
-}
-
-type Response {
-  """Unique identifier for the teacher"""
-  id: ID!
-
-  """Date the this object created"""
-  createdAt: DateTime!
-
-  """Date the this object last updated"""
-  updatedAt: DateTime!
-
-  """Content of the response"""
-  content: String!
-
-  """Additional meta field for this rating"""
-  meta: String!
-
-  """The ratingg that this response belongs to"""
-  to: Rating!
-
-  """The teacher that created this response"""
-  from: User!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type User {
-  """Unique identifier for the user"""
-  id: ID!
-
-  """Date the this object created"""
-  createdAt: DateTime!
-
-  """Date the this object last updated"""
-  updatedAt: DateTime!
-
-  """Role of this user"""
-  role: String!
-
-  """Email of this user"""
-  email: String!
-
-  """Username of this user"""
-  username: String!
-
-  """First name of this user"""
-  firstName: String
-
-  """Last name of this user"""
-  lastName: String
-
-  """Rating that this user has made"""
-  ratings: [Rating!]
-
-  """Number of ratings that this user has made"""
-  ratingCount: Int
-
-  """University that this user is associated with"""
-  university: University
-
-  """Faculty that this user is associated with"""
-  faculty: Faculty
-
-  """Responses that this user has created"""
-  responses: [Response!]
-
-  """Number of responses that this user has created"""
-  responseCount: Int
-
-  """Teacher that this user is associated with"""
-  teacher: Teacher
-
-  """Whether this user (teacher) is verified or not"""
-  isApproved: Boolean
-
-  """Whether this user is anonymous or not"""
-  isAnonymous: Boolean
-  response: [Response!]!
-}
-
-type Rating {
-  """Unique identifier for rating"""
-  id: ID!
-
-  """Date the this object created"""
-  createdAt: DateTime!
-
-  """Date the this object last updated"""
-  updatedAt: DateTime!
-
-  """Score of this rating"""
-  score: Int!
-
-  """Message of this rating"""
-  comment: String
-
-  """Additional meta field for this rating"""
-  meta: String
-
-  """The university that this rating rates"""
-  university: University
-
-  """The university that this rating rates"""
-  teacher: Teacher
-
-  """The user that created this rating"""
-  user: User
-}
-
 type Domain {
   """Unique identifier for the domain"""
   id: ID!
@@ -155,6 +18,11 @@ type Domain {
   """University of the domain"""
   university: University!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type University {
   """Unique identifier for the university"""
@@ -261,6 +129,64 @@ input RatingSortInput {
   updatedAt: String
 }
 
+type Rating {
+  """Unique identifier for rating"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Score of this rating"""
+  score: Int!
+
+  """Message of this rating"""
+  comment: String
+
+  """Additional meta field for this rating"""
+  meta: String
+
+  """The university that this rating rates"""
+  university: University
+
+  """The university that this rating rates"""
+  teacher: Teacher
+
+  """The user that created this rating"""
+  user: User
+}
+
+type Teacher {
+  """Unique identifier for the teacher"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Name of the faculty"""
+  name: String!
+
+  """Slug of the faculty"""
+  slug: String!
+
+  """The university that this teacher works"""
+  university: University
+
+  """The faculty that this teacher works"""
+  faculty: Faculty
+
+  """Ratings of this teacher"""
+  ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
+
+  """Number of ratings of this teacher"""
+  ratingCount: Int
+}
+
 type Faculty {
   """Unique identifier for the faculty"""
   id: ID!
@@ -304,7 +230,7 @@ input UniversitySortInput {
   slug: String
 }
 
-type Teacher {
+type Response {
   """Unique identifier for the teacher"""
   id: ID!
 
@@ -314,23 +240,97 @@ type Teacher {
   """Date the this object last updated"""
   updatedAt: DateTime!
 
-  """Name of the faculty"""
-  name: String!
+  """Content of the response"""
+  content: String!
 
-  """Slug of the faculty"""
-  slug: String!
+  """Additional meta field for this rating"""
+  meta: String!
 
-  """The university that this teacher works"""
+  """The ratingg that this response belongs to"""
+  to: Rating!
+
+  """The teacher that created this response"""
+  from: User!
+}
+
+type User {
+  """Unique identifier for the user"""
+  id: ID!
+
+  """Date the this object created"""
+  createdAt: DateTime!
+
+  """Date the this object last updated"""
+  updatedAt: DateTime!
+
+  """Role of this user"""
+  role: String!
+
+  """Email of this user"""
+  email: String!
+
+  """Username of this user"""
+  username: String!
+
+  """First name of this user"""
+  firstName: String
+
+  """Last name of this user"""
+  lastName: String
+
+  """Rating that this user has made"""
+  ratings: [Rating!]
+
+  """Number of ratings that this user has made"""
+  ratingCount: Int
+
+  """University that this user is associated with"""
   university: University
 
-  """The faculty that this teacher works"""
+  """Faculty that this user is associated with"""
   faculty: Faculty
 
-  """Ratings of this teacher"""
-  ratings(page: Int = 0, pageSize: Int = 10, id: Int, sort: RatingSortInput): [Rating!]
+  """Responses that this user has created"""
+  responses: [Response!]
 
-  """Number of ratings of this teacher"""
-  ratingCount: Int
+  """Number of responses that this user has created"""
+  responseCount: Int
+
+  """Teacher that this user is associated with"""
+  teacher: Teacher
+
+  """Whether this user (teacher) is verified or not"""
+  isApproved: Boolean
+
+  """Whether this user is anonymous or not"""
+  isAnonymous: Boolean
+  response: [Response!]!
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+}
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+type Auth {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+}
+
+type IsExists {
+  """Is exists"""
+  result: Boolean!
 }
 
 type Query {
@@ -388,6 +388,8 @@ type Mutation {
   signup(email: String!, username: String!, password: String!, firstName: String!, lastName: String!, university: ConnectUserUniversity, faculty: ConnectUserFaculty, role: String, teacher: ConnectUserTeacher): Auth!
   login(username: String!, password: String!): Auth!
   refreshToken(token: JWT!): Token!
+  changePassword(oldPassword: String!, newPassword: String!): User!
+  changeAnonymity(anonymity: Boolean!): User!
   createResponse(content: String!, meta: String!, to: Int!): Response!
   updateResponse(filter: UpdateResponseFilter!, set: UpdateResponseSet!): Response!
   deleteResponse(id: Int!): Response!

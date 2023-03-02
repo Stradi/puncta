@@ -1,7 +1,9 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UserEntity } from 'src/common/decorators/user.decorator';
 import { Role } from 'src/common/role/roles.enum';
 import { GenericInvalidParameterError } from 'src/shared/shared.exceptions';
+import { User } from 'src/user/entities/user.entity';
 import { AuthService } from './auth.service';
 import { LoginInput } from './dto/login.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
@@ -9,6 +11,7 @@ import { SignupInput } from './dto/signup.input';
 import { Auth } from './entities/auth.entity';
 import { IsExists } from './entities/is-exists.entity';
 import { Token } from './entities/token.entity';
+import { GqlAuthGuard } from './graphql-auth.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -75,5 +78,24 @@ export class AuthResolver {
   async isUsernameExists(@Args('username') username: string) {
     const response = await this.authService.isUsernameExists(username);
     return response ? { result: true } : { result: false };
+  }
+
+  @Mutation(() => User)
+  @UseGuards(GqlAuthGuard)
+  async changePassword(
+    @Args('oldPassword') oldPassword: string,
+    @Args('newPassword') newPassword: string,
+    @UserEntity() user: User,
+  ) {
+    return this.authService.changePassword(oldPassword, newPassword, user);
+  }
+
+  @Mutation(() => User)
+  @UseGuards(GqlAuthGuard)
+  async changeAnonymity(
+    @Args('anonymity') anonymity: boolean,
+    @UserEntity() user: User,
+  ) {
+    return this.authService.changeAnonymity(anonymity, user);
   }
 }

@@ -18,6 +18,7 @@ import { convertArgsToWhereClause } from 'src/shared/utils/prisma.utils';
 import { JwtConfig } from '../common/config/config.types';
 import { LoginInput } from './dto/login.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -120,6 +121,49 @@ export class AuthService {
     return await this.prismaService.user.findUnique({
       where: {
         username,
+      },
+    });
+  }
+
+  async changePassword(oldPassword: string, newPassword: string, user: User) {
+    const currentUser = await this.prismaService.user.findUnique({
+      where: {
+        id: user.id,
+      },
+    });
+
+    if (!currentUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    const isValidPassword = await this.passwordService.comparePassword(
+      oldPassword,
+      currentUser.password,
+    );
+
+    if (!isValidPassword) {
+      throw new BadRequestException('Invalid password');
+    }
+
+    const hashedPassword = await this.passwordService.hashPassword(newPassword);
+
+    return await this.prismaService.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
+  }
+
+  async changeAnonymity(anonymity: boolean, user: User) {
+    return await this.prismaService.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        isAnonymous: anonymity,
       },
     });
   }
