@@ -1,17 +1,19 @@
-import Ratings from '@/components/pages/profil/Ratings';
-import TextSwitch from '@/components/TextSwitch';
-import { AuthContext } from '@/context/AuthContext';
-import { initializeApollo } from '@/lib/apollo';
-import { cn } from '@/lib/utils';
-import { gql } from '@apollo/client';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import Ratings from "@/components/pages/profil/Ratings";
+import TextSwitch from "@/components/TextSwitch";
+import { AuthContext } from "@/context/AuthContext";
+import { initializeApollo } from "@/lib/apollo";
+import { cn } from "@/lib/utils";
+import { gql } from "@apollo/client";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 
 export default function Page() {
   const router = useRouter();
 
-  const [slug, setSlug] = useState<string | string[] | undefined>(router.query.slug);
+  const [slug, setSlug] = useState<string | string[] | undefined>(
+    router.query.slug
+  );
   useEffect(() => {
     setSlug(router.query.slug);
   }, [router.query.slug]);
@@ -19,6 +21,7 @@ export default function Page() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<boolean>(false);
+  const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,6 +31,7 @@ export default function Page() {
           query User($username: String!) {
             user(username: $username) {
               id
+              isAnonymous
               username
               ratings {
                 id
@@ -51,13 +55,20 @@ export default function Page() {
         variables: {
           username: slug,
         },
-        errorPolicy: 'ignore',
+        errorPolicy: "ignore",
       });
 
       if (!data || !data.user) {
         setIsLoading(false);
         setError(true);
       } else {
+        // @ts-ignore
+        if (data.user.isAnonymous) {
+          setIsAnonymous(true);
+          setIsLoading(false);
+          return;
+        }
+
         if (!data.user.ratings) {
           setUser({
             ...data.user,
@@ -86,58 +97,50 @@ export default function Page() {
     fetchData();
   }, [slug]);
 
-  const authContext = useContext(AuthContext);
-  const switchLinks = [
-    {
-      href: `/profil/${slug}`,
-      label: 'Değerlendirmeler',
-    },
-  ];
-
-  if (authContext.isAuthenticated && authContext.user?.username === user?.username) {
-    switchLinks.push({
-      href: `/profil/${slug}/ayarlar`,
-      label: 'Ayarlar',
-    });
-  }
-
   return (
     <>
       <Head>
         <title>{`Profilim | The Puncta`}</title>
       </Head>
       <div className="container mx-auto max-w-6xl">
-        {!error && !isLoading && user && (
+        {!isAnonymous && !error && !isLoading && user && (
           <>
-            <header className={cn('mb-8 px-4')}>
+            <header className={cn("mb-8 px-4")}>
               <h2 className="text-2xl font-medium sm:text-3xl">
                 <b>{user.username}</b> adlı kullanıcının profili.
               </h2>
             </header>
-            <div>
-              <h2 className="my-16 w-full bg-black py-8 text-center text-2xl font-bold text-white md:text-4xl">
-                <TextSwitch links={switchLinks} />
-              </h2>
-            </div>
             {user.ratings && user.ratings.length === 0 && (
               <h2 className="px-2 text-2xl font-medium sm:text-3xl">
-                <b>{user.username}</b> adlı kullanıcının henüz bir değerlendirmesi bulunmuyor.
+                <b>{user.username}</b> adlı kullanıcının henüz bir
+                değerlendirmesi bulunmuyor.
               </h2>
             )}
-            <main className="px-2">{user.ratings && user.ratings.length > 0 && <Ratings ratings={user.ratings} />}</main>
+            <main className="px-2">
+              {user.ratings && user.ratings.length > 0 && (
+                <Ratings ratings={user.ratings} />
+              )}
+            </main>
           </>
         )}
         {isLoading && (
-          <header className={cn('mb-8 px-4')}>
+          <header className={cn("mb-8 px-4")}>
             <h2 className="text-2xl font-medium sm:text-3xl">
               <b>{slug}</b> adlı kullanıcının profili yükleniyor.
             </h2>
           </header>
-        )}{' '}
+        )}{" "}
         {error && (
-          <header className={cn('mb-8 px-4')}>
+          <header className={cn("mb-8 px-4")}>
             <h2 className="text-2xl font-medium sm:text-3xl">
               <b>{slug}</b> adında bir kullanıcı bulunamadı.
+            </h2>
+          </header>
+        )}
+        {isAnonymous && (
+          <header className={cn("mb-8 px-4")}>
+            <h2 className="text-2xl font-medium sm:text-3xl">
+              <b>{slug}</b> adlı kullanıcı anonimdir.
             </h2>
           </header>
         )}
