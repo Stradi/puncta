@@ -94,4 +94,10 @@ export class User {
     nullable: true,
   })
   isApproved: boolean;
+
+  @Field(() => Boolean, {
+    description: 'Whether this user is anonymous or not',
+    nullable: true,
+  })
+  isAnonymous: boolean;
 }

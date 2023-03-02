@@ -22,6 +22,7 @@ import { RevalidateModule } from './revalidate/revalidate.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       driver: ApolloDriver,
+      fieldResolverEnhancers: ['interceptors'],
     }),
     UniversityModule,
     FacultyModule,

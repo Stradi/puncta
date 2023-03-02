@@ -102,6 +102,8 @@ model User {
   // Teacher users that are not approved will not be able to create responses. This
   // will be handled by creating a new Guard.
   isApproved Boolean @default(false)
+
+  isAnonymous Boolean @default(true)
 }
 
 model Rating {

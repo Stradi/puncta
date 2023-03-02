@@ -1,6 +1,8 @@
 import { UseGuards } from '@nestjs/common';
+import { UseInterceptors } from '@nestjs/common/decorators';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { GqlAuthGuard } from 'src/auth/graphql-auth.guard';
+import { AnonymizerInterceptor } from 'src/common/anonymizer.interceptor';
 import { UserEntity } from 'src/common/decorators/user.decorator';
 import { Faculty } from 'src/faculty/entities/faculty.entity';
 import { Rating } from 'src/rating/entities/rating.entity';
@@ -14,6 +16,7 @@ import { UserService } from './user.service';
 export class UserResolver {
   constructor(private userService: UserService) {}
 
+  @UseInterceptors(AnonymizerInterceptor)
   @Query(() => User, { name: 'user' })
   async find(@Args() args: GetUserArgs) {
     return this.userService.find(args);

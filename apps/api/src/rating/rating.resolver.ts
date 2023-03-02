@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UseInterceptors } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -8,6 +8,7 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { GqlAuthGuard } from 'src/auth/graphql-auth.guard';
+import { AnonymizerInterceptor } from 'src/common/anonymizer.interceptor';
 import { UserEntity } from 'src/common/decorators/user.decorator';
 import { RoleGuard } from 'src/common/role/role.guard';
 import { Roles } from 'src/common/role/roles.decorator';
@@ -55,6 +56,7 @@ export class RatingResolver {
     return await this.ratingService.teacher(id);
   }
 
+  @UseInterceptors(AnonymizerInterceptor)
   @ResolveField('user', () => User)
   async user(@Parent() rating: Rating) {
     const { id } = rating;

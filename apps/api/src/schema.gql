@@ -104,6 +104,9 @@ type User {
 
   """Whether this user (teacher) is verified or not"""
   isApproved: Boolean
+
+  """Whether this user is anonymous or not"""
+  isAnonymous: Boolean
   response: [Response!]!
 }
 
