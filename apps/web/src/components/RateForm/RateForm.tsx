@@ -1,23 +1,23 @@
-import { ModalContext } from '@/context/ModalContext';
-import { RateContext } from '@/context/RateContext';
-import { FormikProps } from 'formik';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { createRef, useContext, useEffect, useState } from 'react';
-import Button from '../Button';
-import BaseRatingForm from './forms/BaseRatingForm';
-import FinalScreen from './forms/FinalScreen';
-import IntroScreen from './forms/IntroScreen';
-import TagSelectForm from './forms/TagSelectForm';
-import FirstTeacherForm from './forms/teacher/FirstTeacherForm';
-import SecondTeacherForm from './forms/teacher/SecondTeacherForm';
-import FirstUniversityForm from './forms/university/FirstUniversityForm';
-import SecondUniversityForm from './forms/university/SecondUniversityForm';
+import { ModalContext } from "@/context/ModalContext";
+import { RateContext } from "@/context/RateContext";
+import { FormikProps } from "formik";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { createRef, useContext, useEffect, useState } from "react";
+import Button from "../Button";
+import BaseRatingForm from "./forms/BaseRatingForm";
+import FinalScreen from "./forms/FinalScreen";
+import IntroScreen from "./forms/IntroScreen";
+import TagSelectForm from "./forms/TagSelectForm";
+import FirstTeacherForm from "./forms/teacher/FirstTeacherForm";
+import SecondTeacherForm from "./forms/teacher/SecondTeacherForm";
+import FirstUniversityForm from "./forms/university/FirstUniversityForm";
+import SecondUniversityForm from "./forms/university/SecondUniversityForm";
 
-import TeacherTraits from './forms/data/teacher-traits.json';
-import UniversityTraits from './forms/data/university-traits.json';
+import TeacherTraits from "./forms/data/teacher-traits.json";
+import UniversityTraits from "./forms/data/university-traits.json";
 
-export default function RateForm(props: React.ComponentPropsWithoutRef<'div'>) {
+export default function RateForm(props: React.ComponentPropsWithoutRef<"div">) {
   const formRef = createRef<FormikProps<any>>();
   const rateContext = useContext(RateContext);
   const modalContext = useContext(ModalContext);
@@ -31,8 +31,13 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<'div'>) {
     } else {
       modalContext.setCloseConfirmation(
         <div>
-          <h1 className="mb-4 text-2xl font-medium">Değerlendirmen kaydedilmeyecek.</h1>
-          <p className="mb-4">Eğer bu pencereyi kapatırsanız hali hazırda girdiğin puanlar kaybolacak.</p>
+          <h1 className="mb-4 text-2xl font-medium">
+            Değerlendirmen kaydedilmeyecek.
+          </h1>
+          <p className="mb-4">
+            Eğer bu pencereyi kapatırsanız hali hazırda girdiğin puanlar
+            kaybolacak.
+          </p>
         </div>
       );
     }
@@ -57,8 +62,12 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<'div'>) {
           setIsLoading(false);
           modalContext.setContent(
             <div>
-              <h1 className="mb-4 text-2xl font-medium">Değerlendirmen kaydedilemedi.</h1>
-              <p className="mb-4">Bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+              <h1 className="mb-4 text-2xl font-medium">
+                Değerlendirmen kaydedilemedi.
+              </h1>
+              <p className="mb-4">
+                Bir hata oluştu. Lütfen daha sonra tekrar deneyin.
+              </p>
             </div>
           );
           modalContext.setCloseConfirmation(false);
@@ -78,26 +87,57 @@ export default function RateForm(props: React.ComponentPropsWithoutRef<'div'>) {
       {isLoading && (
         <div className="absolute top-0 left-0 z-50 flex h-full w-full flex-col items-center justify-center gap-4 bg-black/80">
           <div className="border-primary-normal h-16 w-16 animate-spin rounded-full border-y-2 border-r-4"></div>
-          <p className="px-4 text-center text-xl font-medium text-white">Değerlendirmen paylaşılıyor. Lütfen biraz bekle.</p>
+          <p className="px-4 text-center text-xl font-medium text-white">
+            Değerlendirmen paylaşılıyor. Lütfen biraz bekle.
+          </p>
         </div>
       )}
       <h1 className="mb-4 text-center text-3xl font-medium">Değerlendir</h1>
       <AnimatePresence>
-        <motion.div key={rateContext.step} initial={{ opacity: 0, height: '0px' }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: '0px' }}>
+        <motion.div
+          key={rateContext.step}
+          initial={{ opacity: 0, height: "0px" }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: "0px" }}
+        >
           {rateContext.step === 0 && <IntroScreen />}
-          {rateContext.step === 1 && (rateContext.ratingTo.type === 'teacher' ? <FirstTeacherForm ref={formRef} /> : <FirstUniversityForm ref={formRef} />)}
-          {rateContext.step === 2 && (rateContext.ratingTo.type === 'teacher' ? <SecondTeacherForm ref={formRef} /> : <SecondUniversityForm ref={formRef} />)}
-          {rateContext.step === 3 && <TagSelectForm ref={formRef} tags={rateContext.ratingTo.type === 'university' ? UniversityTraits : TeacherTraits} />}
+          {rateContext.step === 1 &&
+            (rateContext.ratingTo.type === "teacher" ? (
+              <FirstTeacherForm ref={formRef} />
+            ) : (
+              <FirstUniversityForm ref={formRef} />
+            ))}
+          {rateContext.step === 2 &&
+            (rateContext.ratingTo.type === "teacher" ? (
+              <SecondTeacherForm ref={formRef} />
+            ) : (
+              <SecondUniversityForm ref={formRef} />
+            ))}
+          {rateContext.step === 3 && (
+            <TagSelectForm
+              ref={formRef}
+              tags={
+                rateContext.ratingTo.type === "university"
+                  ? UniversityTraits
+                  : TeacherTraits
+              }
+            />
+          )}
           {rateContext.step === 4 && <BaseRatingForm ref={formRef} />}
           {rateContext.step === 5 && <FinalScreen />}
         </motion.div>
       </AnimatePresence>
       <div className="mt-8 flex justify-evenly">
-        <Button variant="text" fullWidth onClick={handlePrev} disabled={rateContext.step <= 0}>
+        <Button
+          variant="text"
+          fullWidth
+          onClick={handlePrev}
+          disabled={rateContext.step <= 0}
+        >
           Geri Dön
         </Button>
         <Button fullWidth onClick={handleNext}>
-          {rateContext.step === 5 ? 'Paylaş' : 'Devam Et'}
+          {rateContext.step === 5 ? "Paylaş" : "Devam Et"}
         </Button>
       </div>
     </div>

@@ -12,7 +12,7 @@ export default function Page() {
             İletişim
           </h1>
         </header>
-        <section className="prose prose-neutral prose-lg mx-auto">
+        <section className="prose prose-lg prose-neutral mx-auto">
           <p>
             Her türlü görüş, öneri ve şikayetleriniz için bizimle iletişime
             geçebilirsiniz. Aşağıda bize doğrudan ulaşabileceğiniz bir e-posta

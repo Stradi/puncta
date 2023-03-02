@@ -12,7 +12,7 @@ export default function Page() {
             Kullanım Şartları
           </h1>
         </header>
-        <section className="prose prose-neutral prose-lg mx-auto">
+        <section className="prose prose-lg prose-neutral mx-auto">
           <p className="text-sm font-medium">
             Son güncelleme tarihi: 22.02.2023
           </p>

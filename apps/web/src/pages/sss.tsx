@@ -12,7 +12,7 @@ export default function Page() {
             Sıkça Sorulan Sorular (SSS)
           </h1>
         </header>
-        <section className="prose prose-neutral prose-lg mx-auto">
+        <section className="prose prose-lg prose-neutral mx-auto">
           <ol type="1">
             <li>
               <h3>Üye olmadan değerlendirme yapabilir miyim?</h3>

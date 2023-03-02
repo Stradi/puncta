@@ -30,7 +30,7 @@ export default function Page() {
               </p>
             </div>
           </blockquote>
-          <div className="prose prose-neutral prose-lg mx-auto">
+          <div className="prose prose-lg prose-neutral mx-auto">
             <p>
               The Puncta, tüm üniversite öğrencilerinin eleştirilerini,
               şikayetlerini, taleplerini ya da akademik düşüncelerini anonim
