@@ -101,11 +101,7 @@ export default function NavigationBar({
         >
           {authContext.isAuthenticated ? (
             <>
-              <Button
-                asLink
-                href={`/profil/${authContext.user?.username}`}
-                variant="text"
-              >
+              <Button asLink href={`/profilim`} variant="text">
                 {`${authContext.user?.firstName} ${authContext.user?.lastName}`}
               </Button>
               <Button

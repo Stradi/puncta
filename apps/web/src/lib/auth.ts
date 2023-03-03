@@ -22,6 +22,7 @@ const GET_ME_QUERY = gql`
       role
       email
       username
+      isAnonymous
       university {
         slug
       }
@@ -32,10 +33,13 @@ const GET_ME_QUERY = gql`
         score
         comment
         meta
+        createdAt
         university {
+          name
           slug
         }
         teacher {
+          name
           slug
         }
       }
@@ -93,6 +97,14 @@ const USERNAME_EXISTS_QUERY = gql`
   query UsernameExists($username: String!) {
     isUsernameExists(username: $username) {
       result
+    }
+  }
+`;
+
+const SET_ANONYMOUSER_MUTATION = gql`
+  mutation ChangeAnonymity($anonymity: Boolean!) {
+    changeAnonymity(anonymity: $anonymity) {
+      id
     }
   }
 `;
@@ -260,4 +272,26 @@ export async function checkUsernameExists(username: string) {
   }
 
   return response.data.isUsernameExists.result;
+}
+
+export async function changeUserAnonymity(anonymity: boolean) {
+  const apolloClient = initializeApollo();
+
+  const response = await apolloClient.mutate({
+    mutation: SET_ANONYMOUSER_MUTATION,
+    variables: {
+      anonymity,
+    },
+    errorPolicy: "ignore",
+  });
+
+  if (response.errors && response.errors.length > 0) {
+    return false;
+  }
+
+  if (!response.data || !response.data.changeAnonymity) {
+    return false;
+  }
+
+  return true;
 }

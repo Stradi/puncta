@@ -1,4 +1,10 @@
-import { doLogin, doRegister, getNewAccessToken, getUser } from "@/lib/auth";
+import {
+  changeUserAnonymity,
+  doLogin,
+  doRegister,
+  getNewAccessToken,
+  getUser,
+} from "@/lib/auth";
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
@@ -21,12 +27,15 @@ export interface RegisterPayload {
 interface AuthContextProps {
   user: Partial<User> | null;
   isAuthenticated: boolean;
+  isFetching: boolean;
 
   login: (payload: LoginPayload) => Promise<boolean>;
   logout: () => Promise<void>;
   register: (payload: RegisterPayload) => Promise<boolean>;
   refetchUser: (token: string) => Promise<boolean>;
   addRatingToUser: (rating: Rating) => void;
+
+  setAnonymity: (anonymity: boolean) => Promise<boolean>;
 }
 
 export const AuthContext = createContext<AuthContextProps>(
@@ -41,6 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     if (
@@ -101,15 +111,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const refetchUser = async (token: string) => {
+    setIsFetching(true);
     const user = await getUser(token);
     if (!user) {
       setUser(null);
       setIsAuthenticated(false);
+      setIsFetching(false);
       return false;
     }
 
     setUser(user);
     setIsAuthenticated(true);
+    setIsFetching(false);
     return true;
   };
 
@@ -125,16 +138,39 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setUser(newUser);
   };
 
+  async function setAnonymity(anonymity: boolean) {
+    if (!user) {
+      return false;
+    }
+
+    if (user.isAnonymous === anonymity) {
+      return false;
+    }
+    const response = await changeUserAnonymity(anonymity);
+    if (!response) {
+      return false;
+    }
+    const newUser = {
+      ...user,
+      isAnonymous: anonymity,
+    };
+
+    setUser(newUser);
+    return true;
+  }
+
   return (
     <AuthContext.Provider
       value={{
         user,
         isAuthenticated,
+        isFetching,
         login,
         logout,
         register,
         refetchUser,
         addRatingToUser,
+        setAnonymity,
       }}
     >
       {children}
