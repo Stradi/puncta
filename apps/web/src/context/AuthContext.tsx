@@ -1,3 +1,4 @@
+import { createApolloClient } from "@/lib/apollo";
 import {
   changeUserAnonymity,
   doLogin,
@@ -92,6 +93,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setAccessToken(null);
     setRefreshToken(null);
     setIsAuthenticated(false);
+    createApolloClient().resetStore();
   };
 
   const register = async (payload: RegisterPayload) => {
