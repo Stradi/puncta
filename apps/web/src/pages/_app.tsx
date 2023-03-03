@@ -26,9 +26,11 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     <ApolloProvider client={apolloClient}>
       <AuthProvider>
         <ModalProvider>
-          <div className="space-y-8 sm:space-y-16">
+          <div className="flex min-h-screen flex-col gap-8 sm:gap-16">
             <NavigationBar />
-            {getLayout(<Component {...pageProps} />)}
+            <main className="grow">
+              {getLayout(<Component {...pageProps} />)}
+            </main>
             <Footer />
           </div>
         </ModalProvider>
