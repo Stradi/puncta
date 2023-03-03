@@ -4,7 +4,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { ModalContext } from "@/context/ModalContext";
 import { cn } from "@/lib/utils";
 import Head from "next/head";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 export default function Page() {
   const authContext = useContext(AuthContext);

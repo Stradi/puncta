@@ -5,7 +5,6 @@ import {
   getNewAccessToken,
   getUser,
 } from "@/lib/auth";
-import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
 export interface LoginPayload {
@@ -89,7 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = async () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    setUser({});
+    setUser(null);
     setAccessToken(null);
     setRefreshToken(null);
     setIsAuthenticated(false);
