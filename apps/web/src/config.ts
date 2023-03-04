@@ -48,73 +48,76 @@ interface Config {
 
 const config: Config = {
   site: {
-    name: "Puncta.",
+    name: 'Puncta.',
     seo: {
       homepage: {
-        title: "The Puncta | Not Verme Sırası Sende",
-        description:
-          "Üniversiteni ve öğretim üyelerini anonim olarak değerlendir, not ver ve yorumla. Puanlamalarınla sesini duyur ve daha kaliteli bir eğitim ortamı yarat.",
+        title: 'The Puncta | Not Verme Sırası Sende',
+        description: 'Üniversiteni ve öğretim üyelerini anonim olarak değerlendir, not ver ve yorumla. Puanlamalarınla sesini duyur ve daha kaliteli bir eğitim ortamı yarat.',
       },
       allUniversities: {
-        title: "Tüm Üniversiteler | The Puncta",
-        description: "",
+        title: 'Tüm Üniversiteler | The Puncta',
+        description: '',
       },
       login: {
-        title: "Giriş Yap | The Puncta",
-        description: "",
+        title: 'Giriş Yap | The Puncta',
+        description: '',
       },
       register: {
-        title: "Kayıt Ol | The Puncta",
-        description: "",
+        title: 'Kayıt Ol | The Puncta',
+        description: '',
       },
       search: {
-        title: "Arama Yap | The Puncta",
-        description: "",
+        title: 'Arama Yap | The Puncta',
+        description: '',
       },
       rateable: {
-        title: "Değerlendir | The Puncta",
-        description: "",
+        title: 'Değerlendir | The Puncta',
+        description: '',
       },
     },
   },
   navigation: {
     nonAuth: [
       {
-        label: "Tüm Üniversiteler",
-        href: "/universiteler",
+        label: 'Tüm Üniversiteler',
+        href: '/universiteler',
       },
       {
-        label: "Arama Yap",
-        href: "/ara",
+        label: 'Benim Öğretmenlerim',
+        href: '/degerlendir',
+      },
+      {
+        label: 'Arama Yap',
+        href: '/ara',
       },
     ],
     auth: {
       student: [
         {
-          label: "Tüm Üniversiteler",
-          href: "/universiteler",
+          label: 'Tüm Üniversiteler',
+          href: '/universiteler',
         },
         {
-          label: "Değerlendir",
-          href: "/degerlendir",
+          label: 'Benim Öğretmenlerim',
+          href: '/degerlendir',
         },
         {
-          label: "Arama Yap",
-          href: "/ara",
+          label: 'Bölüm Arama',
+          href: '/ara',
         },
       ],
       teacher: [
         {
-          label: "Tüm Üniversiteler",
-          href: "/universiteler",
+          label: 'Tüm Üniversiteler',
+          href: '/universiteler',
         },
         {
-          label: "Değerlendirenler",
-          href: "/degerlendirenler",
+          label: 'Değerlendirenler',
+          href: '/degerlendirenler',
         },
         {
-          label: "Arama Yap",
-          href: "/ara",
+          label: 'Arama Yap',
+          href: '/ara',
         },
       ],
     },
@@ -122,49 +125,49 @@ const config: Config = {
   footer: {
     items: [
       {
-        heading: "Kurumsal",
+        heading: 'Kurumsal',
         items: [
           {
-            label: "Hakkımızda",
-            href: "/hakkimizda",
+            label: 'Hakkımızda',
+            href: '/hakkimizda',
           },
           {
-            label: "İletişim",
-            href: "/iletisim",
+            label: 'İletişim',
+            href: '/iletisim',
           },
         ],
       },
       {
-        heading: "Destek",
+        heading: 'Destek',
         items: [
           {
-            label: "Sıkça Sorulan Sorular",
-            href: "/sss",
+            label: 'Sıkça Sorulan Sorular',
+            href: '/sss',
           },
           {
-            label: "Gizlilik Politikası",
-            href: "/gizlilik-politikasi",
+            label: 'Gizlilik Politikası',
+            href: '/gizlilik-politikasi',
           },
           {
-            label: "Kullanım Şartları",
-            href: "/kullanim-sartlari",
+            label: 'Kullanım Şartları',
+            href: '/kullanim-sartlari',
           },
         ],
       },
       {
-        heading: "Sosyal Medya",
+        heading: 'Sosyal Medya',
         items: [
           {
-            label: "Twitter",
-            href: "https://twitter.com/punctaapp",
+            label: 'Twitter',
+            href: 'https://twitter.com/punctaapp',
           },
           {
-            label: "Instagram",
-            href: "https://instagram.com/punctaapp",
+            label: 'Instagram',
+            href: 'https://instagram.com/punctaapp',
           },
           {
-            label: "Facebook",
-            href: "https://facebook.com/punctaapp",
+            label: 'Facebook',
+            href: 'https://facebook.com/punctaapp',
           },
         ],
       },
@@ -173,46 +176,43 @@ const config: Config = {
   landing: {
     stats: [
       {
-        text: "Değerlendirme",
-        value: "20K+",
+        text: 'Değerlendirme',
+        value: '20K+',
       },
       {
-        text: "Üniversite",
-        value: "200+",
+        text: 'Üniversite',
+        value: '200+',
       },
       {
-        text: "Yorum",
-        value: "3K+",
+        text: 'Yorum',
+        value: '3K+',
       },
       {
-        text: "Öğretim Üyesi",
-        value: "180K+",
+        text: 'Öğretim Üyesi',
+        value: '180K+',
       },
     ],
     features: [
       {
-        title: "Tamamen Anonimsin",
-        subtitle:
-          "Yani yapılan tüm değerlendirmeler ve yorumlar gizli, kimse göremiyor. Biz bile göremiyoruz.",
-        color: "bg-primary-light",
-        bgImage: "/images/tamamen-anonimsin.png",
-        image: "",
+        title: 'Tamamen Anonimsin',
+        subtitle: 'Yani yapılan tüm değerlendirmeler ve yorumlar gizli, kimse göremiyor. Biz bile göremiyoruz.',
+        color: 'bg-primary-light',
+        bgImage: '/images/tamamen-anonimsin.png',
+        image: '',
       },
       {
-        title: "Tüm Öğrenciler İçin",
-        subtitle:
-          "Öğrencilerin değerlendirmeleri ve yorumları öğretmenler için çok önemli.",
-        color: "bg-primary-light",
-        bgImage: "/images/tum-ogrenciler-icin.png",
-        image: "",
+        title: 'Tüm Öğrenciler İçin',
+        subtitle: 'Öğrencilerin değerlendirmeleri ve yorumları öğretmenler için çok önemli.',
+        color: 'bg-primary-light',
+        bgImage: '/images/tum-ogrenciler-icin.png',
+        image: '',
       },
       {
-        title: "Sesini Duyur",
-        subtitle:
-          "Öğretmenlerini ve üniversiteni punlayarak daha iyi bir eğitim ortamı yaratmamıza yardımcı ol.",
-        color: "bg-primary-light",
-        bgImage: "/images/sesini-duyur.png",
-        image: "",
+        title: 'Sesini Duyur',
+        subtitle: 'Öğretmenlerini ve üniversiteni punlayarak daha iyi bir eğitim ortamı yaratmamıza yardımcı ol.',
+        color: 'bg-primary-light',
+        bgImage: '/images/sesini-duyur.png',
+        image: '',
       },
     ],
   },
