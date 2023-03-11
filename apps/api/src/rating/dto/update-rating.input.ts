@@ -9,10 +9,6 @@ export class UpdateRatingFilter {
 
 @InputType()
 export class UpdateRatingSet {
-  @Field(() => Int, { nullable: true })
-  @IsOptional()
-  score?: number;
-
   @Field(() => String, { nullable: true })
   @IsOptional()
   comment?: string;

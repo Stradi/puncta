@@ -4,14 +4,12 @@ import { initializeApollo } from "./apollo";
 
 const NEW_RATING_MUTATION = gql`
   mutation NewRating(
-    $score: Int!
     $comment: String
     $meta: String
     $university: ConnectRatingUniversity
     $teacher: ConnectRatingTeacher
   ) {
     createRating(
-      score: $score
       comment: $comment
       meta: $meta
       university: $university
@@ -20,7 +18,6 @@ const NEW_RATING_MUTATION = gql`
       id
       createdAt
       updatedAt
-      score
       comment
       meta
       university {
@@ -43,7 +40,6 @@ const UPDATE_RATING_MUTATION = gql`
       id
       createdAt
       updatedAt
-      score
       comment
       meta
       university {
@@ -66,7 +62,6 @@ const DELETE_RATING_MUTATION = gql`
       id
       createdAt
       updatedAt
-      score
       comment
       meta
       university {
@@ -92,7 +87,6 @@ const RATEABLE_UNIVERSITY_QUERY = gql`
         slug
         ratings {
           id
-          score
           meta
         }
       }
@@ -119,7 +113,6 @@ const RATEABLE_TEACHERS_QUERY = gql`
       slug
       ratings {
         id
-        score
         meta
       }
     }
@@ -146,7 +139,6 @@ export async function createRating(payload: CreateRatingPayload) {
   const response = await apolloClient.mutate({
     mutation: NEW_RATING_MUTATION,
     variables: {
-      score: payload.rating,
       comment: payload.comment,
       meta: JSON.stringify({
         criterias: payload.criterias,

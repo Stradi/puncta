@@ -45,9 +45,6 @@ const UniversityValidationSchema = Yup.object().shape({
   faculty: FacultyFieldSchema,
 });
 
-// TODO: Fix this page. It works but it's not good. For example, while having
-// a query in the URL, if you click the /ara link in the navbar, it doesn't
-// remove search results.
 export default function Page() {
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

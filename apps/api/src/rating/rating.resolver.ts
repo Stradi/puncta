@@ -70,13 +70,6 @@ export class RatingResolver {
     @UserEntity() user: User,
     @Args() args: CreateRatingInput,
   ) {
-    if (args.score < 0 || args.score > 100) {
-      throw new GenericInvalidParameterError(
-        'score',
-        'score should be between 0 and 100',
-      );
-    }
-
     if (
       args.university?.id === undefined &&
       !args.university?.slug &&
@@ -125,17 +118,10 @@ export class RatingResolver {
       );
     }
 
-    if (!args.set.score && !args.set.comment && !args.set.meta) {
+    if (!args.set.comment && !args.set.meta) {
       throw new GenericInvalidParameterError(
         'set',
         'At least one set parameter should be passed',
-      );
-    }
-
-    if (args.set.score && (args.set.score < 0 || args.set.score > 100)) {
-      throw new GenericInvalidParameterError(
-        'set.score',
-        'score parameter should be between 0 and 100',
       );
     }
 

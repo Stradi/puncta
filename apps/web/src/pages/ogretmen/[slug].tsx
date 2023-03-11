@@ -156,7 +156,6 @@ export async function getStaticProps({ params }: Params) {
           ratings(sort: { createdAt: "desc" }, pageSize: 250) {
             id
             meta
-            score
             comment
             createdAt
             user {

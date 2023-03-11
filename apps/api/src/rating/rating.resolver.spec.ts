@@ -17,7 +17,6 @@ const ratingMock: Rating = {
   id: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
-  score: 75,
   comment: 'Mock rating comment',
   meta: '',
   teacher: {} as Teacher,

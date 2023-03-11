@@ -29,7 +29,6 @@ const GET_ME_QUERY = gql`
       }
       ratings {
         id
-        score
         comment
         meta
         createdAt

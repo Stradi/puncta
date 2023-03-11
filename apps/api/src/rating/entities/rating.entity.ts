@@ -24,9 +24,6 @@ export class Rating {
   })
   updatedAt: Date;
 
-  @Field(() => Int, { description: 'Score of this rating' })
-  score: number;
-
   @Field(() => String, {
     description: 'Message of this rating',
     nullable: true,
