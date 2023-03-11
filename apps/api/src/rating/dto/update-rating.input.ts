@@ -9,16 +9,16 @@ export class UpdateRatingFilter {
 
 @InputType()
 export class UpdateRatingSet {
+  @Field(() => Int, { nullable: true })
   @IsOptional()
-  @Field(() => Int)
   score?: number;
 
+  @Field(() => String, { nullable: true })
   @IsOptional()
-  @Field(() => String)
   comment?: string;
 
+  @Field(() => String, { nullable: true })
   @IsOptional()
-  @Field(() => String)
   meta?: string;
 }
 

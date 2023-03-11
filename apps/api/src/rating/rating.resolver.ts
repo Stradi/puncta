@@ -144,7 +144,7 @@ export class RatingResolver {
 
   @Mutation(() => Rating)
   @UseGuards(GqlAuthGuard, RoleGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.STUDENT)
   async deleteRating(@Args() args: DeleteRatingInput) {
     if (args.id < 0) {
       throw new GenericInvalidParameterError(

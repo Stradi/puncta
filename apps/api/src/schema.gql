@@ -528,9 +528,9 @@ input UpdateRatingFilter {
 }
 
 input UpdateRatingSet {
-  score: Int!
-  comment: String!
-  meta: String!
+  score: Int
+  comment: String
+  meta: String
 }
 
 input ConnectUserUniversity {

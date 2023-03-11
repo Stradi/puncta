@@ -201,9 +201,11 @@ export class RatingService {
       });
 
       if (rating.teacher) {
-        this.revalidateService.revalidateTeachers([rating.teacher.slug]);
+        await this.revalidateService.revalidateTeachers([rating.teacher.slug]);
       } else if (rating.university) {
-        this.revalidateService.revalidateUniversities([rating.university.slug]);
+        await this.revalidateService.revalidateUniversities([
+          rating.university.slug,
+        ]);
       }
 
       return rating;

@@ -1,12 +1,6 @@
-import { createApolloClient } from "@/lib/apollo";
-import {
-  changeUserAnonymity,
-  doLogin,
-  doRegister,
-  getNewAccessToken,
-  getUser,
-} from "@/lib/auth";
-import { createContext, useEffect, useState } from "react";
+import { createApolloClient } from '@/lib/apollo';
+import { changeUserAnonymity, doLogin, doRegister, getNewAccessToken, getUser } from '@/lib/auth';
+import { createContext, useEffect, useState } from 'react';
 
 export interface LoginPayload {
   username: string;
@@ -21,7 +15,7 @@ export interface RegisterPayload {
   lastName: string;
   university: string;
   faculty: string;
-  type: "STUDENT" | "TEACHER";
+  type: 'STUDENT' | 'TEACHER';
 }
 
 interface AuthContextProps {
@@ -34,13 +28,13 @@ interface AuthContextProps {
   register: (payload: RegisterPayload) => Promise<boolean>;
   refetchUser: (token: string) => Promise<boolean>;
   addRatingToUser: (rating: Rating) => void;
+  updateRatingOfUser: (id: number, rating: Rating) => void;
+  deleteRatingFromUser: (id: number) => void;
 
   setAnonymity: (anonymity: boolean) => Promise<boolean>;
 }
 
-export const AuthContext = createContext<AuthContextProps>(
-  {} as AuthContextProps
-);
+export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 // TODO: Please fix this file. It's working but my eyes are bleeding.
 interface AuthProviderProps extends React.PropsWithChildren {}
@@ -53,12 +47,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
-    if (
-      localStorage.getItem("accessToken") &&
-      localStorage.getItem("refreshToken")
-    ) {
-      setAccessToken(localStorage.getItem("accessToken"));
-      setRefreshToken(localStorage.getItem("refreshToken"));
+    if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')) {
+      setAccessToken(localStorage.getItem('accessToken'));
+      setRefreshToken(localStorage.getItem('refreshToken'));
     }
   }, []);
 
@@ -87,8 +78,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const logout = async () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     setUser(null);
     setAccessToken(null);
     setRefreshToken(null);
@@ -139,6 +130,37 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setUser(newUser);
   };
 
+  const updateRatingOfUser = (id: number, rating: Rating) => {
+    if (!user) {
+      return;
+    }
+
+    const newUser = {
+      ...user,
+      ratings: user.ratings?.map((r) => {
+        if (r.id === id) {
+          return rating;
+        }
+        return r;
+      }),
+    };
+
+    setUser(newUser);
+  };
+
+  const deleteRatingFromUser = (id: number) => {
+    if (!user) {
+      return;
+    }
+
+    const newUser = {
+      ...user,
+      ratings: user.ratings?.filter((r) => r.id !== id),
+    };
+
+    setUser(newUser);
+  };
+
   async function setAnonymity(anonymity: boolean) {
     if (!user) {
       return false;
@@ -171,6 +193,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         register,
         refetchUser,
         addRatingToUser,
+        updateRatingOfUser,
+        deleteRatingFromUser,
         setAnonymity,
       }}
     >
