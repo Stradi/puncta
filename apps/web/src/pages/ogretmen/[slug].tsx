@@ -69,9 +69,12 @@ export default function Page({ teacher }: PageProps) {
                   </RateProvider>
                   <div className="sm:flex sm:justify-between [&>*]:block">
                     {!authContext.isAuthenticated && (
-                      <Button variant="text">{teacherName} siz misiniz?</Button>
+                      <Button
+                        variant="text"
+                        className="text-sm"
+                      >{`${teacherName} siz misiniz?`}</Button>
                     )}
-                    <Button variant="text">
+                    <Button variant="text" className="text-sm">
                       Bilgilerde bir yanlışlık mı var?
                     </Button>
                   </div>
