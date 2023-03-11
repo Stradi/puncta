@@ -1,10 +1,22 @@
-import { CreateRatingPayload } from '@/context/RateContext';
-import { gql } from '@apollo/client';
-import { initializeApollo } from './apollo';
+import { CreateRatingPayload } from "@/context/RateContext";
+import { gql } from "@apollo/client";
+import { initializeApollo } from "./apollo";
 
 const NEW_RATING_MUTATION = gql`
-  mutation NewRating($score: Int!, $comment: String, $meta: String, $university: ConnectRatingUniversity, $teacher: ConnectRatingTeacher) {
-    createRating(score: $score, comment: $comment, meta: $meta, university: $university, teacher: $teacher) {
+  mutation NewRating(
+    $score: Int!
+    $comment: String
+    $meta: String
+    $university: ConnectRatingUniversity
+    $teacher: ConnectRatingTeacher
+  ) {
+    createRating(
+      score: $score
+      comment: $comment
+      meta: $meta
+      university: $university
+      teacher: $teacher
+    ) {
       id
       createdAt
       updatedAt
@@ -95,7 +107,13 @@ const RATEABLE_UNIVERSITY_QUERY = gql`
 
 const RATEABLE_TEACHERS_QUERY = gql`
   query RateableTeachers($universitySlug: String!, $facultySlug: String) {
-    teacher(filter: { university: { slug: { equals: $universitySlug } }, faculty: { slug: { equals: $facultySlug } } }, pageSize: 26) {
+    teacher(
+      filter: {
+        university: { slug: { equals: $universitySlug } }
+        faculty: { slug: { equals: $facultySlug } }
+      }
+      pageSize: 10000
+    ) {
       id
       name
       slug
@@ -113,7 +131,7 @@ export async function createRating(payload: CreateRatingPayload) {
 
   const ratingToObj = {} as any;
 
-  if (payload.ratingTo.type === 'university') {
+  if (payload.ratingTo.type === "university") {
     ratingToObj.university = {
       slug: payload.ratingTo.university.slug,
     };
@@ -123,7 +141,7 @@ export async function createRating(payload: CreateRatingPayload) {
     };
   }
 
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem("accessToken");
 
   const response = await apolloClient.mutate({
     mutation: NEW_RATING_MUTATION,
@@ -156,13 +174,13 @@ export async function createRating(payload: CreateRatingPayload) {
 }
 
 export async function updateRating(id: number, newComment: string) {
-  if (typeof id !== 'number') {
+  if (typeof id !== "number") {
     id = parseInt(id);
   }
 
   const apolloClient = initializeApollo();
 
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem("accessToken");
 
   const response = await apolloClient.mutate({
     mutation: UPDATE_RATING_MUTATION,
@@ -190,13 +208,13 @@ export async function updateRating(id: number, newComment: string) {
 }
 
 export async function deleteRating(id: number) {
-  if (typeof id !== 'number') {
+  if (typeof id !== "number") {
     id = parseInt(id);
   }
 
   const apolloClient = initializeApollo();
 
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem("accessToken");
 
   const response = await apolloClient.mutate({
     mutation: DELETE_RATING_MUTATION,
@@ -224,7 +242,7 @@ export async function deleteRating(id: number) {
 
 export async function getAllRateableEntities() {
   const apolloClient = initializeApollo();
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem("accessToken");
 
   const rateableUniversity = await apolloClient.query({
     query: RATEABLE_UNIVERSITY_QUERY,
@@ -252,6 +270,8 @@ export async function getAllRateableEntities() {
 
   return {
     university: rateableUniversity.data.me.university,
-    teachers: rateableTeachers.data.teacher.filter((t) => t.university !== null && t.faculty !== null),
+    teachers: rateableTeachers.data.teacher.filter(
+      (t) => t.university !== null && t.faculty !== null
+    ),
   };
 }
