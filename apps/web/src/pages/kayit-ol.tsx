@@ -1,25 +1,17 @@
-import Button from "@/components/Button";
-import { Card } from "@/components/Card";
-import FinalForm from "@/components/pages/kayit-ol/forms/FinalForm";
-import PasswordForm from "@/components/pages/kayit-ol/forms/PasswordForm";
-import RegistrationTypeForm from "@/components/pages/kayit-ol/forms/RegistrationTypeForm";
-import StudentInformationForm from "@/components/pages/kayit-ol/forms/student/StudentInformationForm";
-import UniversityForm from "@/components/pages/kayit-ol/forms/student/UniversityForm";
-import TeacherInformationForm from "@/components/pages/kayit-ol/forms/teacher/TeacherInformationForm";
-import config from "@/config";
-import { AuthContext } from "@/context/AuthContext";
-import { SignUpContext, SignUpProvider } from "@/context/SignUpContext";
-import { FormikProps } from "formik";
-import { AnimatePresence, motion } from "framer-motion";
-import Head from "next/head";
-import {
-  createRef,
-  ReactElement,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { useRouter } from "next/navigation";
+import Button from '@/components/Button';
+import { Card } from '@/components/Card';
+import FinalForm from '@/components/pages/kayit-ol/forms/FinalForm';
+import PasswordForm from '@/components/pages/kayit-ol/forms/PasswordForm';
+import StudentInformationForm from '@/components/pages/kayit-ol/forms/student/StudentInformationForm';
+import UniversityForm from '@/components/pages/kayit-ol/forms/student/UniversityForm';
+import config from '@/config';
+import { AuthContext } from '@/context/AuthContext';
+import { SignUpContext, SignUpProvider } from '@/context/SignUpContext';
+import { FormikProps } from 'formik';
+import { AnimatePresence, motion } from 'framer-motion';
+import Head from 'next/head';
+import { createRef, ReactElement, useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 function Page() {
   // Since we are not interested in return type of form, we can use any.
   const formRef = createRef<FormikProps<any>>();
@@ -31,7 +23,7 @@ function Page() {
 
   useEffect(() => {
     if (authContext.isAuthenticated) {
-      router.push("/degerlendir");
+      router.push('/degerlendir');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authContext.isAuthenticated]);
@@ -41,10 +33,7 @@ function Page() {
     <>
       <Head>
         <title>{config.site.seo.register.title}</title>
-        <meta
-          name="description"
-          content={config.site.seo.register.description}
-        />
+        <meta name="description" content={config.site.seo.register.description} />
       </Head>
       <div className="px-2">
         <Card className="relative mx-auto max-w-lg py-16 px-8">
@@ -60,24 +49,13 @@ function Page() {
           <AnimatePresence>
             <motion.div
               key={signUpContext.step}
-              initial={{ opacity: 0, height: "0px" }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: "0px" }}
+              initial={{ opacity: 0, height: '0px' }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: '0px' }}
             >
-              {signUpContext.step === 0 && <RegistrationTypeForm />}
-              {signUpContext.step === 1 &&
-                (signUpContext.registrationType === "STUDENT" ? (
-                  <StudentInformationForm ref={formRef} />
-                ) : (
-                  <TeacherInformationForm ref={formRef} />
-                ))}
-              {signUpContext.step === 2 && <PasswordForm ref={formRef} />}
-              {signUpContext.step === 3 &&
-                (signUpContext.registrationType === "STUDENT" ? (
-                  <UniversityForm ref={formRef} />
-                ) : (
-                  <FinalForm />
-                ))}
+              {signUpContext.step === 0 && <StudentInformationForm ref={formRef} />}
+              {signUpContext.step === 1 && <PasswordForm ref={formRef} />}
+              {signUpContext.step === 3 && <UniversityForm ref={formRef} />}
               {signUpContext.step === 4 && <FinalForm />}
             </motion.div>
           </AnimatePresence>
@@ -100,20 +78,18 @@ function Page() {
                   return;
                 }
 
-                if (signUpContext.registrationType === "STUDENT") {
+                if (signUpContext.registrationType === 'STUDENT') {
                   if (signUpContext.step === 4) {
                     setIsLoading(true);
-                    authContext
-                      .register(signUpContext.getPayload())
-                      .then((isSuccessfull) => {
-                        setIsLoading(false);
-                        if (!isSuccessfull) {
-                          // TODO: Show email domain error.
-                          signUpContext.setStep(1);
-                        } else {
-                          router.push("/degerlendir");
-                        }
-                      });
+                    authContext.register(signUpContext.getPayload()).then((isSuccessfull) => {
+                      setIsLoading(false);
+                      if (!isSuccessfull) {
+                        // TODO: Show email domain error.
+                        signUpContext.setStep(1);
+                      } else {
+                        router.push('/degerlendir');
+                      }
+                    });
                   } else {
                     formRef.current?.submitForm();
                   }
@@ -126,7 +102,7 @@ function Page() {
                 }
               }}
             >
-              {signUpContext.step === 3 ? "Kayıt Ol" : "Devam Et"}
+              {signUpContext.step === 3 ? 'Kayıt Ol' : 'Devam Et'}
             </Button>
           </div>
         </Card>

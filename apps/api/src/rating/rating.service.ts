@@ -105,7 +105,6 @@ export class RatingService {
     try {
       const rating = await this.prismaService.rating.create({
         data: {
-          score: args.score,
           comment: args.comment || '',
           meta: args.meta || '',
           user: {
@@ -145,10 +144,6 @@ export class RatingService {
 
   async update(args: UpdateRatingInput) {
     const setOptions: any = {};
-
-    if (args.set.score) {
-      setOptions['score'] = args.set.score;
-    }
 
     if (args.set.comment) {
       setOptions['comment'] = args.set.comment;
@@ -201,9 +196,11 @@ export class RatingService {
       });
 
       if (rating.teacher) {
-        this.revalidateService.revalidateTeachers([rating.teacher.slug]);
+        await this.revalidateService.revalidateTeachers([rating.teacher.slug]);
       } else if (rating.university) {
-        this.revalidateService.revalidateUniversities([rating.university.slug]);
+        await this.revalidateService.revalidateUniversities([
+          rating.university.slug,
+        ]);
       }
 
       return rating;

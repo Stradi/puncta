@@ -1,79 +1,74 @@
+import Button from "@/components/Button";
 import { CardWithoutRating } from "@/components/Card";
-import SearchInput from "@/components/pages/ara/SearchInput";
+import SearchInput from "@/components/SearchInput";
 import config from "@/config";
-import { searchTeacher, searchUniversity } from "@/lib/search";
-import { parseQuery } from "@/lib/utils";
+import { getTeachersOfUniversityFaculty } from "@/lib/search";
+import { FormikProvider, useFormik } from "formik";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import * as Yup from "yup";
 
-// TODO: Fix this page. It works but it's not good. For example, while having
-// a query in the URL, if you click the /ara link in the navbar, it doesn't
-// remove search results.
-export default function Page() {
-  const [term, setTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<
-    ((Teacher & { type: "teacher" }) | (University & { type: "university" }))[]
-  >([]);
-  const [hasSearched, setHasSearched] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+import faculties from "../components/pages/kayit-ol/data/faculties.json";
+import universities from "../components/pages/kayit-ol/data/universities.json";
 
-  const router = useRouter();
-  const query = parseQuery(router.query, ["q"]);
+const UniversityFieldSchema = Yup.string()
+  .oneOf(
+    universities.map((university) => university.name),
+    "Lütfen geçerli bir üniversite seçiniz."
+  )
+  .required("Üniversite boş bırakılamaz.");
 
-  function onSearch(searchTerm: string) {
-    if (searchTerm !== term) {
-      setTerm(searchTerm);
+const FacultyFieldSchema = Yup.string().when(
+  ["university"],
+  (university, schema) => {
+    const isUniversityValid = UniversityFieldSchema.isValidSync(university);
+    if (!isUniversityValid) {
+      return schema;
     }
+
+    const selectedUniversity = universities.find(
+      (universityItem) => universityItem.name === university
+    );
+
+    const availableFaculties = selectedUniversity?.faculties.map(
+      (facultyItem) => faculties[facultyItem]
+    );
+
+    return schema
+      .oneOf(availableFaculties, "Lütfen geçerli bir bölüm seçiniz.")
+      .required("Bölüm boş bırakılamaz.");
   }
+);
 
-  useEffect(() => {
-    setHasSearched(false);
-  }, []);
+const UniversityValidationSchema = Yup.object().shape({
+  university: UniversityFieldSchema,
+  faculty: FacultyFieldSchema,
+});
 
-  useEffect(() => {
-    setTerm((query.q as string) || "");
-  }, [query.q]);
+export default function Page() {
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
-  useEffect(() => {
-    async function callApi() {
-      const searchPromises = [searchTeacher(term, 12), searchUniversity(term)];
-      const results = await Promise.all(searchPromises);
-
-      const teachers = results[0].map((item: Teacher) => ({
-        ...item,
-        type: "teacher",
-      }));
-
-      const universities = results[1].map((item: University) => ({
-        ...item,
-        type: "university",
-      }));
-
-      setIsLoading(false);
-      setSearchResults([...universities, ...teachers]);
-    }
-
-    if (term.length > 2) {
-      router.push(
-        {
-          pathname: "/ara",
-          query: {
-            q: term,
-          },
-        },
-        undefined,
-        { shallow: true }
-      );
-
+  const formik = useFormik({
+    initialValues: {
+      university: "",
+      faculty: "",
+    },
+    validationSchema: UniversityValidationSchema,
+    onSubmit: async (values) => {
+      setHasSearched(true);
       setIsLoading(true);
 
-      setSearchResults([]);
-      callApi();
-      setHasSearched(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [term]);
+      const response = await getTeachersOfUniversityFaculty(
+        values.university,
+        values.faculty
+      );
+
+      setResults(response);
+      setIsLoading(false);
+    },
+  });
 
   return (
     <>
@@ -89,53 +84,64 @@ export default function Page() {
             sonuçlarına tıklayarak da değerlendirmelerine ulaşabilirsin.
           </p>
         </div>
-        <SearchInput
-          className="mx-auto max-w-xl"
-          placeholder="Öğretmenini veya üniversiteni ara"
-          onSearch={onSearch}
-          initialTerm={term}
-        />
-        {searchResults && searchResults.length > 0 && !isLoading && (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {searchResults.map((result) => {
-              const href = `/${
-                result.type === "teacher" ? "ogretmen" : "universite"
-              }/${result.slug}`;
+        <FormikProvider value={formik}>
+          <div className="mx-auto flex max-w-xl flex-col gap-2">
+            <SearchInput
+              name="university"
+              label="Üniversite"
+              items={universities.map((u) => u.name)}
+            />
+            <SearchInput
+              name="faculty"
+              label="Bölüm"
+              items={(function () {
+                const selectedUniversity = universities.find(
+                  (university) => university.name === formik.values.university
+                );
+                if (!selectedUniversity) {
+                  return [];
+                }
+                return selectedUniversity.faculties.map(
+                  (faculty) => faculties[faculty]
+                );
+              })()}
+            />
+            <Button type="submit" onClick={() => formik.submitForm()}>
+              Ara
+            </Button>
+          </div>
+        </FormikProvider>
 
-              return (
-                <CardWithoutRating
-                  key={result.slug}
-                  title={result.name as string}
-                  href={href}
-                  subtitle={
-                    result.type === "teacher" && (
-                      <div className="text-center">
-                        <span>{result.university?.name}</span>,{" "}
-                        <span>{result.faculty?.name}</span>
-                      </div>
-                    )
-                  }
-                />
-              );
-            })}
-          </div>
-        )}
         {isLoading && (
-          <div className="text-center">
-            <p className="text-2xl font-medium">Aranıyor...</p>
-          </div>
-        )}
-        {!isLoading &&
-          hasSearched &&
-          searchResults &&
-          searchResults.length === 0 && (
-            <div className="text-center">
-              <p className="text-2xl font-medium">
-                Her yeri aradık ama bulamadık. Arama terimini değiştirip tekrar
-                deneyebilirsin.
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center gap-2">
+              <div className="border-primary-dark h-16 w-16 animate-spin rounded-full border-y-2 border-r-4"></div>
+              <p className="px-4 text-center text-xl font-medium text-black">
+                Arama yapılıyor...
               </p>
             </div>
-          )}
+          </div>
+        )}
+        {hasSearched && !isLoading && results.length === 0 && (
+          <p className="px-4 text-center text-xl font-medium text-black">
+            Garip, hiç bir sonuç bulamadık. Lütfen arama kriterlerini değiştirip
+            tekrar deneyin.
+          </p>
+        )}
+        {hasSearched && !isLoading && results.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold sm:text-4xl">Arama Sonuçları</h2>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {results.map((result: any) => (
+                <CardWithoutRating
+                  key={result.slug}
+                  title={result.name}
+                  href={`/ogretmen/${result.slug}`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

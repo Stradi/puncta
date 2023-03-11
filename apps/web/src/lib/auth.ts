@@ -17,8 +17,6 @@ const GET_ME_QUERY = gql`
       id
       createdAt
       updatedAt
-      firstName
-      lastName
       role
       email
       username
@@ -30,7 +28,7 @@ const GET_ME_QUERY = gql`
         slug
       }
       ratings {
-        score
+        id
         comment
         meta
         createdAt
@@ -61,8 +59,6 @@ const REGISTER_MUTATION = gql`
     $email: String!
     $username: String!
     $password: String!
-    $firstName: String!
-    $lastName: String!
     $university: ConnectUserUniversity!
     $faculty: ConnectUserFaculty!
     $teacher: ConnectUserTeacher!
@@ -72,8 +68,6 @@ const REGISTER_MUTATION = gql`
       email: $email
       username: $username
       password: $password
-      firstName: $firstName
-      lastName: $lastName
       university: $university
       faculty: $faculty
       teacher: $teacher
@@ -194,17 +188,13 @@ export async function doRegister(payload: RegisterPayload) {
       email: payload.email,
       username: payload.username,
       password: payload.password,
-      firstName: payload.firstName,
-      lastName: payload.lastName,
       university: {
         name: payload.university,
       },
       faculty: {
         name: payload.faculty,
       },
-      teacher: {
-        name: `${payload.firstName} ${payload.lastName}`,
-      },
+      teacher: {},
       role: payload.type,
     },
     errorPolicy: "ignore",

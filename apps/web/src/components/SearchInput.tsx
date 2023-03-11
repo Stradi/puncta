@@ -72,7 +72,7 @@ export default function SearchInput({
         type="search"
         autoComplete="off"
         className={cn(
-          "mb-2 rounded-full px-4 py-2 transition duration-100",
+          "mb-2 w-full rounded-full px-4 py-2 transition duration-100",
           "border border-black font-medium outline-none"
         )}
       />

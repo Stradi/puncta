@@ -139,9 +139,6 @@ type Rating {
   """Date the this object last updated"""
   updatedAt: DateTime!
 
-  """Score of this rating"""
-  score: Int!
-
   """Message of this rating"""
   comment: String
 
@@ -272,12 +269,6 @@ type User {
   """Username of this user"""
   username: String!
 
-  """First name of this user"""
-  firstName: String
-
-  """Last name of this user"""
-  lastName: String
-
   """Rating that this user has made"""
   ratings: [Rating!]
 
@@ -382,10 +373,10 @@ type Mutation {
     """Slug of the resource"""
     slug: String
   ): Teacher!
-  createRating(score: Int!, comment: String, meta: String, university: ConnectRatingUniversity, teacher: ConnectRatingTeacher): Rating!
+  createRating(comment: String, meta: String, university: ConnectRatingUniversity, teacher: ConnectRatingTeacher): Rating!
   updateRating(filter: UpdateRatingFilter!, set: UpdateRatingSet!): Rating!
   deleteRating(id: Int!): Rating!
-  signup(email: String!, username: String!, password: String!, firstName: String!, lastName: String!, university: ConnectUserUniversity, faculty: ConnectUserFaculty, role: String, teacher: ConnectUserTeacher): Auth!
+  signup(email: String!, username: String!, password: String!, university: ConnectUserUniversity, faculty: ConnectUserFaculty, role: String, teacher: ConnectUserTeacher): Auth!
   login(username: String!, password: String!): Auth!
   refreshToken(token: JWT!): Token!
   changePassword(oldPassword: String!, newPassword: String!): User!
@@ -528,9 +519,8 @@ input UpdateRatingFilter {
 }
 
 input UpdateRatingSet {
-  score: Int!
-  comment: String!
-  meta: String!
+  comment: String
+  meta: String
 }
 
 input ConnectUserUniversity {

@@ -17,8 +17,6 @@ export interface RegisterPayload {
   email: string;
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
   university: string;
   faculty: string;
   type: "STUDENT" | "TEACHER";
@@ -34,6 +32,8 @@ interface AuthContextProps {
   register: (payload: RegisterPayload) => Promise<boolean>;
   refetchUser: (token: string) => Promise<boolean>;
   addRatingToUser: (rating: Rating) => void;
+  updateRatingOfUser: (id: number, rating: Rating) => void;
+  deleteRatingFromUser: (id: number) => void;
 
   setAnonymity: (anonymity: boolean) => Promise<boolean>;
 }
@@ -139,6 +139,37 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setUser(newUser);
   };
 
+  const updateRatingOfUser = (id: number, rating: Rating) => {
+    if (!user) {
+      return;
+    }
+
+    const newUser = {
+      ...user,
+      ratings: user.ratings?.map((r) => {
+        if (r.id === id) {
+          return rating;
+        }
+        return r;
+      }),
+    };
+
+    setUser(newUser);
+  };
+
+  const deleteRatingFromUser = (id: number) => {
+    if (!user) {
+      return;
+    }
+
+    const newUser = {
+      ...user,
+      ratings: user.ratings?.filter((r) => r.id !== id),
+    };
+
+    setUser(newUser);
+  };
+
   async function setAnonymity(anonymity: boolean) {
     if (!user) {
       return false;
@@ -171,6 +202,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         register,
         refetchUser,
         addRatingToUser,
+        updateRatingOfUser,
+        deleteRatingFromUser,
         setAnonymity,
       }}
     >

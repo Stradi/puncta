@@ -74,8 +74,6 @@ model User {
   username String @unique
   email String @unique
   password String
-  firstName String?
-  lastName String?
 
   universityId Int?
   university University? @relation(fields: [universityId], references: [id])
@@ -111,7 +109,6 @@ model Rating {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  score Int
   comment String
   meta String @db.Text
 

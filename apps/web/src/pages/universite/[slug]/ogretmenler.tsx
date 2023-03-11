@@ -129,7 +129,6 @@ export async function getStaticProps({ params }: Params) {
           ratings {
             id
             meta
-            score
             comment
             createdAt
           }
@@ -140,7 +139,6 @@ export async function getStaticProps({ params }: Params) {
             ratings {
               id
               meta
-              score
             }
           }
           ratingCount

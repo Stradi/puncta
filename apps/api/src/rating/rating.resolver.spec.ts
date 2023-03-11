@@ -17,7 +17,6 @@ const ratingMock: Rating = {
   id: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
-  score: 75,
   comment: 'Mock rating comment',
   meta: '',
   teacher: {} as Teacher,
@@ -27,8 +26,6 @@ const ratingMock: Rating = {
 const userMock: User = {
   id: 0,
   email: 'mockuser@example.com',
-  firstName: 'Mock',
-  lastName: 'User',
   role: Role.STUDENT,
   createdAt: new Date(),
   updatedAt: new Date(),

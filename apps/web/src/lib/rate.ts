@@ -4,14 +4,12 @@ import { initializeApollo } from "./apollo";
 
 const NEW_RATING_MUTATION = gql`
   mutation NewRating(
-    $score: Int!
     $comment: String
     $meta: String
     $university: ConnectRatingUniversity
     $teacher: ConnectRatingTeacher
   ) {
     createRating(
-      score: $score
       comment: $comment
       meta: $meta
       university: $university
@@ -20,7 +18,50 @@ const NEW_RATING_MUTATION = gql`
       id
       createdAt
       updatedAt
-      score
+      comment
+      meta
+      university {
+        id
+        name
+        slug
+      }
+      teacher {
+        id
+        name
+        slug
+      }
+    }
+  }
+`;
+
+const UPDATE_RATING_MUTATION = gql`
+  mutation UpdateRating($id: Int!, $comment: String!) {
+    updateRating(filter: { id: $id }, set: { comment: $comment }) {
+      id
+      createdAt
+      updatedAt
+      comment
+      meta
+      university {
+        id
+        name
+        slug
+      }
+      teacher {
+        id
+        name
+        slug
+      }
+    }
+  }
+`;
+
+const DELETE_RATING_MUTATION = gql`
+  mutation DeleteRating($id: Int!) {
+    deleteRating(id: $id) {
+      id
+      createdAt
+      updatedAt
       comment
       meta
       university {
@@ -46,7 +87,6 @@ const RATEABLE_UNIVERSITY_QUERY = gql`
         slug
         ratings {
           id
-          score
           meta
         }
       }
@@ -66,14 +106,13 @@ const RATEABLE_TEACHERS_QUERY = gql`
         university: { slug: { equals: $universitySlug } }
         faculty: { slug: { equals: $facultySlug } }
       }
-      pageSize: 26
+      pageSize: 10000
     ) {
       id
       name
       slug
       ratings {
         id
-        score
         meta
       }
     }
@@ -100,7 +139,6 @@ export async function createRating(payload: CreateRatingPayload) {
   const response = await apolloClient.mutate({
     mutation: NEW_RATING_MUTATION,
     variables: {
-      score: payload.rating,
       comment: payload.comment,
       meta: JSON.stringify({
         criterias: payload.criterias,
@@ -124,6 +162,73 @@ export async function createRating(payload: CreateRatingPayload) {
   }
 
   const rating = response.data.createRating;
+  return rating;
+}
+
+export async function updateRating(id: number, newComment: string) {
+  if (typeof id !== "number") {
+    id = parseInt(id);
+  }
+
+  const apolloClient = initializeApollo();
+
+  const accessToken = localStorage.getItem("accessToken");
+
+  const response = await apolloClient.mutate({
+    mutation: UPDATE_RATING_MUTATION,
+    variables: {
+      id,
+      comment: newComment,
+    },
+    context: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  });
+
+  if (response.errors && response.errors.length > 0) {
+    return null;
+  }
+
+  if (!response.data || !response.data.updateRating) {
+    return null;
+  }
+
+  const rating = response.data.updateRating;
+  return rating;
+}
+
+export async function deleteRating(id: number) {
+  if (typeof id !== "number") {
+    id = parseInt(id);
+  }
+
+  const apolloClient = initializeApollo();
+
+  const accessToken = localStorage.getItem("accessToken");
+
+  const response = await apolloClient.mutate({
+    mutation: DELETE_RATING_MUTATION,
+    variables: {
+      id,
+    },
+    context: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  });
+
+  if (response.errors && response.errors.length > 0) {
+    return null;
+  }
+
+  if (!response.data || !response.data.deleteRating) {
+    return null;
+  }
+
+  const rating = response.data.deleteRating;
   return rating;
 }
 
