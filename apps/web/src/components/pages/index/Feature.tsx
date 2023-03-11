@@ -36,24 +36,14 @@ export default function Feature({
           height={1000}
           className={cn(
             "absolute top-0 left-0 h-full w-full",
-            "blur-[2px] brightness-[0.75] transition duration-100 group-hover:blur-[4px]"
+            "blur-[4px] brightness-[0.75] transition duration-100"
           )}
         />
         <div className="z-10 w-full space-y-4">
-          <h3
-            className="text-2xl font-semibold text-white transition duration-100 group-hover:scale-110 md:text-6xl"
-            style={{
-              textShadow: "2px 2px rgba(0,0,0,1.0)",
-            }}
-          >
+          <h3 className="text-2xl font-semibold text-white transition duration-100 group-hover:scale-110 md:text-6xl">
             {leftSide.title}
           </h3>
-          <p
-            className="text-lg font-medium text-white md:text-2xl"
-            style={{
-              textShadow: "2px 2px rgba(0,0,0,1.0)",
-            }}
-          >
+          <p className="text-lg font-medium text-white md:text-2xl">
             {leftSide.subtitle}
           </p>
         </div>
