@@ -51,8 +51,6 @@ export class AuthModule implements OnModuleInit {
           email: this.configService.getOrThrow('ADMIN_EMAIL'),
           username: 'admin',
           password: this.configService.getOrThrow('ADMIN_PASSWORD'),
-          firstName: 'ADMIN',
-          lastName: 'ADMIN',
         },
         Role.ADMIN,
       );

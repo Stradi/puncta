@@ -44,8 +44,6 @@ interface University extends Partial<CommonResource> {
 }
 
 interface User extends Partial<CommonResource> {
-  firstName: string;
-  lastName: string;
   role: string;
   email: string;
   username: string;

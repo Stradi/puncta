@@ -16,16 +16,13 @@ export default function FinalForm() {
       </div>
       <div className="font-medium">
         <p>
-          Anladığımız kadarıyla adın{" "}
-          <span className="font-bold">
-            {`${signUpContext.firstName} ${signUpContext.lastName}`}
-          </span>
-          , e-postan <span className="font-bold">{signUpContext.email}</span> ve{" "}
+          Anladığımız kadarıyla kullanıcı adın{" "}
+          <span className="font-bold">{`${signUpContext.username}`}</span>,
+          e-postan <span className="font-bold">{signUpContext.email}</span> ve{" "}
           <span className="font-bold">
             {`${signUpContext.university}'nde ${signUpContext.faculty}`}
           </span>{" "}
-          bölümü okuyorsun.<br></br>Ayrıca şifren de{" "}
-          <span className="font-bold">*****</span>.
+          bölümü okuyorsun.
         </p>
       </div>
       <p className="font-medium">

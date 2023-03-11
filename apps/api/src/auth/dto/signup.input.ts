@@ -27,14 +27,6 @@ export class SignupInput {
   @MinLength(8)
   password: string;
 
-  @Field(() => String)
-  @IsNotEmpty()
-  firstName: string;
-
-  @Field(() => String)
-  @IsNotEmpty()
-  lastName: string;
-
   @Field(() => ConnectUserUniversity, { nullable: true })
   university?: ConnectUserUniversity;
 

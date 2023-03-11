@@ -40,8 +40,6 @@ export class AuthService {
         data: {
           email: args.email,
           username: args.username,
-          firstName: args.firstName,
-          lastName: args.lastName,
           password: hashedPassword,
           role,
           ...conditional,

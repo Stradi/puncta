@@ -1,6 +1,6 @@
-import { LoginPayload, RegisterPayload } from '@/context/AuthContext';
-import { gql } from '@apollo/client';
-import { initializeApollo } from './apollo';
+import { LoginPayload, RegisterPayload } from "@/context/AuthContext";
+import { gql } from "@apollo/client";
+import { initializeApollo } from "./apollo";
 
 const LOGIN_MUTATION = gql`
   mutation Login($username: String!, $password: String!) {
@@ -17,8 +17,6 @@ const GET_ME_QUERY = gql`
       id
       createdAt
       updatedAt
-      firstName
-      lastName
       role
       email
       username
@@ -62,14 +60,20 @@ const REGISTER_MUTATION = gql`
     $email: String!
     $username: String!
     $password: String!
-    $firstName: String!
-    $lastName: String!
     $university: ConnectUserUniversity!
     $faculty: ConnectUserFaculty!
     $teacher: ConnectUserTeacher!
     $role: String!
   ) {
-    signup(email: $email, username: $username, password: $password, firstName: $firstName, lastName: $lastName, university: $university, faculty: $faculty, teacher: $teacher, role: $role) {
+    signup(
+      email: $email
+      username: $username
+      password: $password
+      university: $university
+      faculty: $faculty
+      teacher: $teacher
+      role: $role
+    ) {
       accessToken
       refreshToken
     }
@@ -109,7 +113,7 @@ export async function doLogin(payload: LoginPayload) {
       username: payload.username,
       password: payload.password,
     },
-    errorPolicy: 'ignore',
+    errorPolicy: "ignore",
   });
 
   if (response.errors && response.errors.length > 0) {
@@ -126,8 +130,8 @@ export async function doLogin(payload: LoginPayload) {
     return null;
   }
 
-  localStorage.setItem('accessToken', response.data.login.accessToken);
-  localStorage.setItem('refreshToken', response.data.login.refreshToken);
+  localStorage.setItem("accessToken", response.data.login.accessToken);
+  localStorage.setItem("refreshToken", response.data.login.refreshToken);
   return { accessToken, refreshToken };
 }
 
@@ -143,7 +147,7 @@ export async function getUser(accessToken: string) {
         authorization: `Bearer ${accessToken}`,
       },
     },
-    errorPolicy: 'ignore',
+    errorPolicy: "ignore",
   });
 
   // Probably access token is expired.
@@ -168,8 +172,8 @@ export async function getNewAccessToken(refreshToken: string) {
     },
   });
 
-  localStorage.setItem('accessToken', response.data.refreshToken.accessToken);
-  localStorage.setItem('refreshToken', response.data.refreshToken.refreshToken);
+  localStorage.setItem("accessToken", response.data.refreshToken.accessToken);
+  localStorage.setItem("refreshToken", response.data.refreshToken.refreshToken);
   return {
     accessToken: response.data.refreshToken.accessToken,
     refreshToken: response.data.refreshToken.refreshToken,
@@ -185,20 +189,16 @@ export async function doRegister(payload: RegisterPayload) {
       email: payload.email,
       username: payload.username,
       password: payload.password,
-      firstName: payload.firstName,
-      lastName: payload.lastName,
       university: {
         name: payload.university,
       },
       faculty: {
         name: payload.faculty,
       },
-      teacher: {
-        name: `${payload.firstName} ${payload.lastName}`,
-      },
+      teacher: {},
       role: payload.type,
     },
-    errorPolicy: 'ignore',
+    errorPolicy: "ignore",
   });
 
   if (response.errors && response.errors.length > 0) {
@@ -215,8 +215,8 @@ export async function doRegister(payload: RegisterPayload) {
     return null;
   }
 
-  localStorage.setItem('accessToken', response.data.signup.accessToken);
-  localStorage.setItem('refreshToken', response.data.signup.refreshToken);
+  localStorage.setItem("accessToken", response.data.signup.accessToken);
+  localStorage.setItem("refreshToken", response.data.signup.refreshToken);
 
   return { accessToken, refreshToken };
 }
@@ -229,7 +229,7 @@ export async function checkEmailExists(email: string) {
     variables: {
       email,
     },
-    errorPolicy: 'ignore',
+    errorPolicy: "ignore",
   });
 
   if (response.errors && response.errors.length > 0) {
@@ -251,7 +251,7 @@ export async function checkUsernameExists(username: string) {
     variables: {
       username,
     },
-    errorPolicy: 'ignore',
+    errorPolicy: "ignore",
   });
 
   if (response.errors && response.errors.length > 0) {
@@ -273,7 +273,7 @@ export async function changeUserAnonymity(anonymity: boolean) {
     variables: {
       anonymity,
     },
-    errorPolicy: 'ignore',
+    errorPolicy: "ignore",
   });
 
   if (response.errors && response.errors.length > 0) {

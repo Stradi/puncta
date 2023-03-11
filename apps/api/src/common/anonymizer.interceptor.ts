@@ -10,8 +10,6 @@ import { map } from 'rxjs/operators';
 
 const USER_SPECIFIC_FIELDS = {
   username: (value: string) => value.replace(/./g, '*'),
-  firstName: (value: string) => value.replace(/./g, '*'),
-  lastName: (value: string) => value.replace(/./g, '*'),
   email: (value: string) => value.replace(/./g, '*'),
 } as Record<string, (value: string) => string>;
 

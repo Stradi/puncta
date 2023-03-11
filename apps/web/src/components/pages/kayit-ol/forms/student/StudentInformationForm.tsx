@@ -35,23 +35,6 @@ const StudentInformationValidationSchema = yup.object().shape({
         return !(await checkUsernameExists(value as string));
       }
     ),
-  name: yup
-    .string()
-    .min(3, "Ad en az 3 karakter olmalıdır.")
-    .required("Ad boş bırakılamaz.")
-    .test(
-      "Only firstname",
-      "Galiba sadece adını girmişsin, lütfen soyadını da gir.",
-      function (value) {
-        if (!value) {
-          return false;
-        }
-        const fullName = value.trim();
-
-        const arr = fullName.split(" ");
-        return arr.length > 1;
-      }
-    ),
 });
 
 export default forwardRef<FormikProps<any>>(function StudentInformationForm(
@@ -65,18 +48,11 @@ export default forwardRef<FormikProps<any>>(function StudentInformationForm(
       initialValues={{
         email: signUpContext.email,
         username: signUpContext.username,
-        name:
-          signUpContext.firstName && signUpContext.lastName
-            ? `${signUpContext.firstName} ${signUpContext.lastName}`
-            : "",
       }}
       validationSchema={StudentInformationValidationSchema}
       onSubmit={(values) => {
-        const arr = values.name.trim().split(" ");
         signUpContext.setEmail(values.email);
         signUpContext.setUsername(values.username);
-        signUpContext.setFirstName(arr[0]);
-        signUpContext.setLastName(arr[1]);
         signUpContext.nextStep();
       }}
     >
@@ -89,7 +65,6 @@ export default forwardRef<FormikProps<any>>(function StudentInformationForm(
           kullanmamanı öneririz.
         </p>
       </div>
-      <TextInput name="name" label="Ad Soyad" type="text" />
       <TextInput name="username" label="Kullanıcı adı" type="text" />
       <TextInput name="email" label="E-posta" type="email" />
     </BaseMultistepForm>

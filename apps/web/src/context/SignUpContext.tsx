@@ -14,12 +14,6 @@ interface SignUpContextProps {
   password: string;
   setPassword: (password: string) => void;
 
-  firstName: string;
-  setFirstName: (firstName: string) => void;
-
-  lastName: string;
-  setLastName: (lastName: string) => void;
-
   university: string;
   setUniversity: (university: string) => void;
 
@@ -45,8 +39,6 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [university, setUniversity] = useState("");
   const [faculty, setFaculty] = useState("");
 
@@ -68,8 +60,6 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
       email,
       username,
       password,
-      firstName,
-      lastName,
       university,
       faculty,
     };
@@ -86,10 +76,6 @@ export function SignUpProvider({ children }: React.PropsWithChildren<{}>) {
         setUsername,
         password,
         setPassword,
-        firstName,
-        setFirstName,
-        lastName,
-        setLastName,
         university,
         setUniversity,
         faculty,

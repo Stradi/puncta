@@ -1,16 +1,19 @@
-import config from '@/config';
-import { AuthContext } from '@/context/AuthContext';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useContext, useEffect, useState } from 'react';
-import Button from './Button';
-import { CloseIcon, HamburgerIcon } from './Icons';
-import Logo from './Logo';
+import config from "@/config";
+import { AuthContext } from "@/context/AuthContext";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import Button from "./Button";
+import { CloseIcon, HamburgerIcon } from "./Icons";
+import Logo from "./Logo";
 
-interface NavigationBarProps extends React.ComponentPropsWithoutRef<'nav'> {}
+interface NavigationBarProps extends React.ComponentPropsWithoutRef<"nav"> {}
 
-export default function NavigationBar({ className, ...props }: NavigationBarProps) {
+export default function NavigationBar({
+  className,
+  ...props
+}: NavigationBarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuItems, setMenuItems] = useState(config.navigation.nonAuth);
   const authContext = useContext(AuthContext);
@@ -23,9 +26,9 @@ export default function NavigationBar({ className, ...props }: NavigationBarProp
 
   useEffect(() => {
     if (authContext.isAuthenticated && authContext.user) {
-      if (authContext.user.role === 'STUDENT') {
+      if (authContext.user.role === "STUDENT") {
         setMenuItems(config.navigation.auth.student);
-      } else if (authContext.user.role === 'TEACHER') {
+      } else if (authContext.user.role === "TEACHER") {
         setMenuItems(config.navigation.auth.teacher);
       }
     } else {
@@ -34,8 +37,20 @@ export default function NavigationBar({ className, ...props }: NavigationBarProp
   }, [authContext.isAuthenticated, authContext.user]);
 
   return (
-    <nav className={cn('w-full', 'bg-primary-light border-b border-black', className)} {...props}>
-      <div className={cn('container mx-auto max-w-6xl', 'flex flex-wrap items-center justify-between sm:justify-start')}>
+    <nav
+      className={cn(
+        "w-full",
+        "bg-primary-light border-b border-black",
+        className
+      )}
+      {...props}
+    >
+      <div
+        className={cn(
+          "container mx-auto max-w-6xl",
+          "flex flex-wrap items-center justify-between sm:justify-start"
+        )}
+      >
         <Logo />
         <div className="flex sm:hidden">
           {isMenuOpen ? (
@@ -54,8 +69,21 @@ export default function NavigationBar({ className, ...props }: NavigationBarProp
             />
           )}
         </div>
-        <div className={cn(!isMenuOpen && 'hidden', 'w-full sm:flex sm:w-auto', 'items-center justify-between')}>
-          <ul className={cn('flex flex-col gap-4 py-4 pl-4', 'border-t border-t-black', 'text-primary-darker font-medium', 'sm:mt-0 sm:flex-row sm:border-0 sm:py-0 sm:text-sm')}>
+        <div
+          className={cn(
+            !isMenuOpen && "hidden",
+            "w-full sm:flex sm:w-auto",
+            "items-center justify-between"
+          )}
+        >
+          <ul
+            className={cn(
+              "flex flex-col gap-4 py-4 pl-4",
+              "border-t border-t-black",
+              "text-primary-darker font-medium",
+              "sm:mt-0 sm:flex-row sm:border-0 sm:py-0 sm:text-sm"
+            )}
+          >
             {menuItems.map((item) => (
               <li key={item.label} className="hover:text-black">
                 <Link href={item.href}>{item.label}</Link>
@@ -63,11 +91,18 @@ export default function NavigationBar({ className, ...props }: NavigationBarProp
             ))}
           </ul>
         </div>
-        <div className={cn(!isMenuOpen && 'hidden', 'my-2 w-full', 'sm:my-0 sm:ml-auto sm:flex sm:w-auto', 'border-t border-t-black sm:border-0')}>
+        <div
+          className={cn(
+            !isMenuOpen && "hidden",
+            "my-2 w-full",
+            "sm:my-0 sm:ml-auto sm:flex sm:w-auto",
+            "border-t border-t-black sm:border-0"
+          )}
+        >
           {authContext.isAuthenticated ? (
             <>
               <Button asLink href={`/profilim`} variant="text">
-                {`${authContext.user?.firstName} ${authContext.user?.lastName}`}
+                {`${authContext.user?.username}`}
               </Button>
               <Button
                 variant="text"

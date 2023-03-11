@@ -74,8 +74,6 @@ model User {
   username String @unique
   email String @unique
   password String
-  firstName String?
-  lastName String?
 
   universityId Int?
   university University? @relation(fields: [universityId], references: [id])

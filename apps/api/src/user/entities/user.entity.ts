@@ -35,18 +35,6 @@ export class User {
   @Field(() => String, { description: 'Username of this user' })
   username: string;
 
-  @Field(() => String, {
-    description: 'First name of this user',
-    nullable: true,
-  })
-  firstName: string;
-
-  @Field(() => String, {
-    description: 'Last name of this user',
-    nullable: true,
-  })
-  lastName: string;
-
   @Field(() => [Rating], {
     description: 'Rating that this user has made',
     nullable: true,

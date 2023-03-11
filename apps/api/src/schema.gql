@@ -272,12 +272,6 @@ type User {
   """Username of this user"""
   username: String!
 
-  """First name of this user"""
-  firstName: String
-
-  """Last name of this user"""
-  lastName: String
-
   """Rating that this user has made"""
   ratings: [Rating!]
 
@@ -385,7 +379,7 @@ type Mutation {
   createRating(score: Int!, comment: String, meta: String, university: ConnectRatingUniversity, teacher: ConnectRatingTeacher): Rating!
   updateRating(filter: UpdateRatingFilter!, set: UpdateRatingSet!): Rating!
   deleteRating(id: Int!): Rating!
-  signup(email: String!, username: String!, password: String!, firstName: String!, lastName: String!, university: ConnectUserUniversity, faculty: ConnectUserFaculty, role: String, teacher: ConnectUserTeacher): Auth!
+  signup(email: String!, username: String!, password: String!, university: ConnectUserUniversity, faculty: ConnectUserFaculty, role: String, teacher: ConnectUserTeacher): Auth!
   login(username: String!, password: String!): Auth!
   refreshToken(token: JWT!): Token!
   changePassword(oldPassword: String!, newPassword: String!): User!

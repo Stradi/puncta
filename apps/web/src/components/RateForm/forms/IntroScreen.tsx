@@ -28,7 +28,7 @@ export default function IntroScreen() {
   return (
     <div className="space-y-2 text-lg">
       <p>
-        Hoşgeldin <b>{authContext.user?.firstName}</b>. Görüşüne göre{" "}
+        Hoşgeldin <b>{authContext.user?.username}</b>. Görüşüne göre{" "}
         <b>{ratingTo.name}</b> adlı {ratingTo.typeLocalized} değerlendirmek
         istiyorsun.
       </p>

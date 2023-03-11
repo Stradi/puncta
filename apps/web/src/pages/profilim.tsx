@@ -42,7 +42,7 @@ export default function Page() {
             <>
               <div className="mx-auto max-w-lg text-center">
                 <h2 className="text-2xl font-medium sm:text-3xl">
-                  Profiline hoşgeldin <b>{authContext.user.firstName}</b>.
+                  Profiline hoşgeldin <b>{authContext.user.username}</b>.
                 </h2>
                 <br></br>
                 <h3 className="text-xl font-medium sm:text-2xl">

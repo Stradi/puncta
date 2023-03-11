@@ -1,6 +1,12 @@
-import { createApolloClient } from '@/lib/apollo';
-import { changeUserAnonymity, doLogin, doRegister, getNewAccessToken, getUser } from '@/lib/auth';
-import { createContext, useEffect, useState } from 'react';
+import { createApolloClient } from "@/lib/apollo";
+import {
+  changeUserAnonymity,
+  doLogin,
+  doRegister,
+  getNewAccessToken,
+  getUser,
+} from "@/lib/auth";
+import { createContext, useEffect, useState } from "react";
 
 export interface LoginPayload {
   username: string;
@@ -11,11 +17,9 @@ export interface RegisterPayload {
   email: string;
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
   university: string;
   faculty: string;
-  type: 'STUDENT' | 'TEACHER';
+  type: "STUDENT" | "TEACHER";
 }
 
 interface AuthContextProps {
@@ -34,7 +38,9 @@ interface AuthContextProps {
   setAnonymity: (anonymity: boolean) => Promise<boolean>;
 }
 
-export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
+export const AuthContext = createContext<AuthContextProps>(
+  {} as AuthContextProps
+);
 
 // TODO: Please fix this file. It's working but my eyes are bleeding.
 interface AuthProviderProps extends React.PropsWithChildren {}
@@ -47,9 +53,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')) {
-      setAccessToken(localStorage.getItem('accessToken'));
-      setRefreshToken(localStorage.getItem('refreshToken'));
+    if (
+      localStorage.getItem("accessToken") &&
+      localStorage.getItem("refreshToken")
+    ) {
+      setAccessToken(localStorage.getItem("accessToken"));
+      setRefreshToken(localStorage.getItem("refreshToken"));
     }
   }, []);
 
@@ -78,8 +87,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const logout = async () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     setUser(null);
     setAccessToken(null);
     setRefreshToken(null);
